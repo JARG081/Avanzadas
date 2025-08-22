@@ -33,7 +33,6 @@ public class Programa {
     public Facultad getFacultad() { return facultad; }
     public void setFacultad(Facultad facultad) { this.facultad = facultad; }
 
-    @Override
     public String toString() {
         return "Programa{" +
                 "ID=" + ID +

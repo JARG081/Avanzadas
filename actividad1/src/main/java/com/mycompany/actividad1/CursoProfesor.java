@@ -26,7 +26,6 @@ public class CursoProfesor {
     public Curso getCurso() { return curso; }
     public void setCurso(Curso curso) { this.curso = curso; }
 
-    @Override
     public String toString() {
         return "CursoProfesor{" +
                 "profesor=" + profesor +

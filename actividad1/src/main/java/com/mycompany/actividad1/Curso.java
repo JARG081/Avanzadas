@@ -26,7 +26,6 @@ public class Curso {
     public Boolean getActivo() { return activo; }
     public void setActivo(Boolean activo) { this.activo = activo; }
 
-    @Override
     public String toString() {
         return "Curso{" +
                 "ID=" + ID +

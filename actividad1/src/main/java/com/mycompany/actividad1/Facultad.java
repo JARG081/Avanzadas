@@ -21,7 +21,6 @@ public class Facultad {
     public Persona getDecano() { return decano; }
     public void setDecano(Persona decano) { this.decano = decano; }
 
-    @Override
     public String toString() {
         return "Facultad{" +
                 "ID=" + ID +
