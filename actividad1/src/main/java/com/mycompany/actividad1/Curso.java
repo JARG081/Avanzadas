@@ -1,40 +1,38 @@
 package com.mycompany.actividad1;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Curso {
+    private Double ID;
     private String nombre;
-    private Profesor profesor;
-    private List<Estudiante> estudiantes;
-    private Asignatura asignatura;
+    private Programa programa;
+    private Boolean activo;
 
-    public Curso(String nombre, Profesor profesor, Asignatura asignatura) {
+    public Curso() {
+        this.ID = ID;
         this.nombre = nombre;
-        this.profesor = profesor;
-        this.asignatura = asignatura;
-        this.estudiantes = new ArrayList<>();
+        this.programa = programa;
+        this.activo = activo;
     }
 
-    public void agregarEstudiante(Estudiante e) {
-        estudiantes.add(e);
-    }
+    //Setters y getters
+    public Double getID() { return ID; }
+    public void setID(Double ID) { this.ID = ID; }
 
-    public void mostrarEstudiantes() {
-        System.out.println("Estudiantes en el curso " + nombre + ":");
-        for (Estudiante e : estudiantes) {
-            System.out.println(" - " + e.getNombre());
-        }
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public Programa getPrograma() { return programa; }
+    public void setPrograma(Programa programa) { this.programa = programa; }
+
+    public Boolean getActivo() { return activo; }
+    public void setActivo(Boolean activo) { this.activo = activo; }
 
     @Override
     public String toString() {
         return "Curso{" +
-                "nombre='" + nombre + '\'' +
-                ", profesor=" + profesor +
-                ", asignatura=" + asignatura +
-                ", estudiantes=" + estudiantes.size() +
+                "ID=" + ID +
+                ", nombre='" + nombre + '\'' +
+                ", programa=" + programa +
+                ", activo=" + activo +
                 '}';
-    }
+    } 
 }

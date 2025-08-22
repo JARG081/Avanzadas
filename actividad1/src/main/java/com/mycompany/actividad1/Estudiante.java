@@ -1,32 +1,34 @@
 package com.mycompany.actividad1;
 
-public class Estudiante {
-    private String nombre;
-    private int edad;
+public class Estudiante extends Persona {
+    // Atributos específicos del estudiante
     private String codigo;
-
-    public Estudiante(String nombre, int edad, String codigo) {
-        this.nombre = nombre;
-        this.edad = edad;
+    private Programa programa;
+    
+    public Estudiante(Double ID, String nombres, String apellidos, String email, String codigo, Programa programa) {
+        super(ID, nombres, apellidos, email); // Llama al constructor de Persona
         this.codigo = codigo;
+        this.programa = programa;
     }
-
+    
     // Getters y Setters
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-
-    public int getEdad() { return edad; }
-    public void setEdad(int edad) { this.edad = edad; }
-
     public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
-
+    public void setCodigo(String codigo) { 
+        this.codigo = codigo; 
+    }
+    
+    public Programa getPrograma() { return programa; }
+    public void setPrograma(Programa programa) { this.programa = programa; }
+    
     @Override
     public String toString() {
         return "Estudiante{" +
-                "nombre='" + nombre + '\'' +
-                ", edad=" + edad +
+                "ID=" + getID() +
+                ", nombres='" + getNombres() + '\'' +
+                ", apellidos='" + getApellidos() + '\'' +
+                ", email='" + getEmail() + '\'' +
                 ", codigo='" + codigo + '\'' +
+                ", programa='" + programa + '\'' +
                 '}';
     }
 }

@@ -1,27 +1,27 @@
 package com.mycompany.actividad1;
 
 
-public class Profesor {
-    private String nombre;
-    private String especialidad;
+public class Profesor extends Persona {
+    private String TipoContrato;
 
-    public Profesor(String nombre, String especialidad) {
-        this.nombre = nombre;
-        this.especialidad = especialidad;
+    public Profesor(Double ID, String nombres, String apellidos, String email, String tipoContrato) {
+        super(ID, nombres, apellidos, email);
+        this.TipoContrato = tipoContrato;
     }
 
     // Getters y Setters
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getTipoContrato() { return TipoContrato; }
+    public void setTipoContrato(String TipoContrato) { this.TipoContrato = TipoContrato; }
 
-    public String getEspecialidad() { return especialidad; }
-    public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
 
     @Override
     public String toString() {
         return "Profesor{" +
-                "nombre='" + nombre + '\'' +
-                ", especialidad='" + especialidad + '\'' +
+                "ID=" + getID() +
+                ", nombres='" + getNombres() + '\'' +
+                ", apellidos='" + getApellidos() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", tipoContrato='" + TipoContrato + '\'' +
                 '}';
     }
 }
