@@ -244,3 +244,240 @@ ALTER TABLE CURSO DROP COLUMN anio [42122-232]
 	at org.h2.server.web.WebThread.process(WebThread.java:190)
 	at org.h2.server.web.WebThread.run(WebThread.java:103)
 	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-08-21 21:12:53.145071-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "NOMBRE" no encontrada
+Column "NOMBRE" not found; SQL statement:
+INSERT INTO profesor(nombre, apellido, correo) VALUES (?, ?, ?) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:93)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:316)
+	at com.mycompany.actividad1.dao.ProfesorDAO.insertar(ProfesorDAO.java:14)
+	at com.mycompany.actividad1.Main.main(Main.java:21)
+2025-08-21 21:14:37.035266-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "FACULTAD" no encontrada
+Table "FACULTAD" not found; SQL statement:
+CREATE TABLE programa (
+id BIGINT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(120) NOT NULL,
+duracion DOUBLE,
+registro DATE,
+id_facultad BIGINT,
+activo BOOLEAN DEFAULT TRUE,
+CONSTRAINT fk_programa_facultad FOREIGN KEY (id_facultad) REFERENCES facultad(id)
+) [42102-232]
+2025-08-21 21:14:37.040267-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROGRAMA" no encontrada
+Table "PROGRAMA" not found; SQL statement:
+ALTER TABLE programa DROP CONSTRAINT IF EXISTS fk_programa_facultad [42102-232]
+2025-08-21 21:14:37.040267-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROGRAMA" no encontrada
+Table "PROGRAMA" not found; SQL statement:
+ALTER TABLE programa ADD CONSTRAINT fk_programa_facultad FOREIGN KEY (id_facultad) REFERENCES facultad(id) [42102-232]
+2025-08-21 21:14:37.042267-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROGRAMA" no encontrada
+Table "PROGRAMA" not found; SQL statement:
+CREATE TABLE estudiante (
+id_persona BIGINT PRIMARY KEY,
+codigo BIGINT NOT NULL,
+id_programa BIGINT,
+activo BOOLEAN DEFAULT TRUE,
+promedio DOUBLE,
+CONSTRAINT fk_est_persona FOREIGN KEY (id_persona) REFERENCES persona(id),
+CONSTRAINT fk_est_programa FOREIGN KEY (id_programa) REFERENCES programa(id)
+) [42102-232]
+2025-08-21 21:14:37.043269-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]*/"
+Syntax error in SQL statement "[*]*/"; SQL statement:
+*/ [42000-232]
+2025-08-21 21:14:39.876793-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "FACULTAD" no encontrada
+Table "FACULTAD" not found; SQL statement:
+CREATE TABLE programa (
+id BIGINT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(120) NOT NULL,
+duracion DOUBLE,
+registro DATE,
+id_facultad BIGINT,
+activo BOOLEAN DEFAULT TRUE,
+CONSTRAINT fk_programa_facultad FOREIGN KEY (id_facultad) REFERENCES facultad(id)
+) [42102-232]
+2025-08-21 21:14:39.878793-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROGRAMA" no encontrada
+Table "PROGRAMA" not found; SQL statement:
+ALTER TABLE programa DROP CONSTRAINT IF EXISTS fk_programa_facultad [42102-232]
+2025-08-21 21:14:39.879793-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROGRAMA" no encontrada
+Table "PROGRAMA" not found; SQL statement:
+ALTER TABLE programa ADD CONSTRAINT fk_programa_facultad FOREIGN KEY (id_facultad) REFERENCES facultad(id) [42102-232]
+2025-08-21 21:14:39.880793-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROGRAMA" no encontrada
+Table "PROGRAMA" not found; SQL statement:
+CREATE TABLE estudiante (
+id_persona BIGINT PRIMARY KEY,
+codigo BIGINT NOT NULL,
+id_programa BIGINT,
+activo BOOLEAN DEFAULT TRUE,
+promedio DOUBLE,
+CONSTRAINT fk_est_persona FOREIGN KEY (id_persona) REFERENCES persona(id),
+CONSTRAINT fk_est_programa FOREIGN KEY (id_programa) REFERENCES programa(id)
+) [42102-232]
+2025-08-21 21:14:39.882794-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]*/"
+Syntax error in SQL statement "[*]*/"; SQL statement:
+*/ [42000-232]
+2025-08-21 21:15:02.294871-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "FACULTAD" ya existe
+Table "FACULTAD" already exists; SQL statement:
+CREATE TABLE facultad (
+id BIGINT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(120) NOT NULL,
+id_decano BIGINT,
+CONSTRAINT fk_facultad_decano FOREIGN KEY (id_decano) REFERENCES persona(id)
+) [42101-232]
+2025-08-21 21:15:02.297873-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROFESOR" ya existe
+Table "PROFESOR" already exists; SQL statement:
+CREATE TABLE profesor (
+id_persona BIGINT PRIMARY KEY,
+tipo_contrato VARCHAR(60) NOT NULL,
+CONSTRAINT fk_prof_persona FOREIGN KEY (id_persona) REFERENCES persona(id)
+) [42101-232]
+2025-08-21 21:15:02.297873-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]*/"
+Syntax error in SQL statement "[*]*/"; SQL statement:
+*/ [42000-232]
+2025-08-21 21:15:16.016472-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "ESTUDIANTE" ya existe
+Table "ESTUDIANTE" already exists; SQL statement:
+CREATE TABLE estudiante (
+id_persona BIGINT PRIMARY KEY,
+codigo BIGINT NOT NULL,
+id_programa BIGINT,
+activo BOOLEAN DEFAULT TRUE,
+promedio DOUBLE,
+CONSTRAINT fk_est_persona FOREIGN KEY (id_persona) REFERENCES persona(id),
+CONSTRAINT fk_est_programa FOREIGN KEY (id_programa) REFERENCES programa(id)
+) [42101-232]
+2025-08-21 21:15:16.017473-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PROFESOR" ya existe
+Table "PROFESOR" already exists; SQL statement:
+CREATE TABLE profesor (
+id_persona BIGINT PRIMARY KEY,
+tipo_contrato VARCHAR(60) NOT NULL,
+CONSTRAINT fk_prof_persona FOREIGN KEY (id_persona) REFERENCES persona(id)
+) [42101-232]
+2025-08-21 21:15:16.017473-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]*/"
+Syntax error in SQL statement "[*]*/"; SQL statement:
+*/ [42000-232]
+2025-08-21 21:17:28.663926-05:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]" [50000-224]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1546)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:371)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	at org.h2.engine.Database.<init>(Database.java:326)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:343)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:125)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:613)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at com.mycompany.actividad1.Database.getConnection(Database.java:13)
+	at com.mycompany.actividad1.dao.ProfesorDAO.insertar(ProfesorDAO.java:13)
+	at com.mycompany.actividad1.Main.main(Main.java:21)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]" [50000-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 20 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
+	... 14 more
+2025-08-21 21:17:41.300609-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Columna "NOMBRE" no encontrada
+Column "NOMBRE" not found; SQL statement:
+INSERT INTO profesor(nombre, apellido, correo) VALUES (?, ?, ?) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:93)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:316)
+	at com.mycompany.actividad1.dao.ProfesorDAO.insertar(ProfesorDAO.java:14)
+	at com.mycompany.actividad1.Main.main(Main.java:21)
+2025-08-21 21:20:39.022448-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "[*]PERSONA"; se esperaba "PREPARE"
+Syntax error in SQL statement "[*]PERSONA"; expected "PREPARE"; SQL statement:
+PERSONA [42001-232]
+2025-08-21 21:27:07.412337-05:00 database: flush
+org.h2.message.DbException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]" [50000-224]
+	at org.h2.message.DbException.get(DbException.java:212)
+	at org.h2.message.DbException.convert(DbException.java:407)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:122)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:1546)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:371)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:291)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:2035)
+	at org.h2.mvstore.db.Store.<init>(Store.java:133)
+	at org.h2.engine.Database.<init>(Database.java:326)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:343)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:125)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:613)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at com.mycompany.actividad1.Database.getConnection(Database.java:13)
+	at com.mycompany.actividad1.dao.PersonaDAO.insertar(PersonaDAO.java:14)
+	at com.mycompany.actividad1.Main.main(Main.java:15)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: Error General : "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]" [50000-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 20 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/josem/OneDrive/Documentos/NetBeansProjects/actividad1/src/main/java/com/mycompany/actividad1/bd.mv.db [2.2.224/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:996)
+	at org.h2.mvstore.SingleFileStore.lockFileChannel(SingleFileStore.java:143)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:117)
+	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
+	... 14 more

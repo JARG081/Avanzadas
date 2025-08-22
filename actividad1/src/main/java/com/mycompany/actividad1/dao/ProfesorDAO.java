@@ -1,3 +1,5 @@
+package com.mycompany.actividad1.dao;
+
 import com.mycompany.actividad1.model.Profesor;
 import com.mycompany.actividad1.Database;
 import java.sql.*;
