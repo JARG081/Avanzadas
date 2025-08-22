@@ -10,10 +10,10 @@ public class Main {
         PersonaDAO personaDAO = new PersonaDAO();
 
         try {
-            // Insertar una persona de ejemplo
-            Persona persona = new Persona(0, "Juan", "Gómez", "juan.gomez@uni.edu");
-            personaDAO.insertar(persona);
-            System.out.println("Persona insertada correctamente.");
+            
+            //Persona persona = new Persona(0, "Juan", "Gómez", "juan.gomez@uni.edu");
+            //personaDAO.insertar(persona);
+            //System.out.println("Persona insertada correctamente.");
 
             // Listar personas
             List<Persona> personas = personaDAO.listar();
