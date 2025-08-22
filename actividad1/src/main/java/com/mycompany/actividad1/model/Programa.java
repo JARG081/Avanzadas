@@ -1,33 +1,45 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.mycompany.actividad1.model;
+package model;
 
-/**
- *
- * @author josem
- */
+import java.util.Date;
 
 public class Programa {
-    private int id;
+    private Double ID;
     private String nombre;
-    private int facultadId;
+    private String duracion;
+    private Date registro;
+    private Facultad facultad;
 
-    public Programa() {}
-
-    public Programa(int id, String nombre, int facultadId) {
-        this.id = id;
+    public Programa() {
+        this.ID = ID;
         this.nombre = nombre;
-        this.facultadId = facultadId;
+        this.duracion = duracion;
+        this.registro = registro;
+        this.facultad = facultad;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    //Setters y getters
+    public Double getID() { return ID; }
+    public void setID(Double ID) { this.ID = ID; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public int getFacultadId() { return facultadId; }
-    public void setFacultadId(int facultadId) { this.facultadId = facultadId; }
+    public String getDuracion() { return duracion; }    
+    public void setDuracion(String duracion) { this.duracion = duracion; }
+
+    public Date getRegistro() { return registro; }
+    public void setRegistro(Date registro) { this.registro = registro; }
+
+    public Facultad getFacultad() { return facultad; }
+    public void setFacultad(Facultad facultad) { this.facultad = facultad; }
+
+    public String toString() {
+        return "Programa{" +
+                "ID=" + ID +
+                ", nombre='" + nombre + '\'' +
+                ", duracion='" + duracion + '\'' +
+                ", registro=" + registro +
+                ", facultad=" + facultad +
+                '}';
+    }
 }
