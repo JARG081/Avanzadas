@@ -1,33 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.actividad1.model;
 
-/**
- *
- * @author josem
- */
-
 public class Curso {
-    private int id;
-    private String nombre;
-    private int programaId;
+   private Double ID;
+   private String nombre;
+   private Programa programa;
+   private Boolean activo;
 
-    public Curso() {}
+   public Curso(Double ID, String nombre, Programa programa, Boolean activo) {
+      this.ID = ID;
+      this.nombre = nombre;
+      this.programa = programa;
+      this.activo = activo;
+   }
 
-    public Curso(int id, String nombre, int programaId) {
-        this.id = id;
-        this.nombre = nombre;
-        this.programaId = programaId;
-    }
+   public Double getID() {
+      return this.ID;
+   }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+   public void setID(Double ID) {
+      this.ID = ID;
+   }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+   public String getNombre() {
+      return this.nombre;
+   }
 
-    public int getProgramaId() { return programaId; }
-    public void setProgramaId(int programaId) { this.programaId = programaId; }
+   public void setNombre(String nombre) {
+      this.nombre = nombre;
+   }
+
+   public Programa getPrograma() {
+      return this.programa;
+   }
+
+   public void setPrograma(Programa programa) {
+      this.programa = programa;
+   }
+
+   public Boolean getActivo() {
+      return this.activo;
+   }
+
+   public void setActivo(Boolean activo) {
+      this.activo = activo;
+   }
+
+   public String toString() {
+      return "Curso{ID=" + this.ID + ", nombre='" + this.nombre + "', programa=" + this.programa + ", activo=" + this.activo + "}";
+   }
 }

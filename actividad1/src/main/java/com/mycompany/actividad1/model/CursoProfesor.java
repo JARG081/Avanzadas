@@ -1,33 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.actividad1.model;
 
-/**
- *
- * @author josem
- */
-
 public class CursoProfesor {
-    private int id;
-    private int cursoId;
-    private int profesorId;
+   private Profesor profesor;
+   private int año;
+   private int semestre;
+   private Curso curso;
 
-    public CursoProfesor() {}
+   public CursoProfesor(Profesor profesor, int año, int semestre, Curso curso) {
+      this.profesor = profesor;
+      this.año = año;
+      this.semestre = semestre;
+      this.curso = curso;
+   }
 
-    public CursoProfesor(int id, int cursoId, int profesorId) {
-        this.id = id;
-        this.cursoId = cursoId;
-        this.profesorId = profesorId;
-    }
+   public Profesor getProfesor() {
+      return this.profesor;
+   }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+   public void setProfesor(Profesor profesor) {
+      this.profesor = profesor;
+   }
 
-    public int getCursoId() { return cursoId; }
-    public void setCursoId(int cursoId) { this.cursoId = cursoId; }
+   public int getAño() {
+      return this.año;
+   }
 
-    public int getProfesorId() { return profesorId; }
-    public void setProfesorId(int profesorId) { this.profesorId = profesorId; }
+   public void setAño(int año) {
+      this.año = año;
+   }
+
+   public int getSemestre() {
+      return this.semestre;
+   }
+
+   public void setSemestre(int semestre) {
+      this.semestre = semestre;
+   }
+
+   public Curso getCurso() {
+      return this.curso;
+   }
+
+   public void setCurso(Curso curso) {
+      this.curso = curso;
+   }
+
+   public String toString() {
+      return "CursoProfesor{profesor=" + this.profesor + ", año=" + this.año + ", semestre=" + this.semestre + ", curso=" + this.curso + "}";
+   }
 }

@@ -1,51 +1,51 @@
 package com.mycompany.actividad1.model;
 
 public class Persona {
-    private long id;
-    String nombres;
-    private String apellidos;
-    private String email;
+   private Double ID;
+   private String nombres;
+   private String apellidos;
+   private String email;
 
-    public Persona() {
-    }
+   public Persona(Double ID, String nombres, String apellidos, String email) {
+      this.ID = ID;
+      this.nombres = nombres;
+      this.apellidos = apellidos;
+      this.email = email;
+   }
 
-    public Persona(long id, String nombres, String apellidos, String email) {
-        this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-        this.email = email;
-    }
+   public Double getID() {
+      return this.ID;
+   }
 
-    // Getters y setters
-    public long getId() {
-        return id;
-    }
+   public void setID(Double ID) {
+      this.ID = ID;
+   }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+   public String getNombres() {
+      return this.nombres;
+   }
 
-    public String getNombres() {
-        return nombres;
-    }
+   public void setNombres(String nombres) {
+      this.nombres = nombres;
+   }
 
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
+   public String getApellidos() {
+      return this.apellidos;
+   }
 
-    public String getApellidos() {
-        return apellidos;
-    }
+   public void setApellidos(String apellidos) {
+      this.apellidos = apellidos;
+   }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
+   public String getEmail() {
+      return this.email;
+   }
 
-    public String getEmail() {
-        return email;
-    }
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+   public String toString() {
+      return "Persona{ID=" + this.ID + ", nombres='" + this.nombres + "', apellidos='" + this.apellidos + "', email='" + this.email + "'}";
+   }
 }

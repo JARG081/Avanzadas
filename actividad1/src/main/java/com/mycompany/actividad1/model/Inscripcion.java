@@ -1,33 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.actividad1.model;
 
-/**
- *
- * @author josem
- */
 public class Inscripcion {
-    private int id;
-    private int estudianteId;
-    private int cursoId;
+   private Curso curso;
+   private int año;
+   private int semestre;
+   private Estudiante estudiante;
 
-    public Inscripcion() {}
+   public Inscripcion(Curso curso, int año, int semestre, Estudiante estudiante) {
+      this.curso = curso;
+      this.año = año;
+      this.semestre = semestre;
+      this.estudiante = estudiante;
+   }
 
-    public Inscripcion(int id, int estudianteId, int cursoId) {
-        this.id = id;
-        this.estudianteId = estudianteId;
-        this.cursoId = cursoId;
-    }
+   public Curso getCurso() {
+      return this.curso;
+   }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+   public void setCurso(Curso curso) {
+      this.curso = curso;
+   }
 
-    public int getEstudianteId() { return estudianteId; }
-    public void setEstudianteId(int estudianteId) { this.estudianteId = estudianteId; }
+   public int getAño() {
+      return this.año;
+   }
 
-    public int getCursoId() { return cursoId; }
-    public void setCursoId(int cursoId) { this.cursoId = cursoId; }
+   public void setAño(int año) {
+      this.año = año;
+   }
+
+   public int getSemestre() {
+      return this.semestre;
+   }
+
+   public void setSemestre(int semestre) {
+      this.semestre = semestre;
+   }
+
+   public Estudiante getEstudiante() {
+      return this.estudiante;
+   }
+
+   public void setEstudiante(Estudiante estudiante) {
+      this.estudiante = estudiante;
+   }
+
+   public String toString() {
+      return "Inscripcion{curso=" + this.curso + ", año=" + this.año + ", semestre=" + this.semestre + ", estudiante=" + this.estudiante + "}";
+   }
 }
-

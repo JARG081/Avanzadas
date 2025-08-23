@@ -1,33 +1,64 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Source code is decompiled from a .class file using FernFlower decompiler.
 package com.mycompany.actividad1.model;
 
-/**
- *
- * @author josem
- */
-
+import java.util.Date;
+    
 public class Programa {
-    private int id;
-    private String nombre;
-    private int facultadId;
+   private Double ID;
+   private String nombre;
+   private String duracion;
+   private Date registro;
+   private Facultad facultad;
 
-    public Programa() {}
+   public Programa(Double ID, String nombre, String duracion, Date registro, Facultad facultad) {
+      this.ID = ID;
+      this.nombre = nombre;
+      this.duracion = duracion;
+      this.registro = registro;
+      this.facultad = facultad;
+   }
 
-    public Programa(int id, String nombre, int facultadId) {
-        this.id = id;
-        this.nombre = nombre;
-        this.facultadId = facultadId;
-    }
+   public Double getID() {
+      return this.ID;
+   }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+   public void setID(Double ID) {
+      this.ID = ID;
+   }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+   public String getNombre() {
+      return this.nombre;
+   }
 
-    public int getFacultadId() { return facultadId; }
-    public void setFacultadId(int facultadId) { this.facultadId = facultadId; }
+   public void setNombre(String nombre) {
+      this.nombre = nombre;
+   }
+
+   public String getDuracion() {
+      return this.duracion;
+   }
+
+   public void setDuracion(String duracion) {
+      this.duracion = duracion;
+   }
+
+   public Date getRegistro() {
+      return this.registro;
+   }
+
+   public void setRegistro(Date registro) {
+      this.registro = registro;
+   }
+
+   public Facultad getFacultad() {
+      return this.facultad;
+   }
+
+   public void setFacultad(Facultad facultad) {
+      this.facultad = facultad;
+   }
+
+   public String toString() {
+      return "Programa{ID=" + this.ID + ", nombre='" + this.nombre + "', duracion='" + this.duracion + "', registro=" + this.registro + ", facultad=" + this.facultad + "}";
+   }
 }

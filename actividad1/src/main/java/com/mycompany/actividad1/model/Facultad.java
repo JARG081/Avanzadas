@@ -1,28 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.actividad1.model;
 
-/**
- *
- * @author josem
- */
-
 public class Facultad {
-    private int id;
-    private String nombre;
+   private Double ID;
+   private String nombre;
+   private Persona decano;
 
-    public Facultad() {}
+   public Facultad(Double ID, String nombre, Persona decano) {
+      this.ID = ID;
+      this.nombre = nombre;
+      this.decano = decano;
+   }
 
-    public Facultad(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
+   public Double getID() {
+      return this.ID;
+   }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+   public void setID(Double ID) {
+      this.ID = ID;
+   }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+   public String getNombre() {
+      return this.nombre;
+   }
+
+   public void setNombre(String nombre) {
+      this.nombre = nombre;
+   }
+
+   public Persona getDecano() {
+      return this.decano;
+   }
+
+   public void setDecano(Persona decano) {
+      this.decano = decano;
+   }
+
+   public String toString() {
+      return "Facultad{ID=" + this.ID + ", nombre='" + this.nombre + "', decano=" + this.decano + "}";
+   }
 }
