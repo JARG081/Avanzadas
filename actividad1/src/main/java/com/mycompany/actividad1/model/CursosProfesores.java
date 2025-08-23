@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CursosProfesores implements Servicios {
-    //Metodos propios de la clase
+    //Metodos propios de la clase   
     private List<CursoProfesor> cursosProfesores;
 
     public CursosProfesores() {

@@ -59,5 +59,6 @@ public class CursosInscritos implements Servicios {
     public List<String> imprimirListado() {
         return cursos;
     }
-
 }
+
+
