@@ -3,7 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursosInscritos {
+public class CursosInscritos implements model.Servicios {
+    //metodos propios de la clase
     private List<Inscripcion> inscripciones;
 
     public CursosInscritos() {
@@ -39,4 +40,26 @@ public class CursosInscritos {
         //no se que hace esta función
     }
 
+    //metodos de la interfaz
+    private List<String> cursos = new ArrayList<>();
+
+    @Override
+    public String imprimirPosicion(int posicion) {
+        if (posicion >= 0 && posicion < cursos.size()) {
+            return cursos.get(posicion);
+        }
+        return "Posición inválida";
+    }
+
+    @Override
+    public Integer cantidadActual() {
+        return cursos.size();
+    }
+
+    @Override
+    public List<String> imprimirListado() {
+        return cursos;
+    }
 }
+
+
