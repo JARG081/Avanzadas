@@ -1,4 +1,4 @@
-package model;
+package com.mycompany.actividad1.model;
 
 public class Persona {
     private Double ID;

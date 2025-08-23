@@ -1,4 +1,4 @@
-package model;
+package com.mycompany.actividad1.model;
 
 public class CursoProfesor {
     private Profesor profesor;

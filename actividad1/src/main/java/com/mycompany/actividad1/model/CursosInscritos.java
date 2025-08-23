@@ -1,9 +1,9 @@
-package model;
+package com.mycompany.actividad1.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursosInscritos {
+public class CursosInscritos implements Servicios {
     private List<Inscripcion> inscripciones;
 
     public CursosInscritos() {
@@ -37,6 +37,27 @@ public class CursosInscritos {
 
     public void cargarDatos(){
         //no se que hace esta función
+    }
+
+    //Implementación de los métodos de la interfaz Servicios
+    private List<String> cursos = new ArrayList<>();
+
+    @Override
+    public String imprimirPosicion(int posicion) {
+        if (posicion >= 0 && posicion < cursos.size()) {
+            return cursos.get(posicion);
+        }
+        return "Posición inválida";
+    }
+
+    @Override
+    public Integer cantidadActual() {
+        return cursos.size();
+    }
+
+    @Override
+    public List<String> imprimirListado() {
+        return cursos;
     }
 
 }

@@ -1,4 +1,4 @@
-package model;
+package com.mycompany.actividad1.model;
 
 public class Curso {
     private Double ID;

@@ -1,4 +1,4 @@
-package model;
+package com.mycompany.actividad1.model;
 
 import java.util.Date;
 
