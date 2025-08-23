@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.actividad1.dao;
 
 import com.mycompany.actividad1.model.Facultad;
@@ -28,12 +24,15 @@ public class FacultadDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                lista.add(new Facultad(
-                    rs.getInt("id"),
-                    rs.getString("nombre")
-                ));
+                Facultad facultad = new Facultad(
+                    rs.getDouble("id"),
+                    rs.getString("nombre"),
+                    null
+                );
+                lista.add(facultad);
             }
         }
         return lista;
     }
 }
+

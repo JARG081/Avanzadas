@@ -1,38 +1,31 @@
 package com.mycompany.actividad1;
 
-import com.mycompany.actividad1.dao.PersonaDAO;
-import com.mycompany.actividad1.model.*;
-
-import java.sql.SQLException;
-import java.util.List;
+import com.mycompany.actividad1.model.InscripcionesPersonas;
+import com.mycompany.actividad1.model.Persona;
 
 public class Main {
     public static void main(String[] args) {
-        PersonaDAO personaDAO = new PersonaDAO();
+        InscripcionesPersonas inscripciones = new InscripcionesPersonas();
 
-        try {
-            // 1. Insertar y listar Persona (guardarDatos / cargarDatos)
-            Persona persona = new Persona(1.0, "Juan", "Gómez", "juan.gomez@uni.edu");
-            personaDAO.insertar(persona);
+        // Cargar lo que ya existe en BD a la lista en memoria
+        inscripciones.cargarDatos();
+        System.out.println("Personas en BD al iniciar:");
+        for (Persona p : inscripciones.getListado()) {
+            System.out.println(p);
+        }
 
-            List<Persona> personas = personaDAO.listar();
-            System.out.println("Personas en BD:");
-            for (Persona p : personas) {
-                System.out.println(p);
-            }
+        // Trabajar con la lista en memoria
+        Persona nueva = new Persona(0.0, "Juan", "Gómez", "juan.gomez@uni.edu");
+        inscripciones.inscribir(nueva);
 
-            // 2. Ejemplo de herencia
-            Estudiante estudiante = new Estudiante(2.0, "Laura", "Martínez", "laura.m@uni.edu", "2025001", null);
-            System.out.println("\nEjemplo de Estudiante (herencia):");
-            System.out.println(estudiante);
+        // Guardar SOLO esa persona en la BD (cumple 'guardarInformación(Persona)')
+        inscripciones.guardarInformacion(nueva);
 
-            // 3. Ejemplo con interfaz Servicios
-            Servicios cursos = new CursosInscritos();
-            System.out.println("\nProbando interfaz Servicios:");
-            System.out.println("Cantidad cursos inscritos: " + cursos.cantidadActual());
-
-        } catch (SQLException e) {
-            System.out.println("Error en la base de datos: " + e.getMessage());
+        // Verificar recargando desde la BD
+        inscripciones.cargarDatos();
+        System.out.println("\nPersonas en BD después de guardar:");
+        for (Persona p : inscripciones.getListado()) {
+            System.out.println(p);
         }
     }
 }

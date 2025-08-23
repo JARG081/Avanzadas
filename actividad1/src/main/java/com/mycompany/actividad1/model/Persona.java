@@ -46,6 +46,6 @@ public class Persona {
    }
 
    public String toString() {
-      return "Persona{ID=" + this.ID + ", nombres='" + this.nombres + "', apellidos='" + this.apellidos + "', email='" + this.email + "'}";
+      return "Persona: ID=" + this.ID + ", nombres='" + this.nombres + "', apellidos='" + this.apellidos + "', email='" + this.email + "'";
    }
 }

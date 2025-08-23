@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.actividad1.dao;
 
 import com.mycompany.actividad1.model.Programa;
+import com.mycompany.actividad1.model.Facultad;
 import com.mycompany.actividad1.Database;
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,11 +10,13 @@ import java.util.List;
 public class ProgramaDAO {
     
     public void insertar(Programa programa) throws SQLException {
-        String sql = "INSERT INTO programa(nombre, facultad_id) VALUES (?, ?)";
+        String sql = "INSERT INTO programa(nombre, duracion, registro, facultad_id) VALUES (?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, programa.getNombre());
-            stmt.setInt(2, programa.getFacultadId());
+            stmt.setString(2, programa.getDuracion());
+            stmt.setDate(3, new java.sql.Date(programa.getRegistro().getTime()));
+            stmt.setDouble(4, programa.getFacultad().getID());
             stmt.executeUpdate();
         }
     }
@@ -29,10 +28,19 @@ public class ProgramaDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
+                
+                Facultad facultad = new Facultad(
+                    rs.getDouble("facultad_id"),
+                    null,
+                    null
+                );
+
                 lista.add(new Programa(
-                    rs.getInt("id"),
+                    rs.getDouble("id"),
                     rs.getString("nombre"),
-                    rs.getInt("facultad_id")
+                    rs.getString("duracion"),
+                    rs.getDate("registro"),
+                    facultad
                 ));
             }
         }

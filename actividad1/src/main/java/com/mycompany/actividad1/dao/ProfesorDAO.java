@@ -9,12 +9,13 @@ import java.util.List;
 public class ProfesorDAO {
     
     public void insertar(Profesor profesor) throws SQLException {
-        String sql = "INSERT INTO profesor(nombre, apellido, correo) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO profesor(nombre, apellido, correo, tipo_contrato) VALUES (?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, profesor.getNombre());
-            stmt.setString(2, profesor.getApellido());
-            stmt.setString(3, profesor.getCorreo());
+            stmt.setString(1, profesor.getNombres());
+            stmt.setString(2, profesor.getApellidos());
+            stmt.setString(3, profesor.getEmail());
+            stmt.setString(4, profesor.getTipoContrato());
             stmt.executeUpdate();
         }
     }
@@ -27,10 +28,11 @@ public class ProfesorDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 lista.add(new Profesor(
-                    rs.getInt("id"),
+                    rs.getDouble("id"),             
                     rs.getString("nombre"),
                     rs.getString("apellido"),
-                    rs.getString("correo")
+                    rs.getString("correo"),
+                    rs.getString("tipo_contrato") 
                 ));
             }
         }

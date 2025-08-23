@@ -1,31 +1,71 @@
 package com.mycompany.actividad1.model;
-
+import com.mycompany.actividad1.dao.PersonaDAO;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InscripcionesPersonas {
-   private List<Persona> personas = new ArrayList<>();
+    private final List<Persona> listado = new ArrayList<>();
+    private final PersonaDAO personaDAO = new PersonaDAO();
 
-   public void inscribir(Persona persona) {
-      this.personas.add(persona);
-      System.out.println("Persona inscrita: " + persona.getNombres() + " " + persona.getApellidos());
-   }
+    // NOTA: no llamamos métodos sobreescribibles desde el constructor.
+    // Llama a cargarDatos() desde Main.
 
-   public void eliminar(Persona persona) {
-      this.personas.remove(persona);
-      System.out.println("Persona eliminada: " + persona.getNombres() + " " + persona.getApellidos());
-   }
+    public void inscribir(Persona persona) {
+        if (persona == null) return;
+        listado.add(persona);
+    }
 
-   public void actualizar(Persona persona) {
-      this.personas.set(this.personas.indexOf(persona), persona);
-      System.out.println("Persona actualizada: " + persona.getNombres() + " " + persona.getApellidos());
-   }
+    public void eliminar(Persona persona) {
+        if (persona == null) return;
+        listado.remove(persona);
+        try {
+            // Tu PersonaDAO expone eliminar(long id). Convertimos Double -> long.
+            if (persona.getID() != null) {
+                personaDAO.eliminar(persona.getID().longValue());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-   public void guardarInformacion() {
-      System.out.println("Informacion guardada");
-   }
+    public void actualizar(Persona persona) {
+        if (persona == null || persona.getID() == null) return;
+        int idx = indexOfById(persona.getID());
+        if (idx >= 0) {
+            listado.set(idx, persona);
+            // No hay update en PersonaDAO. Si hiciera falta, podríamos hacer:
+            // personaDAO.eliminar(persona.getID().longValue());
+            // personaDAO.insertar(persona);
+        }
+    }
 
-   public void cargarDatos() {
-      System.out.println("Datos cargados");
-   }
+    // === Persistencia requerida por el diagrama ===
+    public void guardarInformacion(Persona persona) {
+        try {
+            personaDAO.insertar(persona); // guarda en H2
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarDatos() {
+        listado.clear();
+        try {
+            listado.addAll(personaDAO.listar()); // trae de H2 a la lista
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Persona> getListado() {
+        return listado;
+    }
+
+    private int indexOfById(Double id) {
+        for (int i = 0; i < listado.size(); i++) {
+            Double cur = listado.get(i).getID();
+            if (cur != null && cur.equals(id)) return i;
+        }
+        return -1;
+    }
 }
