@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Database {
-    private static final String URL = "jdbc:h2:C:\\Users\\josem\\OneDrive\\Escritorio\\Avanzadas\\Avanzadas\\actividad1\\src\\main\\java\\com\\mycompany\\actividad1/bd"; 
+    private static final String URL = "jdbc:h2:./src/main/java/com/mycompany/actividad1/bd"; 
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 

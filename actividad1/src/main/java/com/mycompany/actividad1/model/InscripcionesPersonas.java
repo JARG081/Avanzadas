@@ -7,9 +7,6 @@ public class InscripcionesPersonas {
     private final List<Persona> listado = new ArrayList<>();
     private final PersonaDAO personaDAO = new PersonaDAO();
 
-    // NOTA: no llamamos métodos sobreescribibles desde el constructor.
-    // Llama a cargarDatos() desde Main.
-
     public void inscribir(Persona persona) {
         if (persona == null) return;
         listado.add(persona);
@@ -19,7 +16,7 @@ public class InscripcionesPersonas {
         if (persona == null) return;
         listado.remove(persona);
         try {
-            // Tu PersonaDAO expone eliminar(long id). Convertimos Double -> long.
+
             if (persona.getID() != null) {
                 personaDAO.eliminar(persona.getID().longValue());
             }
@@ -33,16 +30,12 @@ public class InscripcionesPersonas {
         int idx = indexOfById(persona.getID());
         if (idx >= 0) {
             listado.set(idx, persona);
-            // No hay update en PersonaDAO. Si hiciera falta, podríamos hacer:
-            // personaDAO.eliminar(persona.getID().longValue());
-            // personaDAO.insertar(persona);
         }
     }
 
-    // === Persistencia requerida por el diagrama ===
     public void guardarInformacion(Persona persona) {
         try {
-            personaDAO.insertar(persona); // guarda en H2
+            personaDAO.insertar(persona); 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +44,7 @@ public class InscripcionesPersonas {
     public void cargarDatos() {
         listado.clear();
         try {
-            listado.addAll(personaDAO.listar()); // trae de H2 a la lista
+            listado.addAll(personaDAO.listar());
         } catch (Exception e) {
             e.printStackTrace();
         }
