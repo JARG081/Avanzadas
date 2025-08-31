@@ -17,8 +17,8 @@ public class InscripcionesPersonas {
         listado.remove(persona);
         try {
 
-            if (persona.getID() != null) {
-                personaDAO.eliminar(persona.getID().longValue());
+            if (persona.getId() != null) {
+                personaDAO.eliminar(persona.getId().longValue());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -26,8 +26,8 @@ public class InscripcionesPersonas {
     }
 
     public void actualizar(Persona persona) {
-        if (persona == null || persona.getID() == null) return;
-        int idx = indexOfById(persona.getID());
+        if (persona == null || persona.getId() == null) return;
+        int idx = indexOfById(persona.getId());
         if (idx >= 0) {
             listado.set(idx, persona);
         }
@@ -56,7 +56,7 @@ public class InscripcionesPersonas {
 
     private int indexOfById(Double id) {
         for (int i = 0; i < listado.size(); i++) {
-            Double cur = listado.get(i).getID();
+            Double cur = listado.get(i).getId();
             if (cur != null && cur.equals(id)) return i;
         }
         return -1;

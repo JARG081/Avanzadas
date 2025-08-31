@@ -17,6 +17,6 @@ public class Profesor extends Persona {
    }
 
    public String toString() {
-      return "Profesor{ID=" + this.getID() + ", nombres='" + this.getNombres() + "', apellidos='" + this.getApellidos() + "', email='" + this.getEmail() + "', tipoContrato='" + this.TipoContrato + "'}";
+      return "Profesor{ID=" + this.getId() + ", nombres='" + this.getNombres() + "', apellidos='" + this.getApellidos() + "', email='" + this.getEmail() + "', tipoContrato='" + this.TipoContrato + "'}";
    }
 }

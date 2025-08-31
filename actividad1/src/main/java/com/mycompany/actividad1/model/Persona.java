@@ -1,24 +1,24 @@
 package com.mycompany.actividad1.model;
 
 public class Persona {
-   private Double ID;
+   private Double id;
    private String nombres;
    private String apellidos;
    private String email;
 
-   public Persona(Double ID, String nombres, String apellidos, String email) {
-      this.ID = ID;
+   public Persona(Double id, String nombres, String apellidos, String email) {
+      this.id = id;
       this.nombres = nombres;
       this.apellidos = apellidos;
       this.email = email;
    }
 
-   public Double getID() {
-      return this.ID;
+   public Double getId() {
+      return this.id;
    }
 
-   public void setID(Double ID) {
-      this.ID = ID;
+   public void setId(Double id) {
+      this.id = id;
    }
 
    public String getNombres() {
@@ -45,7 +45,8 @@ public class Persona {
       this.email = email;
    }
 
+   @Override
    public String toString() {
-      return "Persona: ID=" + this.ID + ", nombres='" + this.nombres + "', apellidos='" + this.apellidos + "', email='" + this.email + "'";
+      return "Persona: ID=" + this.id + ", nombres='" + this.nombres + "', apellidos='" + this.apellidos + "', email='" + this.email + "'";
    }
 }
