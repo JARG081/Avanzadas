@@ -6,10 +6,14 @@ import java.util.List;
 public class CursosProfesores implements Servicios {
    private List<CursoProfesor> cursosProfesores = new ArrayList<>();
 
-   public void inscribir(CursoProfesor cursoProfesor) {
-      this.cursosProfesores.add(cursoProfesor);
-      System.out.println("CursoProfesor inscrito: " + cursoProfesor.getCurso().getNombre() + " " + cursoProfesor.getProfesor().getNombres() + " " + cursoProfesor.getProfesor().getApellidos());
-   }
+public void inscribir(CursoProfesor cursoProfesor) {
+    this.cursosProfesores.add(cursoProfesor);
+    System.out.println("CursoProfesor inscrito: " 
+        + cursoProfesor.getCurso().getNombre() 
+        + " " + cursoProfesor.getProfesor().getNombres() 
+        + " " + cursoProfesor.getProfesor().getApellidos());
+}
+
 
    public void guardarInformacion(CursoProfesor cursoProfesor) {
       System.out.println("Informacion guardada");

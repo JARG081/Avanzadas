@@ -1,23 +1,26 @@
 package com.mycompany.actividad1.model;
 
 public class Curso {
-   private Double ID;
+   private Integer ID;
    private String nombre;
    private Programa programa;
    private Boolean activo;
 
-   public Curso(Double ID, String nombre, Programa programa, Boolean activo) {
+   public Curso(Integer ID, String nombre, Programa programa, Boolean activo) {
       this.ID = ID;
       this.nombre = nombre;
       this.programa = programa;
       this.activo = activo;
    }
 
-   public Double getID() {
+    public Curso() {
+    }
+
+   public Integer getID() {
       return this.ID;
    }
 
-   public void setID(Double ID) {
+   public void setID(Integer ID) {
       this.ID = ID;
    }
 

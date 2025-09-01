@@ -1,22 +1,51 @@
 package com.mycompany.actividad1.model;
 
-public class Profesor extends Persona {
-   private String TipoContrato;
+public class Profesor {
+    private double idPersona;   
+    private String contrato; 
+    private Persona persona; 
+    public Profesor() {}
 
-   public Profesor(Double ID, String nombres, String apellidos, String email, String tipoContrato) {
-      super(ID, nombres, apellidos, email);
-      this.TipoContrato = tipoContrato;
-   }
+    public Profesor(double idPersona, String contrato, Persona persona) {
+        this.idPersona = idPersona;
+        this.contrato = contrato;
+        this.persona = persona;
+    }
+    public Profesor(double idPersona, String contrato) {
+    this.idPersona = idPersona;
+    this.contrato = contrato;
+}
 
-   public String getTipoContrato() {
-      return this.TipoContrato;
-   }
+    public double getIdPersona() {
+        return idPersona;
+    }
 
-   public void setTipoContrato(String TipoContrato) {
-      this.TipoContrato = TipoContrato;
-   }
+    public void setIdPersona(double idPersona) {
+        this.idPersona = idPersona;
+    }
 
-   public String toString() {
-      return "Profesor{ID=" + this.getId() + ", nombres='" + this.getNombres() + "', apellidos='" + this.getApellidos() + "', email='" + this.getEmail() + "', tipoContrato='" + this.TipoContrato + "'}";
-   }
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    // Delegamos nombres/apellidos a Persona
+    public String getNombres() {
+        return persona != null ? persona.getNombres() : "";
+    }
+
+    public String getApellidos() {
+        return persona != null ? persona.getApellidos() : "";
+    }
 }

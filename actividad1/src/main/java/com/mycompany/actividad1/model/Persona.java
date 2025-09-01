@@ -13,6 +13,9 @@ public class Persona {
       this.email = email;
    }
 
+    public Persona() {
+    }
+
    public Double getId() {
       return this.id;
    }
