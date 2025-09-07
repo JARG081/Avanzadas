@@ -1,51 +1,61 @@
 package com.mycompany.actividad1.model;
 
+import java.util.Objects;
+
+/**
+ * PK compuesta: (curso.id, estudiante.id, anio, semestre)
+ */
 public class Inscripcion {
-   private Curso curso;
-   private int año;
-   private int semestre;
-   private Estudiante estudiante;
+    private Curso curso;
+    private Integer anio;
+    private Integer semestre;
+    private Estudiante estudiante;
 
-   public Inscripcion(Curso curso, int año, int semestre, Estudiante estudiante) {
-      this.curso = curso;
-      this.año = año;
-      this.semestre = semestre;
-      this.estudiante = estudiante;
-   }
+    public Inscripcion() {}
 
-   public Curso getCurso() {
-      return this.curso;
-   }
+    public Inscripcion(Curso curso, Integer anio, Integer semestre, Estudiante estudiante) {
+        this.curso = curso;
+        this.anio = anio;
+        this.semestre = semestre;
+        this.estudiante = estudiante;
+    }
 
-   public void setCurso(Curso curso) {
-      this.curso = curso;
-   }
+    public Curso getCurso() { return curso; }
+    public void setCurso(Curso curso) { this.curso = curso; }
 
-   public int getAño() {
-      return this.año;
-   }
+    public Integer getAnio() { return anio; }
+    public void setAnio(Integer anio) { this.anio = anio; }
 
-   public void setAño(int año) {
-      this.año = año;
-   }
+    public Integer getSemestre() { return semestre; }
+    public void setSemestre(Integer semestre) { this.semestre = semestre; }
 
-   public int getSemestre() {
-      return this.semestre;
-   }
+    public Estudiante getEstudiante() { return estudiante; }
+    public void setEstudiante(Estudiante estudiante) { this.estudiante = estudiante; }
 
-   public void setSemestre(int semestre) {
-      this.semestre = semestre;
-   }
+    @Override public String toString() {
+        String cursoStr = (curso == null) ? "(sin curso)" : (curso.getNombre() + " #" + curso.getID());
+        String estStr = (estudiante == null) ? "(sin estudiante)" :
+                (estudiante.getNombres() + " " + estudiante.getApellidos() + " [" + estudiante.getId() + "]");
+        return "Inscripcion{curso=" + cursoStr + ", anio=" + anio +
+               ", semestre=" + semestre + ", estudiante=" + estStr + "}";
+    }
 
-   public Estudiante getEstudiante() {
-      return this.estudiante;
-   }
-
-   public void setEstudiante(Estudiante estudiante) {
-      this.estudiante = estudiante;
-   }
-
-   public String toString() {
-      return "Inscripcion{curso=" + this.curso + ", año=" + this.año + ", semestre=" + this.semestre + ", estudiante=" + this.estudiante + "}";
-   }
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Inscripcion)) return false;
+        Inscripcion that = (Inscripcion) o;
+        Integer cursoId = (curso == null ? null : curso.getID());
+        Long estId = (estudiante == null ? null : estudiante.getId());
+        Integer cursoId2 = (that.curso == null ? null : that.curso.getID());
+        Long estId2 = (that.estudiante == null ? null : that.estudiante.getId());
+        return Objects.equals(cursoId, cursoId2)
+            && Objects.equals(estId, estId2)
+            && Objects.equals(anio, that.anio)
+            && Objects.equals(semestre, that.semestre);
+    }
+    @Override public int hashCode() {
+        Integer cursoId = (curso == null ? null : curso.getID());
+        Long estId = (estudiante == null ? null : estudiante.getId());
+        return Objects.hash(cursoId, estId, anio, semestre);
+    }
 }

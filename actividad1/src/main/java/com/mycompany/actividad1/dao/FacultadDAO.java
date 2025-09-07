@@ -10,19 +10,23 @@ import java.util.List;
 public class FacultadDAO {
 
     // ================= INSERTAR =================
-    public void insertar(Facultad facultad) throws Exception {
+    public boolean insertar(Facultad facultad) throws SQLException {
         String sql = "INSERT INTO facultad (id, nombre, id_decano) VALUES (?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDouble(1, facultad.getID());
             stmt.setString(2, facultad.getNombre());
-            stmt.setDouble(3, facultad.getDecano().getId()); // usamos el id de Persona
-            stmt.executeUpdate();
+            // Persona.getId() es Long -> lo convertimos explícitamente a double
+            Double decanoId = facultad.getDecano() == null ? null : 
+                              (facultad.getDecano().getId() == null ? null : facultad.getDecano().getId().doubleValue());
+            if (decanoId == null) stmt.setNull(3, Types.DOUBLE);
+            else stmt.setDouble(3, decanoId);
+            return stmt.executeUpdate() > 0;
         }
     }
 
     // ================= BUSCAR =================
-    public Facultad buscarPorId(Double id) throws Exception {
+    public Facultad buscarPorId(Double id) throws SQLException {
         String sql = "SELECT * FROM facultad WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -32,7 +36,6 @@ public class FacultadDAO {
                     String nombre = rs.getString("nombre");
                     Double decanoId = rs.getDouble("id_decano");
 
-                    // Traemos al decano como objeto Persona
                     PersonaDAO personaDAO = new PersonaDAO();
                     Persona decano = personaDAO.buscarPorId(decanoId);
 
@@ -42,7 +45,8 @@ public class FacultadDAO {
         }
         return null;
     }
-        public List<Facultad> listar() throws SQLException {
+
+    public List<Facultad> listar() throws SQLException {
         List<Facultad> lista = new ArrayList<>();
         String sql = "SELECT * FROM facultad ORDER BY id";
         try (Connection conn = Database.getConnection();
@@ -50,41 +54,67 @@ public class FacultadDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             PersonaDAO personaDAO = new PersonaDAO();
-
             while (rs.next()) {
                 Double id = rs.getDouble("id");
                 String nombre = rs.getString("nombre");
                 Double decanoId = rs.getDouble("id_decano");
 
                 Persona decano = personaDAO.buscarPorId(decanoId);
-
-                Facultad facultad = new Facultad(id, nombre, decano);
-                lista.add(facultad);
+                lista.add(new Facultad(id, nombre, decano));
             }
         }
         return lista;
     }
 
     // ================= ACTUALIZAR =================
-    public void actualizar(Facultad facultad) throws Exception {
+    public boolean actualizar(Facultad facultad) throws SQLException {
         String sql = "UPDATE facultad SET nombre = ?, id_decano = ? WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, facultad.getNombre());
-            stmt.setDouble(2, facultad.getDecano().getId()); // ID del decano
+            Double decanoId = facultad.getDecano() == null ? null :
+                              (facultad.getDecano().getId() == null ? null : facultad.getDecano().getId().doubleValue());
+            if (decanoId == null) stmt.setNull(2, Types.DOUBLE);
+            else stmt.setDouble(2, decanoId);
             stmt.setDouble(3, facultad.getID());
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
         }
     }
 
     // ================= ELIMINAR =================
-    public void eliminar(Double id) throws Exception {
+    public boolean eliminar(Double id) throws SQLException {
         String sql = "DELETE FROM facultad WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setDouble(1, id);
-            stmt.executeUpdate();
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    // ======= REGLAS de unicidad para el decano =======
+
+    // ¿El decano ya está asignado en alguna facultad?
+    public boolean existeDecano(Double decanoId) throws SQLException {
+        String sql = "SELECT 1 FROM facultad WHERE id_decano = ? LIMIT 1";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, decanoId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    // ¿El decano está asignado en otra facultad distinta a 'facultadId'?
+    public boolean existeDecanoEnOtraFacultad(Double decanoId, Double facultadId) throws SQLException {
+        String sql = "SELECT 1 FROM facultad WHERE id_decano = ? AND id <> ? LIMIT 1";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, decanoId);
+            ps.setDouble(2, facultadId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 }
-

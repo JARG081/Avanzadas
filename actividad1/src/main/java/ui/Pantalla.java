@@ -6,19 +6,22 @@ import com.mycompany.actividad1.dao.ProgramaDAO;
 import com.mycompany.actividad1.dao.CursoDAO;
 import com.mycompany.actividad1.dao.ProfesorDAO;
 import com.mycompany.actividad1.model.Curso;
+import com.mycompany.actividad1.model.Estudiante;
 import com.mycompany.actividad1.model.Facultad;
 import com.mycompany.actividad1.model.Persona;
 import com.mycompany.actividad1.model.Profesor;
 import com.mycompany.actividad1.model.Programa;
+import controller.PersonaController;
+import controller.ProfesorController;
+import controller.FacultadController;
+import controller.ProgramaController;
+import controller.CursoController;
+import controller.EstudianteController;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
 /**
  *
@@ -38,8 +41,14 @@ public class Pantalla extends javax.swing.JFrame {
         cargarTablaPrograma();
         cargarTablaCurso();
         cargarTablaProfesores();
+        cargarTablaEstudiantes();
     }
-
+    private final PersonaController personaController = new PersonaController();
+    private final ProfesorController profesorController = new ProfesorController();
+    private final FacultadController facultadController = new FacultadController();
+    private final ProgramaController programaController = new ProgramaController();
+    private final CursoController CursoController = new CursoController();
+    private final EstudianteController estudianteController = new EstudianteController();    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,6 +131,20 @@ public class Pantalla extends javax.swing.JFrame {
         jTable4 = new javax.swing.JTable();
         ingresCursoBtn = new javax.swing.JButton();
         actuaCursoBtn = new javax.swing.JButton();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        idPersonaE = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        codigoEst = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        idProgramaE = new javax.swing.JTextField();
+        ingresEstBtn = new javax.swing.JButton();
+        delEstBtn = new javax.swing.JButton();
+        actuaEstBtn = new javax.swing.JButton();
+        buscaEstBtn = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable6 = new javax.swing.JTable();
+        inscripcionesBtn = new javax.swing.JButton();
 
         jButton2.setText("jButton2");
 
@@ -194,7 +217,7 @@ public class Pantalla extends javax.swing.JFrame {
         jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel23.setText("PROFESORES");
 
-        jLabel24.setText("Id");
+        jLabel24.setText("Id Persona");
 
         idPersonaP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,13 +281,19 @@ public class Pantalla extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(63, 63, 63)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(ingresPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(actuaPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -274,48 +303,44 @@ public class Pantalla extends javax.swing.JFrame {
                                 .addComponent(delPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addComponent(jLabel25))
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(idPersonaP)
-                                    .addComponent(contratoProfesor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(224, 224, 224)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(238, 238, 238)
-                        .addComponent(jLabel23)))
-                .addGap(78, 78, 78))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(idPersona, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                            .addComponent(nomPersona)
-                            .addComponent(apePersona)
-                            .addComponent(emailPersona))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(idPersona, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                    .addComponent(nomPersona)
+                                    .addComponent(apePersona)
+                                    .addComponent(emailPersona))))
                         .addGap(94, 94, 94))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addComponent(ingresProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel25)
+                        .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ingresProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(actuaProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buscaProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(delProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(delProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(idPersonaP)
+                        .addComponent(contratoProfesor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(113, 113, 113))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(224, 224, 224)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(181, 181, 181)
+                        .addComponent(jLabel23)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,33 +363,35 @@ public class Pantalla extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(emailPersona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(83, 83, 83)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(68, 68, 68)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ingresPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscaPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(delPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(actuaPersonaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(85, 85, 85)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(144, 144, 144)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idPersonaP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel24))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel25)
-                    .addComponent(contratoProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(77, 77, 77)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ingresProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscaProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(delProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(actuaProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(idPersonaP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(contratoProfesor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ingresProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buscaProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(delProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(actuaProfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel25)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -583,6 +610,70 @@ public class Pantalla extends javax.swing.JFrame {
             }
         });
 
+        jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel26.setText("ESTUDIANTES");
+
+        jLabel21.setText("Id Persona");
+
+        idPersonaE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idPersonaEActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setText("Codigo Est");
+
+        jLabel27.setText("Id Programa");
+
+        ingresEstBtn.setText("Insertar");
+        ingresEstBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ingresEstBtnActionPerformed(evt);
+            }
+        });
+
+        delEstBtn.setText("Eliminar");
+        delEstBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delEstBtnActionPerformed(evt);
+            }
+        });
+
+        actuaEstBtn.setText("Actualizar");
+        actuaEstBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actuaEstBtnActionPerformed(evt);
+            }
+        });
+
+        buscaEstBtn.setText("Buscar");
+        buscaEstBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscaEstBtnActionPerformed(evt);
+            }
+        });
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable6.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane6.setViewportView(jTable6);
+
+        inscripcionesBtn.setText("Inscripciones");
+        inscripcionesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inscripcionesBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -592,116 +683,137 @@ public class Pantalla extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(170, 170, 170)
+                        .addComponent(jLabel26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(182, 182, 182)
-                                        .addComponent(idFacultad, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGap(182, 182, 182)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addComponent(decFacultad, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-                                                .addComponent(nomFacultad)))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(ingresFacuBtn)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(actFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(buscaFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(delFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(182, 182, 182)
+                                .addComponent(idFacultad, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(162, 162, 162)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(decFacultad, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nomFacultad, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(179, 179, 179)
+                        .addComponent(jLabel6))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(179, 179, 179)
-                                .addComponent(jLabel6)))
-                        .addGap(157, 157, 157)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(139, 139, 139)
-                                .addComponent(jLabel10)
-                                .addGap(261, 261, 261))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(regPrograma))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(idPrograma))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(durPrograma)
-                                            .addComponent(nomPrograma)
-                                            .addComponent(facPrograma)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(ingresProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(actProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(buscaProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(delProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(108, 108, 108))))
+                                .addComponent(ingresFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(actFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buscaFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(delFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel22)
+                                .addComponent(jLabel21)
+                                .addComponent(jLabel27))
+                            .addGap(233, 233, 233)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(codigoEst, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(idProgramaE, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(idPersonaE, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(ingresEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(actuaEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buscaEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(delEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(216, 216, 216)
+                                .addGap(139, 139, 139)
+                                .addComponent(jLabel10))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(178, 178, 178)
                                 .addComponent(jLabel20))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
+                                .addGap(36, 36, 36)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
+                                        .addComponent(ingresCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(actuaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(buscaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(delCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(ingresCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(actuaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(buscaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(delCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(21, 21, 21)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(182, 182, 182)
-                                                        .addComponent(idCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(182, 182, 182)
+                                                .addComponent(idCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(182, 182, 182))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                            .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(182, 182, 182))
-                                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING)
-                                                                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING))
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(activoCurso)
-                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                .addComponent(progCurso)
-                                                                .addComponent(nomCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                                            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING))
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(activoCurso)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(progCurso)
+                                                        .addComponent(nomCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(614, Short.MAX_VALUE))))
+                        .addContainerGap(27, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(inscripcionesBtn))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(regPrograma))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(idPrograma))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(durPrograma)
+                                    .addComponent(nomPrograma)
+                                    .addComponent(facPrograma)))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(ingresProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(actProgBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(30, 30, 30)
+                                .addComponent(buscaProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(delProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(84, 84, 84))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -755,8 +867,8 @@ public class Pantalla extends javax.swing.JFrame {
                             .addComponent(buscaFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(delFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(actFacuBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ingresProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -765,41 +877,67 @@ public class Pantalla extends javax.swing.JFrame {
                             .addComponent(actProgBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(75, 75, 75)
-                .addComponent(jLabel20)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(idCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel18)
-                                .addGap(6, 6, 6))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(nomCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel17))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(progCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(activoCurso))
-                    .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
+                .addGap(38, 38, 38)
+                .addComponent(inscripcionesBtn)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ingresCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(delCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(actuaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20)
+                    .addComponent(jLabel26))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(idCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel21)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel18)
+                                        .addGap(6, 6, 6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(nomCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel17)
+                                            .addComponent(jLabel22))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(progCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel27))))
+                                .addComponent(activoCurso))
+                            .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(idPersonaE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(codigoEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(idProgramaE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ingresEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buscaEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(delEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(actuaEstBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ingresCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buscaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(delCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(actuaCursoBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -810,41 +948,25 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_nomPersonaActionPerformed
 
     private void ingresPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresPersonaBtnActionPerformed
-        try {
-            String id = idPersona.getText().trim();
-            String nombres = nomPersona.getText().trim();
-            String apellidos = apePersona.getText().trim();
-            String email = emailPersona.getText().trim();
+    try {
+        personaController.insertar(
+            idPersona.getText().trim(),
+            nomPersona.getText().trim(),
+            apePersona.getText().trim(),
+            emailPersona.getText().trim()
+        );
+        JOptionPane.showMessageDialog(this, "Persona registrada con éxito");
+        cargarTablaPers();
+        jTable1.setModel(personaController.modeloTablaTodas()); // refresca tabla
+        //imprimir en consola:
+        personaController.listar().forEach(System.out::println);
 
-            if (id.isEmpty() || nombres.isEmpty() || apellidos.isEmpty() || email.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios");
-                return;
-            }
-
-            PersonaDAO dao = new PersonaDAO();
-            Persona nueva = new Persona(Double.valueOf(id), nombres, apellidos, email);
-            dao.insertar(nueva);
-
-            JOptionPane.showMessageDialog(this, "Persona registrada con éxito");
-            
-
-            // limpiar campos
-            nomPersona.setText("");
-            apePersona.setText("");
-            emailPersona.setText("");
-            idPersona.setText("");
-            cargarTablaPers();
-            // mostrar en consola lo que hay en la BD
-            List<Persona> lista = dao.listar();
-            System.out.println("=== Personas en BD ===");
-            for (Persona p : lista) {
-                System.out.println(p);
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error al registrar: " + ex.getMessage());
-            cargarTablaPers();
-        }
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al registrar: " + ex.getMessage());
+    }
+    limpiarCamposPersona();
     }//GEN-LAST:event_ingresPersonaBtnActionPerformed
 
     private void idPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPersonaActionPerformed
@@ -852,109 +974,73 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_idPersonaActionPerformed
 
     private void delPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delPersonaBtnActionPerformed
-            try {
-            String idTexto = idPersona.getText().trim();
-            if (idTexto.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un ID para eliminar");
-                return;
-            }
-
-            long id = Long.parseLong(idTexto);
-            PersonaDAO dao = new PersonaDAO();
-            Persona persona = dao.buscarPorId((double) id);
-
-            if (persona == null) {
-                JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + id);
-                return;
-            }
-
-            // Mostrar datos encontrados en la tabla para confirmar
-            javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
-            modelo.addColumn("ID");
-            modelo.addColumn("Nombres");
-            modelo.addColumn("Apellidos");
-            modelo.addColumn("Email");
-            modelo.addRow(new Object[]{
-                persona.getId(),
-                persona.getNombres(),
-                persona.getApellidos(),
-                persona.getEmail()
-            });
-            jTable1.setModel(modelo);
-
-            // Confirmación con JOptionPane
-            int opcion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Está seguro que desea eliminar este registro?\n\n" +
-                "ID: " + persona.getId() + "\n" +
-                "Nombre: " + persona.getNombres() + "\n" +
-                "Apellido: " + persona.getApellidos() + "\n" +
-                "Email: " + persona.getEmail(),
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-            );
-
-            if (opcion == JOptionPane.YES_OPTION) {
-                boolean eliminado = dao.eliminar(id);
-                if (eliminado) {
-                    JOptionPane.showMessageDialog(this,
-                            "Se eliminó correctamente a:\n" +
-                            persona.getNombres() + " " + persona.getApellidos(),
-                            "Eliminación exitosa",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(this,
-                            "No se pudo eliminar. El registro ya no existe.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-                cargarTablaPers(); // refresca todos los registros
-            } else {
-                // Cancelado
-                cargarTablaPers();
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        }
-    }//GEN-LAST:event_delPersonaBtnActionPerformed
-
-    private void buscaPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaPersonaBtnActionPerformed
     try {
-        String idTexto = idPersona.getText().trim();
-        if (idTexto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar");
+        String idTxt = idPersona.getText().trim();
+        Persona persona = personaController.buscar(idTxt);
+        if (persona == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + idTxt);
             return;
         }
 
-        double id = Double.parseDouble(idTexto);
-        PersonaDAO dao = new PersonaDAO();
-        Persona persona = dao.buscarPorId(id);
+        // Mostrar en la tabla para confirmar
+        jTable1.setModel(personaController.modeloTablaDe(persona));
 
-        if (persona != null) {
-            javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
-            modelo.addColumn("ID");
-            modelo.addColumn("Nombres");
-            modelo.addColumn("Apellidos");
-            modelo.addColumn("Email");
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro que desea eliminar este registro?\n\n" +
+            "ID: " + persona.getId() + "\n" +
+            "Nombre: " + persona.getNombres() + "\n" +
+            "Apellido: " + persona.getApellidos() + "\n" +
+            "Email: " + persona.getEmail(),
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
 
-            modelo.addRow(new Object[]{
-                persona.getId(),
-                persona.getNombres(),
-                persona.getApellidos(),
-                persona.getEmail()
-            });
-
-            jTable1.setModel(modelo);
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean ok = personaController.eliminar(idTxt);
+            JOptionPane.showMessageDialog(this,
+                ok ? "Se eliminó correctamente." : "No se pudo eliminar (no existe).");
+            jTable1.setModel(personaController.modeloTablaTodas());
         } else {
-            JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + id);
-            cargarTablaPers(); // 👉 recarga lista completa
+            jTable1.setModel(personaController.modeloTablaTodas());
         }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        cargarTablaPers();
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        cargarTablaPers();
     }
+        limpiarCamposPersona();
+    }//GEN-LAST:event_delPersonaBtnActionPerformed
+
+    private void buscaPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaPersonaBtnActionPerformed
+        try {
+            String idTxt = idPersona.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar");
+                return;
+            }
+
+            Persona p = personaController.buscar(idTxt);
+            if (p != null) {
+                // llenar inputs
+                idPersona.setText(String.valueOf(p.getId()));
+                nomPersona.setText(p.getNombres());
+                apePersona.setText(p.getApellidos());
+                emailPersona.setText(p.getEmail());
+                JOptionPane.showMessageDialog(this, "Persona encontrada");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + idTxt);
+            }
+            cargarTablaPers();
+
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_buscaPersonaBtnActionPerformed
 
     private void idFacultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idFacultadActionPerformed
@@ -962,119 +1048,92 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_idFacultadActionPerformed
 
     private void actuaPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaPersonaBtnActionPerformed
-        try {
-            String id = idPersona.getText().trim();
-            String nombres = nomPersona.getText().trim();
-            String apellidos = apePersona.getText().trim();
-            String email = emailPersona.getText().trim();
+    try {
+        boolean actualizado = personaController.actualizar(
+            idPersona.getText().trim(),
+            nomPersona.getText().trim(),
+            apePersona.getText().trim(),
+            emailPersona.getText().trim()
+        );
 
-            if (id.isEmpty() || nombres.isEmpty() || apellidos.isEmpty() || email.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios para actualizar");
-                return;
-            }
+        JOptionPane.showMessageDialog(this,
+            actualizado ? "Persona actualizada con éxito" : "No se pudo actualizar la persona");
 
-            PersonaDAO dao = new PersonaDAO();
-            Persona personaExistente = dao.buscarPorId(Double.valueOf(id));
+        cargarTablaPers();
+        cargarTablaFacu();
+        jTable1.setModel(personaController.modeloTablaTodas());
+        personaController.listar().forEach(System.out::println);
 
-            if (personaExistente == null) {
-                JOptionPane.showMessageDialog(this, "No existe persona con ese ID");
-                return;
-            }
-
-            Persona actualizada = new Persona(Double.valueOf(id), nombres, apellidos, email);
-            boolean actualizado = dao.actualizar(actualizada);
-
-            if (actualizado) {
-                JOptionPane.showMessageDialog(this, "Persona actualizada con éxito");
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo actualizar la persona");
-            }
-
-            // limpiar campos
-            nomPersona.setText("");
-            apePersona.setText("");
-            emailPersona.setText("");
-            idPersona.setText("");
-            cargarTablaPers();
-
-            // mostrar en consola lo que hay en la BD
-            List<Persona> lista = dao.listar();
-            System.out.println("=== Personas en BD ===");
-            for (Persona p : lista) {
-                System.out.println(p);
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
-            cargarTablaPers();
-        }
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
+    }
+       limpiarCamposPersona();
     }//GEN-LAST:event_actuaPersonaBtnActionPerformed
 
     private void ingresFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresFacuBtnActionPerformed
         try {
-            Double id = Double.parseDouble(idFacultad.getText());
-            String nombre = nomFacultad.getText();
-            Double decanoId = Double.parseDouble(decFacultad.getText());
-
-            PersonaDAO personaDAO = new PersonaDAO();
-            Persona decano = personaDAO.buscarPorId(decanoId);
-
-            if (decano == null) {
-                JOptionPane.showMessageDialog(this, "No existe persona con id: " + decanoId);
-                return;
-            }
-
-            Facultad facultad = new Facultad(id, nombre, decano); // ahora con id de interfaz
-            FacultadDAO facultadDAO = new FacultadDAO();
-            facultadDAO.insertar(facultad);
-
-            JOptionPane.showMessageDialog(this, "Facultad insertada correctamente.");
+            boolean ok = facultadController.insertar(
+                idFacultad.getText().trim(),
+                nomFacultad.getText().trim(),
+                decFacultad.getText().trim()
+            );
+            JOptionPane.showMessageDialog(this, ok ? "Facultad insertada correctamente."
+                                                   : "No se pudo insertar la facultad.");
             cargarTablaFacu();
-
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al insertar: " + e.getMessage());
         }
+        limpiarCamposFacultad();
     }//GEN-LAST:event_ingresFacuBtnActionPerformed
 
     private void actFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actFacuBtnActionPerformed
-    try {
-        Double id = Double.valueOf(idFacultad.getText().trim());
-        String nombre = nomFacultad.getText().trim();
-        Double decanoId = Double.parseDouble(decFacultad.getText().trim());
-
-        PersonaDAO personaDAO = new PersonaDAO();
-        Persona decano = personaDAO.buscarPorId(decanoId);
-
-        if (decano == null) {
-            JOptionPane.showMessageDialog(this, "El decano con ID " + decanoId + " no existe");
-            return;
+        try {
+            boolean ok = facultadController.actualizar(
+                idFacultad.getText().trim(),
+                nomFacultad.getText().trim(),
+                decFacultad.getText().trim()
+            );
+            JOptionPane.showMessageDialog(this, ok ? "Facultad actualizada correctamente."
+                                                   : "No se pudo actualizar la facultad.");
+            cargarTablaFacu();
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage());
         }
-
-        Facultad facultad = new Facultad(id, nombre, decano);
-        FacultadDAO facultadDAO = new FacultadDAO();
-        facultadDAO.actualizar(facultad);
-        cargarTablaFacu();
-        JOptionPane.showMessageDialog(this, "Facultad actualizada correctamente");
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
-    }
+        limpiarCamposFacultad();
     }//GEN-LAST:event_actFacuBtnActionPerformed
 
     private void buscaFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaFacuBtnActionPerformed
         try {
-            Double id = Double.valueOf(idFacultad.getText().trim());
-
-            FacultadDAO facultadDAO = new FacultadDAO();
-            Facultad facultad = facultadDAO.buscarPorId(id);
-
-            if (facultad != null) {
-                nomFacultad.setText(facultad.getNombre());
-                decFacultad.setText(facultad.getDecano().getId().toString());
-                JOptionPane.showMessageDialog(this, "Facultad encontrada");
-            } else {
-                JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + id);
-                cargarTablaFacu(); // 👉 recarga tabla
+            String idTxt = idFacultad.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el ID de la facultad.");
+                return;
             }
+
+            Facultad f = facultadController.buscar(idTxt);
+            if (f != null) {
+                idFacultad.setText(String.valueOf(f.getID()));
+                nomFacultad.setText(f.getNombre());
+                if (f.getDecano() != null && f.getDecano().getId() != null) {
+                    decFacultad.setText(String.valueOf(f.getDecano().getId()));
+                } else {
+                    decFacultad.setText("");
+                }
+                JOptionPane.showMessageDialog(this, "Facultad encontrada.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt);
+            }
+
+            cargarTablaFacu(); // deja la tabla con todas las tuplas
+
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al buscar: " + ex.getMessage());
         }
@@ -1082,26 +1141,48 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void delFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delFacuBtnActionPerformed
     try {
-        Double id = Double.valueOf(idFacultad.getText().trim());
-
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de eliminar la facultad con ID " + id + "?",
-                "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            FacultadDAO facultadDAO = new FacultadDAO();
-            facultadDAO.eliminar(id);
-            cargarTablaFacu();
-            // Limpieza de campos
-            idFacultad.setText("");
-            nomFacultad.setText("");
-            decFacultad.setText("");
-
-            JOptionPane.showMessageDialog(this, "Facultad eliminada correctamente");
+        String idTxt = idFacultad.getText().trim();
+        if (idTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese el ID de la facultad.");
+            return;
         }
+
+        // Buscar para mostrar datos en confirmación
+        Facultad f = facultadController.buscar(idTxt);
+        if (f == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt);
+            return;
+        }
+
+        String decanoNom = (f.getDecano() == null) ? "(sin decano)"
+            : (f.getDecano().getNombres() + " " + f.getDecano().getApellidos());
+
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro que desea eliminar la facultad?\n\n" +
+            "ID: " + f.getID() + "\n" +
+            "Nombre: " + f.getNombre() + "\n" +
+            "Decano: " + decanoNom,
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean ok = facultadController.eliminar(idTxt);
+            JOptionPane.showMessageDialog(this, ok ? "Facultad eliminada correctamente."
+                                                   : "No se pudo eliminar la facultad.");
+            cargarTablaFacu();
+        } else {
+            cargarTablaFacu(); // limpiar cualquier filtro/selección previa
+        }
+
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error al eliminar: " + ex.getMessage());
     }
+    limpiarCamposFacultad();
     }//GEN-LAST:event_delFacuBtnActionPerformed
 
     private void nomFacultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomFacultadActionPerformed
@@ -1129,149 +1210,116 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_regProgramaActionPerformed
 
     private void delProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delProgBtnActionPerformed
-try {
-    String idTexto = idPrograma.getText().trim();
-    if (idTexto.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Ingrese un ID de programa para eliminar");
-        return;
-    }
+        try {
+            String idTxt = idPrograma.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un ID de programa para eliminar");
+                return;
+            }
 
-    double id = Double.parseDouble(idTexto);
-    ProgramaDAO dao = new ProgramaDAO(Database.getConnection());
-    Programa programa = dao.buscar((int) id);
+            Programa programa = programaController.buscar(idTxt);
+            if (programa == null) {
+                JOptionPane.showMessageDialog(this, "No se encontró programa con ID: " + idTxt);
+                return;
+            }
 
-    if (programa == null) {
-        JOptionPane.showMessageDialog(this, "No se encontró programa con ID: " + id);
-        return;
-    }
+            // Confirmación
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea eliminar este programa?\n\n" +
+                "ID: " + programa.getId() + "\n" +
+                "Nombre: " + programa.getNombre() + "\n" +
+                "Duración: " + programa.getDuracion() + "\n" +
+                "Facultad: " + (programa.getFacultad() == null ? "" : programa.getFacultad().getNombre()) + "\n" +
+                "Registro: " + programa.getRegistro(),
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
 
-    // Mostrar datos encontrados en la tabla para confirmar
-    javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
-    modelo.addColumn("ID");
-    modelo.addColumn("Nombre");
-    modelo.addColumn("Duración");
-    modelo.addColumn("Registro");
-    modelo.addColumn("Facultad");
-    modelo.addRow(new Object[]{
-        programa.getId(),
-        programa.getNombre(),
-        programa.getDuracion(),
-        programa.getRegistro(),
-        programa.getFacultad().getNombre()
-    });
-    jTable3.setModel(modelo);
+            if (opcion == JOptionPane.YES_OPTION) {
+                boolean eliminado = programaController.eliminar(idTxt);
+                JOptionPane.showMessageDialog(this,
+                    eliminado ? "Programa eliminado correctamente: " + programa.getNombre()
+                              : "No se pudo eliminar. El registro ya no existe.");
+                cargarTablaPrograma();
+            } else {
+                cargarTablaPrograma();
+            }
 
-    // Confirmación con JOptionPane
-    int opcion = JOptionPane.showConfirmDialog(
-        this,
-        "¿Está seguro que desea eliminar este programa?\n\n" +
-        "ID: " + programa.getId() + "\n" +
-        "Nombre: " + programa.getNombre() + "\n" +
-        "Duración: " + programa.getDuracion() + "\n" +
-        "Facultad: " + programa.getFacultad().getNombre() + "\n" +
-        "Registro: " + programa.getRegistro(),
-        "Confirmar eliminación",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.WARNING_MESSAGE
-    );
-
-    if (opcion == JOptionPane.YES_OPTION) {
-        boolean eliminado = dao.eliminar((int) id);
-        if (eliminado) {
-            JOptionPane.showMessageDialog(this,
-                    "Programa eliminado correctamente:\n" + programa.getNombre(),
-                    "Eliminación exitosa",
-                    JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "No se pudo eliminar. El registro ya no existe.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-        cargarTablaPrograma(); // refresca todos los registros
-    } else {
-        // Cancelado
-        cargarTablaPrograma();
-    }
-
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-}
-
+        limpiarCamposPrograma();
     }//GEN-LAST:event_delProgBtnActionPerformed
 
     private void buscaProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaProgBtnActionPerformed
-    try {
-        int id = Integer.parseInt(idPrograma.getText());
-        ProgramaDAO dao = new ProgramaDAO(Database.getConnection());
-        Programa prog = dao.buscar(id);
-
-        if (prog != null) {
-            nomPrograma.setText(prog.getNombre());
-            durPrograma.setText(String.valueOf(prog.getDuracion()));
-            regPrograma.setText(prog.getRegistro().toString());
-            facPrograma.setText(String.valueOf(prog.getFacultad().getID()));
-            JOptionPane.showMessageDialog(this, "Programa encontrado");
-        } else {
-            JOptionPane.showMessageDialog(this, "Programa no encontrado.");
-            cargarTablaPrograma(); // 👉 recarga lista completa
+        try {
+            String idTxt = idPrograma.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el ID del programa.");
+                return;
+            }
+            Programa prog = programaController.buscar(idTxt);
+            if (prog != null) {
+                nomPrograma.setText(prog.getNombre());
+                durPrograma.setText(String.valueOf(prog.getDuracion()));
+                regPrograma.setText(prog.getRegistro().toString());
+                facPrograma.setText(prog.getFacultad() == null ? "" : String.valueOf(prog.getFacultad().getID()));
+                JOptionPane.showMessageDialog(this, "Programa encontrado.");
+                // Si quisieras mostrar solo éste en tabla:
+                // jTable3.setModel(programaController.modeloTablaDe(prog));
+            } else {
+                JOptionPane.showMessageDialog(this, "Programa no encontrado.");
+                cargarTablaPrograma();
+            }
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_buscaProgBtnActionPerformed
 
     private void actProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actProgBtnActionPerformed
-    try {
-        Double id = Double.valueOf(idPrograma.getText());
-        String nombre = nomPrograma.getText();
-        int duracion = Integer.parseInt(durPrograma.getText());
-        java.sql.Date registro = java.sql.Date.valueOf(regPrograma.getText());
-        Double idFac = Double.valueOf(facPrograma.getText());
-
-        FacultadDAO fdao = new FacultadDAO();
-        Facultad facu = fdao.buscarPorId(idFac);
-
-        Programa prog = new Programa(id, nombre, duracion, registro, facu);
-
-        ProgramaDAO dao = new ProgramaDAO(Database.getConnection());
-        if (dao.actualizar(prog)) {
-            JOptionPane.showMessageDialog(this, "Programa actualizado correctamente.");
+        try {
+            boolean ok = programaController.actualizar(
+                idPrograma.getText().trim(),
+                nomPrograma.getText().trim(),
+                durPrograma.getText().trim(),
+                regPrograma.getText().trim(),     // YYYY-MM-DD
+                facPrograma.getText().trim()
+            );
+            JOptionPane.showMessageDialog(this, ok ? "Programa actualizado correctamente."
+                                                   : "No se pudo actualizar el programa.");
             cargarTablaPrograma();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al actualizar programa.");
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
+        limpiarCamposPrograma();
     }//GEN-LAST:event_actProgBtnActionPerformed
 
     private void ingresProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresProgBtnActionPerformed
-    try {
-        Double id = Double.valueOf(idPrograma.getText());
-        String nombre = nomPrograma.getText();
-        int duracion = Integer.parseInt(durPrograma.getText());
-
-        // el registro lo recibimos como fecha
-        java.sql.Date registro = java.sql.Date.valueOf(regPrograma.getText()); // formato YYYY-MM-DD
-
-        Double idFac = Double.valueOf(facPrograma.getText());
-
-        FacultadDAO fdao = new FacultadDAO();
-        Facultad facu = fdao.buscarPorId(idFac);
-
-        Programa prog = new Programa(id, nombre, duracion, registro, facu);
-
-        ProgramaDAO dao = new ProgramaDAO(Database.getConnection());
-        if (dao.insertarPrograma(prog)) {
-            JOptionPane.showMessageDialog(this, "Programa insertado correctamente.");
+        try {
+            boolean ok = programaController.insertar(
+                idPrograma.getText().trim(),
+                nomPrograma.getText().trim(),
+                durPrograma.getText().trim(),
+                regPrograma.getText().trim(),     // YYYY-MM-DD
+                facPrograma.getText().trim()
+            );
+            JOptionPane.showMessageDialog(this, ok ? "Programa insertado correctamente."
+                                                   : "No se pudo insertar el programa.");
             cargarTablaPrograma();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al insertar programa.");
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
+        limpiarCamposPrograma();
     }//GEN-LAST:event_ingresProgBtnActionPerformed
 
     private void ingresCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresCursoBtnActionPerformed
@@ -1296,6 +1344,7 @@ try {
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
+    limpiarCamposCurso();
     }//GEN-LAST:event_ingresCursoBtnActionPerformed
 
     private void actuaCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaCursoBtnActionPerformed
@@ -1320,6 +1369,7 @@ try {
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
+        limpiarCamposCurso();
     }//GEN-LAST:event_actuaCursoBtnActionPerformed
 
     private void buscaCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaCursoBtnActionPerformed
@@ -1361,19 +1411,61 @@ try {
     }//GEN-LAST:event_buscaCursoBtnActionPerformed
 
     private void delCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delCursoBtnActionPerformed
-           try {
-        int id = Integer.parseInt(idCurso.getText());
-
-        CursoDAO dao = new CursoDAO();
-        if (dao.eliminar(id)) {
-            JOptionPane.showMessageDialog(this, "Curso eliminado con éxito.");
-            cargarTablaCurso();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al eliminar el curso.");
+    try {
+        String idTxt = idCurso.getText().trim();
+        if (idTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un ID de curso para eliminar");
+            return;
         }
+
+        // 1) Buscar para mostrar datos antes de confirmar
+        Curso curso = CursoController.buscar(idTxt);
+        if (curso == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró curso con ID: " + idTxt);
+            return;
+        }
+
+        // 2) Armar info del programa (si el DAO no trae nombre, mostramos el ID)
+        String progInfo;
+        if (curso.getPrograma() == null) {
+            progInfo = "(sin programa)";
+        } else if (curso.getPrograma().getNombre() != null) {
+            progInfo = curso.getPrograma().getNombre() + " (ID: " + curso.getPrograma().getId() + ")";
+        } else {
+            progInfo = "ID: " + curso.getPrograma().getId();
+        }
+
+        // 3) Confirmación
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro que desea eliminar este curso?\n\n" +
+            "ID: " + curso.getID() + "\n" +
+            "Nombre: " + curso.getNombre() + "\n" +
+            "Programa: " + progInfo + "\n" +
+            "Activo: " + (Boolean.TRUE.equals(curso.getActivo()) ? "Sí" : "No"),
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        // 4) Eliminar y refrescar
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean eliminado = CursoController.eliminar(idTxt);
+            JOptionPane.showMessageDialog(this,
+                eliminado ? "Curso eliminado correctamente."
+                          : "No se pudo eliminar. El registro ya no existe.");
+            cargarTablaCurso();
+            limpiarCamposCurso();
+        } else {
+            cargarTablaCurso(); // deja la tabla con todas las filas
+        }
+
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
+        limpiarCamposCurso();
     }//GEN-LAST:event_delCursoBtnActionPerformed
 
     private void nomCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomCursoActionPerformed
@@ -1398,64 +1490,22 @@ try {
 
     private void ingresProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresProfBtnActionPerformed
     try {
-        // --- Validaciones previas ---
-        if (idPersonaP.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un ID de persona.");
-            return;
-            
-        }
-        double idPersona;
-        try {
-            idPersona = Integer.parseInt(idPersonaP.getText().trim());
-        } catch (NumberFormatException nfe) {
-            JOptionPane.showMessageDialog(this, "El ID de persona debe ser un número válido.");
-            return;
-        }
+            profesorController.insertar(
+            idPersonaP.getText().trim(),
+            contratoProfesor.getSelectedItem()
+        );
+        JOptionPane.showMessageDialog(this, "Profesor insertado correctamente.");
+                cargarTablaProfesores();
 
-        if (contratoProfesor.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un contrato.");
-            return;
-        }
-        cargarTablaProfesores();
-        String contrato = contratoProfesor.getSelectedItem().toString().trim();
-        if (contrato.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El contrato no puede estar vacío.");
-            return;
-        }
-
-        // --- Debug: imprimir lo que se va a insertar ---
-        System.out.println(">>> Intentando insertar profesor:");
-        System.out.println("    ID Persona: " + idPersona);
-        System.out.println("    Contrato: " + contrato);
-        
-        // --- Conexión y DAO ---
-        Connection conn = Database.getConnection(); 
-        if (conn == null) {
-            JOptionPane.showMessageDialog(this, "No se pudo establecer conexión con la base de datos.");
-            return;
-        }
-
-        ProfesorDAO profesorDAO = new ProfesorDAO(conn);
-        Profesor profesor = new Profesor(idPersona, contrato);
-
-        // --- Intentar insertar ---
-        boolean exito = profesorDAO.insertar(profesor);
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Profesor insertado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al insertar profesor. Verifique si el ID de persona existe.");
-        }
-        cargarTablaProfesores();
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
     } catch (SQLException sqle) {
-        // Si es un error de base de datos mostramos más detalle
         JOptionPane.showMessageDialog(this,
             "Error SQL: " + sqle.getMessage() + "\nCódigo: " + sqle.getErrorCode() + "\nEstado: " + sqle.getSQLState());
-        sqle.printStackTrace();
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
-        e.printStackTrace();
     }
-    cargarTablaProfesores();
+    limpiarCamposProfesor();
 }
 
 
@@ -1464,78 +1514,239 @@ private void btnBuscarActionPerformed() {
 
     private void actuaProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaProfBtnActionPerformed
     try {
-        Connection conn = Database.getConnection(); 
-        ProfesorDAO profesorDAO = new ProfesorDAO(conn);
-        int idPersona = Integer.parseInt(idPersonaP.getText());
-        String contrato = contratoProfesor.getSelectedItem().toString();
-
-        Profesor profesor = new Profesor(idPersona, contrato);
-
-        if (profesorDAO.actualizar(profesor)) {
-            JOptionPane.showMessageDialog(this, "Profesor actualizado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al actualizar profesor.");
-        }
+        boolean ok = profesorController.actualizar(
+            idPersonaP.getText().trim(),
+            contratoProfesor.getSelectedItem()
+        );
+        JOptionPane.showMessageDialog(this,
+            ok ? "Profesor actualizado correctamente."
+               : "Error al actualizar profesor.");
         cargarTablaProfesores();
+
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
-    cargarTablaProfesores();
+    limpiarCamposProfesor();
     }//GEN-LAST:event_actuaProfBtnActionPerformed
 
     private void buscaProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaProfBtnActionPerformed
-    try {
-        Connection conn = Database.getConnection(); 
-        ProfesorDAO profesorDAO = new ProfesorDAO(conn);
-        int idPersona = Integer.parseInt(idPersonaP.getText());
+        try {
+            String idTxt = idPersonaP.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un ID de persona.");
+                return;
+            }
 
-        Profesor profesor = profesorDAO.buscar(idPersona);
-        if (profesor != null) {
-            contratoProfesor.setSelectedItem(profesor.getContrato());
-        } else {
-            JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
+            Profesor profesor = profesorController.buscar(idTxt);
+            if (profesor != null) {
+                idPersonaP.setText(String.valueOf(profesor.getIdPersona())); // o getId()
+                contratoProfesor.setSelectedItem(profesor.getContrato());
+                JOptionPane.showMessageDialog(this, "Profesor encontrado");
+            } else {
+                JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
+            }
+
+            cargarTablaProfesores(); // mantiene todas las filas
+
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-        cargarTablaProfesores();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
-    cargarTablaProfesores();
     }//GEN-LAST:event_buscaProfBtnActionPerformed
 
     private void delProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delProfBtnActionPerformed
     try {
-        Connection conn = Database.getConnection(); 
-        ProfesorDAO profesorDAO = new ProfesorDAO(conn);
-        int idPersona = Integer.parseInt(idPersonaP.getText());
-
-        if (profesorDAO.eliminar(idPersona)) {
-            JOptionPane.showMessageDialog(this, "Profesor eliminado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al eliminar profesor.");
+        String idTxt = idPersonaP.getText().trim();
+        if (idTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un ID de persona.");
+            return;
         }
-        cargarTablaProfesores();
+
+        // 1) Buscar para mostrar datos antes de confirmar (opcional pero recomendado)
+        Profesor profesor = profesorController.buscar(idTxt);
+        if (profesor == null) {
+            JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
+            return;
+        }
+
+        // 2) Preparar texto de confirmación (si tienes Persona anidada, muestra nombre)
+        String nombres = "";
+        String apellidos = "";
+        if (profesor.getPersona() != null) {
+            nombres = profesor.getPersona().getNombres();
+            apellidos = profesor.getPersona().getApellidos();
+        }
+
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro que desea eliminar este registro?\n\n" +
+            "ID Persona: " + profesor.getIdPersona() + "\n" +
+            "Contrato: " + profesor.getContrato() +
+            ((nombres.isEmpty() && apellidos.isEmpty()) ? "" : ("\nNombre: " + nombres + " " + apellidos)),
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean ok = profesorController.eliminar(idTxt);
+            JOptionPane.showMessageDialog(this,
+                ok ? "Profesor eliminado correctamente."
+                   : "Error al eliminar profesor.");
+            cargarTablaProfesores();
+        } else {
+            // Cancelado → refresca por si habías filtrado la tabla
+            cargarTablaProfesores();
+        }
+
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
-    cargarTablaProfesores();
+    limpiarCamposProfesor();
     }//GEN-LAST:event_delProfBtnActionPerformed
+
+    private void idPersonaEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPersonaEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idPersonaEActionPerformed
+
+    private void ingresEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresEstBtnActionPerformed
+            try {
+        boolean ok = estudianteController.insertar(
+            idPersonaE.getText().trim(),
+            codigoEst.getText().trim(),
+            idProgramaE.getText().trim() // puede ir vacío
+        );
+        JOptionPane.showMessageDialog(this, ok ? "Estudiante insertado correctamente."
+                                               : "No se pudo insertar el estudiante.");
+        cargarTablaEstudiantes();
+        limpiarCamposEstudiante();
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_ingresEstBtnActionPerformed
+
+    private void actuaEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaEstBtnActionPerformed
+           try {
+        boolean ok = estudianteController.actualizar(
+            idPersonaE.getText().trim(),
+            codigoEst.getText().trim(),
+            idProgramaE.getText().trim()
+        );
+        JOptionPane.showMessageDialog(this, ok ? "Estudiante actualizado correctamente."
+                                               : "No se pudo actualizar el estudiante.");
+        cargarTablaEstudiantes();
+        limpiarCamposEstudiante();
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_actuaEstBtnActionPerformed
+
+    private void buscaEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaEstBtnActionPerformed
+            try {
+        String idTxt = idPersonaE.getText().trim();
+        if (idTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese ID de persona.");
+            return;
+        }
+        Estudiante e = estudianteController.buscar(idTxt);
+        if (e != null) {
+            idPersonaE.setText(String.valueOf(e.getId()));
+            codigoEst.setText(e.getCodigo());
+            idProgramaE.setText(e.getPrograma() == null ? "" : String.valueOf(e.getPrograma().getId()));
+            JOptionPane.showMessageDialog(this, "Estudiante encontrado.");
+        } else {
+            JOptionPane.showMessageDialog(this, "No existe Estudiante con ese ID de persona.");
+        }
+        cargarTablaEstudiantes();
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_buscaEstBtnActionPerformed
+
+    private void delEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delEstBtnActionPerformed
+            try {
+        String idTxt = idPersonaE.getText().trim();
+        if (idTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese ID de persona.");
+            return;
+        }
+
+        Estudiante e = estudianteController.buscar(idTxt);
+        if (e == null) {
+            JOptionPane.showMessageDialog(this, "No existe Estudiante con ese ID de persona.");
+            return;
+        }
+
+        String progNombre = (e.getPrograma() == null) ? "(sin programa)" : e.getPrograma().getNombre();
+
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Eliminar este estudiante?\n\n" +
+            "ID Persona: " + e.getId() + "\n" +
+            "Nombre: " + e.getNombres() + " " + e.getApellidos() + "\n" +
+            "Email: " + e.getEmail() + "\n" +
+            "Código: " + e.getCodigo() + "\n" +
+            "Programa: " + progNombre,
+            "Confirmar eliminación",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            boolean ok = estudianteController.eliminar(idTxt);
+            JOptionPane.showMessageDialog(this, ok ? "Estudiante eliminado."
+                                                   : "No se pudo eliminar.");
+            cargarTablaEstudiantes();
+            limpiarCamposEstudiante();
+        } else {
+            cargarTablaEstudiantes();
+        }
+
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_delEstBtnActionPerformed
+
+    private void inscripcionesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inscripcionesBtnActionPerformed
+    ui.PantallaInscripcion win = new ui.PantallaInscripcion();
+    win.setLocationRelativeTo(this);
+    win.setVisible(true);
+    
+    }//GEN-LAST:event_inscripcionesBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actFacuBtn;
     private javax.swing.JButton actProgBtn;
     private javax.swing.JRadioButton activoCurso;
     private javax.swing.JButton actuaCursoBtn;
+    private javax.swing.JButton actuaEstBtn;
     private javax.swing.JButton actuaPersonaBtn;
     private javax.swing.JButton actuaProfBtn;
     private javax.swing.JTextField apePersona;
     private javax.swing.JButton buscaCursoBtn;
+    private javax.swing.JButton buscaEstBtn;
     private javax.swing.JButton buscaFacuBtn;
     private javax.swing.JButton buscaPersonaBtn;
     private javax.swing.JButton buscaProfBtn;
     private javax.swing.JButton buscaProgBtn;
+    private javax.swing.JTextField codigoEst;
     private javax.swing.JComboBox<String> contratoProfesor;
     private javax.swing.JTextField decFacultad;
     private javax.swing.JButton delCursoBtn;
+    private javax.swing.JButton delEstBtn;
     private javax.swing.JButton delFacuBtn;
     private javax.swing.JButton delPersonaBtn;
     private javax.swing.JButton delProfBtn;
@@ -1546,13 +1757,17 @@ private void btnBuscarActionPerformed() {
     private javax.swing.JTextField idCurso;
     private javax.swing.JTextField idFacultad;
     private javax.swing.JTextField idPersona;
+    private javax.swing.JTextField idPersonaE;
     private javax.swing.JTextField idPersonaP;
     private javax.swing.JTextField idPrograma;
+    private javax.swing.JTextField idProgramaE;
     private javax.swing.JButton ingresCursoBtn;
+    private javax.swing.JButton ingresEstBtn;
     private javax.swing.JButton ingresFacuBtn;
     private javax.swing.JButton ingresPersonaBtn;
     private javax.swing.JButton ingresProfBtn;
     private javax.swing.JButton ingresProgBtn;
+    private javax.swing.JButton inscripcionesBtn;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1567,9 +1782,13 @@ private void btnBuscarActionPerformed() {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1583,11 +1802,13 @@ private void btnBuscarActionPerformed() {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTable6;
     private javax.swing.JTextField nomCurso;
     private javax.swing.JTextField nomFacultad;
     private javax.swing.JTextField nomPersona;
@@ -1598,90 +1819,46 @@ private void btnBuscarActionPerformed() {
 
     private void cargarTablaPers() {
         try {
-        PersonaDAO dao = new PersonaDAO();
-        List<Persona> lista = dao.listar();
-
-        // Definir modelo de tabla
-        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombres");
-        modelo.addColumn("Apellidos");
-        modelo.addColumn("Email");
-        
-        // Llenar con datos
-        for (Persona p : lista) {
-            modelo.addRow(new Object[]{
-                p.getId(), 
-                p.getNombres(), 
-                p.getApellidos(), 
-                p.getEmail()
-            });
-        }
-
-        jTable1.setModel(modelo);
-
-        } catch (SQLException ex) {
+            jTable1.setModel(personaController.modeloTablaTodas());
+        } catch (java.sql.SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar la tabla: " + ex.getMessage());
         }
     }
 
-private void cargarTablaFacu() {
-    try {
-        FacultadDAO dao = new FacultadDAO();
-        List<Facultad> lista = dao.listar();
-
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Decano"); // mostrará el nombre del decano
-
-        for (Facultad f : lista) {
-            modelo.addRow(new Object[]{
-                f.getID(),
-                f.getNombre(),
-                f.getDecano().getNombres() + " " + f.getDecano().getApellidos()
-            });
-        }
-
-        jTable2.setModel(modelo);
-        
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
+    private void limpiarCamposPersona() {
+        idPersona.setText("");
+        nomPersona.setText("");
+        apePersona.setText("");
+        emailPersona.setText("");
     }
+
+
+
+    private void cargarTablaFacu() {
+        try {
+            jTable2.setModel(facultadController.modeloTablaTodas());
+        } catch (java.sql.SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
+        }
+    }
+
+    private void limpiarCamposFacultad() {
         idFacultad.setText("");
         nomFacultad.setText("");
         decFacultad.setText("");
-}
-
-private void cargarTablaPrograma() {
-    try {
-        ProgramaDAO dao = new ProgramaDAO(Database.getConnection());
-        List<Programa> lista = dao.listar();
-
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Duración");
-        modelo.addColumn("Registro");
-        modelo.addColumn("Facultad");
-
-        for (Programa p : lista) {
-            modelo.addRow(new Object[]{
-                p.getId(),
-                p.getNombre(),
-                p.getDuracion(),
-                p.getRegistro(),
-                p.getFacultad().getNombre()
-            });
-        }
-
-        jTable3.setModel(modelo);
-
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
     }
 
-    // limpiar campos del formulario
+
+
+    private void cargarTablaPrograma() {
+        try {
+            jTable3.setModel(programaController.modeloTablaTodos());
+        } catch (java.sql.SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
+        }
+    }
+
+private void limpiarCamposPrograma() {
     idPrograma.setText("");
     nomPrograma.setText("");
     durPrograma.setText("");
@@ -1689,62 +1866,48 @@ private void cargarTablaPrograma() {
     facPrograma.setText("");
 }
 
-private void cargarTablaCurso() {
-    try {
-        CursoDAO dao = new CursoDAO();   
-        List<Curso> lista = dao.listar();
 
-        DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("ID");
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Programa");
-        modelo.addColumn("Activo");
 
-        for (Curso c : lista) {
-            modelo.addRow(new Object[]{
-                c.getID(),
-                c.getNombre(),
-                c.getPrograma() != null ? c.getPrograma().getId() : null,
-                c.getActivo() ? "Sí" : "No"
-            });
+    private void cargarTablaCurso() {
+        try {
+            jTable4.setModel(CursoController.modeloTablaTodos());
+        } catch (java.sql.SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
         }
-
-        jTable4.setModel(modelo);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar la tabla: " + e.getMessage());
     }
-    idCurso.setText("");
-    nomCurso.setText("");
-    progCurso.setText("");
-    activoCurso.setSelected(false);
-}
-private void cargarTablaProfesores() {
-    try {
- 
-        Connection conn = Database.getConnection();
-        ProfesorDAO profesorDAO = new ProfesorDAO(conn);
-        List<Profesor> listaProfesores = profesorDAO.listar();
 
-        DefaultTableModel modelo = (DefaultTableModel) jTable5.getModel();
-        modelo.setRowCount(0);
+    private void limpiarCamposCurso() {
+        idCurso.setText("");
+        nomCurso.setText("");
+        progCurso.setText("");
+        activoCurso.setSelected(false);
+    }
 
-        for (Profesor profesor : listaProfesores) {
-            modelo.addRow(new Object[]{
-                profesor.getIdPersona(),
-                profesor.getNombres(),
-                profesor.getApellidos(),
-                profesor.getContrato()    
-            });
+    private void cargarTablaProfesores() {
+        try {
+            jTable5.setModel(profesorController.modeloTablaTodos());
+        } catch (java.sql.SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar la tabla: " + ex.getMessage());
         }
+    }
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar profesores: " + e.getMessage());
-        e.printStackTrace();
+    private void limpiarCamposProfesor() {
+        idPersonaP.setText("");
+        contratoProfesor.setSelectedIndex(0); // o setSelectedItem("Seleccione...")
+    }
+    private void cargarTablaEstudiantes() {
+    try {
+        jTable6.setModel(estudianteController.modeloTablaTodos());
+    } catch (java.sql.SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
     }
 }
 
-
+    private void limpiarCamposEstudiante() {
+    idPersonaE.setText("");
+    codigoEst.setText("");
+    idProgramaE.setText("");
+}
 
 }
 

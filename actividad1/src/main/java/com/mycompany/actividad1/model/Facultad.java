@@ -14,6 +14,11 @@ public class Facultad {
    public Double getID() {
       return this.ID;
    }
+   
+    public Double getId() { 
+        return this.ID; 
+    }  
+
 
    public void setID(Double ID) {
       this.ID = ID;

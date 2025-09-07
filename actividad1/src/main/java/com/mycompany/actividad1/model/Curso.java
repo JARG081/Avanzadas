@@ -15,7 +15,9 @@ public class Curso {
 
     public Curso() {
     }
-
+    
+    public Integer getId() { return this.ID; } 
+    
    public Integer getID() {
       return this.ID;
    }

@@ -1,4 +1,5 @@
 package com.mycompany.actividad1.model;
+
 import com.mycompany.actividad1.dao.PersonaDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,9 @@ public class InscripcionesPersonas {
         if (persona == null) return;
         listado.remove(persona);
         try {
-
-            if (persona.getId() != null) {
-                personaDAO.eliminar(persona.getId().longValue());
+            Long id = persona.getId();
+            if (id != null) {
+                personaDAO.eliminar(id); // el DAO recibe long/Long
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,7 +36,7 @@ public class InscripcionesPersonas {
 
     public void guardarInformacion(Persona persona) {
         try {
-            personaDAO.insertar(persona); 
+            personaDAO.insertar(persona);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,13 +51,12 @@ public class InscripcionesPersonas {
         }
     }
 
-    public List<Persona> getListado() {
-        return listado;
-    }
+    public List<Persona> getListado() { return listado; }
 
-    private int indexOfById(Double id) {
+    private int indexOfById(Long id) {
+        if (id == null) return -1;
         for (int i = 0; i < listado.size(); i++) {
-            Double cur = listado.get(i).getId();
+            Long cur = listado.get(i).getId();
             if (cur != null && cur.equals(id)) return i;
         }
         return -1;
