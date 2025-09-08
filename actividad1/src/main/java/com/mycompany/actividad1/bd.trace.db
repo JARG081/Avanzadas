@@ -5960,3 +5960,27 @@ The connection was not closed by the application and is garbage collected [90018
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 39 more
+2025-09-08 15:21:24.260070-05:00 jdbc[4]: null
+org.h2.message.DbException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcConnection.closeOld(JdbcConnection.java:218)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:135)
+	at org.h2.Driver.connect(Driver.java:59)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:613)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at com.mycompany.actividad1.Database.getConnection(Database.java:14)
+	at com.mycompany.actividad1.dao.EstudianteDAO.buscarPorIdPersona(EstudianteDAO.java:40)
+	at controller.EstudianteController.buscar(EstudianteController.java:59)
+	at com.mycompany.actividad1.Main.estudianteBuscar(Main.java:373)
+	at com.mycompany.actividad1.Main.submenuEstudiante(Main.java:344)
+	at com.mycompany.actividad1.Main.runConsoleMenus(Main.java:93)
+	at com.mycompany.actividad1.Main.askModeInConsole(Main.java:58)
+	at com.mycompany.actividad1.Main.main(Main.java:34)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientConnectionException: La conexión no fue cerrada por la aplicación y esta siendo limpiada (garbage collected)
+The connection was not closed by the application and is garbage collected [90018-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:690)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	... 16 more

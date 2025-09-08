@@ -1,6 +1,8 @@
 package com.mycompany.actividad1;
 
 import controller.PersonaController;
+import controller.ProfesorController;
+import controller.EstudianteController;
 import com.mycompany.actividad1.model.Persona;
 import ui.Pantalla;
 
@@ -14,6 +16,8 @@ public class Main {
 
     //se hizo el push?
     private static final PersonaController personaController = new PersonaController();
+    private static final ProfesorController profesorController = new ProfesorController();
+    private static final EstudianteController estudianteController = new EstudianteController();
 
     public static void main(String[] args) {
         // Atajos opcionales por parámetro:
@@ -85,8 +89,8 @@ public class Main {
 
             switch (op) {
                 case "1": submenuPersona(sc); break;
-                case "2": submenuNoImplementado(sc, "Profesor"); break;   // por ahora
-                case "3": submenuNoImplementado(sc, "Estudiante"); break; // por ahora
+                case "2": submenuProfesor(sc); break;
+                case "3": submenuEstudiante(sc); break;
                 case "4": launchGUI(); return;
                 case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
@@ -226,6 +230,202 @@ public class Main {
             for (Persona p : lista) System.out.println(" - " + p);
         } catch (Exception e) {
             System.out.println("× Error listando personas: " + e.getMessage());
+        }
+    }
+
+    // ========== Profesor (CONSOLA) ==========
+    private static void submenuProfesor(Scanner sc) {
+        while (true) {
+            System.out.println("\n=== Profesor ===");
+            System.out.println("[1] Crear");
+            System.out.println("[2] Buscar");
+            System.out.println("[3] Editar");
+            System.out.println("[4] Eliminar");
+            System.out.println("[5] Listar todos");
+            System.out.println("[6] Volver");
+            System.out.println("[0] Cerrar programa");
+            String op = ask(sc, "Opción: ");
+            switch (op) {
+                case "1": profesorCrear(sc);   break;
+                case "2": profesorBuscar(sc);  break;
+                case "3": profesorEditar(sc);  break;
+                case "4": profesorEliminar(sc);break;
+                case "5": profesorListar();    break;
+                case "6": return;
+                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                default:  System.out.println("Opción inválida.");
+            }
+        }
+    }
+
+    private static void profesorCrear(Scanner sc) {
+        System.out.println("\n--- Crear Profesor ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero): ");
+            String contrato  = askNonEmpty(sc, "Contrato (p.ej. Cátedra/Tiempo completo): ");
+            profesorController.insertar(idPersona, contrato);
+            System.out.println("✔ Profesor creado.");
+            profesorListar();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void profesorBuscar(Scanner sc) {
+        System.out.println("\n--- Buscar Profesor ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero): ");
+            com.mycompany.actividad1.model.Profesor p = profesorController.buscar(idPersona);
+            if (p == null) System.out.println("No existe profesor con ID persona " + idPersona);
+            else System.out.println("Resultado: ID Persona=" + p.getIdPersona() + ", Contrato=" + p.getContrato());
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void profesorEditar(Scanner sc) {
+        System.out.println("\n--- Editar Profesor ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero) a editar: ");
+            com.mycompany.actividad1.model.Profesor actual = profesorController.buscar(idPersona);
+            if (actual == null) { System.out.println("No existe profesor con ID persona " + idPersona); return; }
+            String contrato = askDefault(sc, "Contrato [" + actual.getContrato() + "]: ", actual.getContrato());
+            boolean ok = profesorController.actualizar(idPersona, contrato);
+            System.out.println(ok ? "✔ Profesor actualizado." : "× No se pudo actualizar.");
+            profesorListar();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void profesorEliminar(Scanner sc) {
+        System.out.println("\n--- Eliminar Profesor ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero) a eliminar: ");
+            com.mycompany.actividad1.model.Profesor actual = profesorController.buscar(idPersona);
+            if (actual == null) { System.out.println("No existe profesor con ID persona " + idPersona); return; }
+            String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
+            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
+            boolean ok = profesorController.eliminar(idPersona);
+            System.out.println(ok ? "✔ Profesor eliminado." : "× No se pudo eliminar.");
+            profesorListar();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void profesorListar() {
+        try {
+            javax.swing.table.DefaultTableModel modelo = profesorController.modeloTablaTodos();
+            System.out.println("\n=== Profesores en BD ===");
+            if (modelo.getRowCount() == 0) { System.out.println("(sin registros)"); return; }
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                System.out.println(" - ID Persona=" + modelo.getValueAt(i,0) + ", Contrato=" + modelo.getValueAt(i,1));
+            }
+        } catch (Exception e) {
+            System.out.println("× Error listando profesores: " + e.getMessage());
+        }
+    }
+
+    // ========== Estudiante (CONSOLA) ==========
+    private static void submenuEstudiante(Scanner sc) {
+        while (true) {
+            System.out.println("\n=== Estudiante ===");
+            System.out.println("[1] Crear");
+            System.out.println("[2] Buscar");
+            System.out.println("[3] Editar");
+            System.out.println("[4] Eliminar");
+            System.out.println("[5] Listar todos");
+            System.out.println("[6] Volver");
+            System.out.println("[0] Cerrar programa");
+            String op = ask(sc, "Opción: ");
+            switch (op) {
+                case "1": estudianteCrear(sc);   break;
+                case "2": estudianteBuscar(sc);  break;
+                case "3": estudianteEditar(sc);  break;
+                case "4": estudianteEliminar(sc);break;
+                case "5": estudianteListar();    break;
+                case "6": return;
+                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                default:  System.out.println("Opción inválida.");
+            }
+        }
+    }
+
+    private static void estudianteCrear(Scanner sc) {
+        System.out.println("\n--- Crear Estudiante ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero): ");
+            String codigo    = askNonEmpty(sc, "Código: ");
+            String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
+            boolean ok = estudianteController.insertar(idPersona, codigo, idPrograma);
+            System.out.println(ok ? "✔ Estudiante creado." : "× No se pudo crear.");
+            estudianteListar();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void estudianteBuscar(Scanner sc) {
+        System.out.println("\n--- Buscar Estudiante ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero): ");
+            com.mycompany.actividad1.model.Estudiante e = estudianteController.buscar(idPersona);
+            if (e == null) System.out.println("No existe estudiante con ID persona " + idPersona);
+            else System.out.println("Resultado: ID Persona=" + e.getId() + ", Código=" + e.getCodigo() +
+                                    ", Programa=" + (e.getPrograma()==null? "" : e.getPrograma().getNombre()));
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void estudianteEditar(Scanner sc) {
+        System.out.println("\n--- Editar Estudiante ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero) a editar: ");
+            com.mycompany.actividad1.model.Estudiante actual = estudianteController.buscar(idPersona);
+            if (actual == null) { System.out.println("No existe estudiante con ID persona " + idPersona); return; }
+            String codigo = askDefault(sc, "Código [" + actual.getCodigo() + "]: ", actual.getCodigo());
+            String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío" +
+                                         (actual.getPrograma()!=null? ", actual="+actual.getPrograma().getId() : "") +
+                                         "): ").trim();
+            boolean ok = estudianteController.actualizar(idPersona, codigo, idPrograma);
+            System.out.println(ok ? "✔ Estudiante actualizado." : "× No se pudo actualizar.");
+            estudianteListar();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void estudianteEliminar(Scanner sc) {
+        System.out.println("\n--- Eliminar Estudiante ---");
+        try {
+            String idPersona = askNumeric(sc, "ID Persona (entero) a eliminar: ");
+            com.mycompany.actividad1.model.Estudiante actual = estudianteController.buscar(idPersona);
+            if (actual == null) { System.out.println("No existe estudiante con ID persona " + idPersona); return; }
+            String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
+            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
+            boolean ok = estudianteController.eliminar(idPersona);
+            System.out.println(ok ? "✔ Estudiante eliminado." : "× No se pudo eliminar.");
+            estudianteListar();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
+    }
+
+    private static void estudianteListar() {
+        try {
+            java.util.List<?> lista = estudianteController.listar();
+            System.out.println("\n=== Estudiantes en BD ===");
+            if (lista == null || lista.isEmpty()) { System.out.println("(sin registros)"); return; }
+            for (Object o : lista) {
+                com.mycompany.actividad1.model.Estudiante e = (com.mycompany.actividad1.model.Estudiante) o;
+                System.out.println(" - ID Persona=" + e.getId()
+                    + ", Código=" + e.getCodigo()
+                    + ", Programa=" + (e.getPrograma()==null? "" : e.getPrograma().getNombre()));
+            }
+        } catch (Exception e) {
+            System.out.println("× Error listando estudiantes: " + e.getMessage());
         }
     }
 
