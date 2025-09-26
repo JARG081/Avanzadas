@@ -14,7 +14,6 @@ public class PersonaController {
         this.service = service;
     }
 
-    // Helper local de parseo (para mantener el controller recibiendo String del UI/console)
     private static Double parseDouble(String s) {
         if (s == null || s.isBlank()) throw new IllegalArgumentException("ID es obligatorio");
         try {
@@ -26,7 +25,6 @@ public class PersonaController {
         }
     }
 
-    // ==== Operaciones expuestas al UI/Consola ====
 
     public void insertar(String id, String nombres, String apellidos, String email) {
         service.registrar(parseDouble(id), nombres, apellidos, email); // service.registrar acepta Double
@@ -37,18 +35,17 @@ public class PersonaController {
     }
 
     public boolean eliminar(String id) {
-        return service.eliminar(parseDouble(id)); // Double → OK
+        return service.eliminar(parseDouble(id));
     }
 
     public Persona buscar(String id) {
-        return service.buscar(parseDouble(id)); // Double → OK
+        return service.buscar(parseDouble(id));
     }
 
     public List<Persona> listar() {
         return service.listar();
     }
 
-    // Modelo de tabla (si lo usas en la UI)
     public DefaultTableModel modeloTablaTodas() {
         String[] cols = {"ID", "Nombres", "Apellidos", "Email"};
         DefaultTableModel m = new DefaultTableModel(cols, 0) {

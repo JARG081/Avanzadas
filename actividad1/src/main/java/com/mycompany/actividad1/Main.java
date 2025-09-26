@@ -1,6 +1,6 @@
 package com.mycompany.actividad1;
 
-import controller.PersonaController;
+import com.mycompany.actividad1.factory.InfraFactory;
 import controller.ProfesorController;
 import controller.EstudianteController;
 import controller.FacultadController;
@@ -8,8 +8,8 @@ import controller.ProgramaController;
 import controller.CursoController;
 import controller.InscripcionController;
 import com.mycompany.actividad1.model.Persona;
-import repository.PersonaRepository;
-import com.mycompany.actividad1.dao.PersonaJdbcRepository;
+import controller.PersonaController;
+
 
 
 
@@ -20,23 +20,20 @@ import java.awt.GraphicsEnvironment;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
-import service.PersonaService;
+
 
 public class Main {
 
 
-    private static final PersonaController personaController;
-    private static final ProfesorController profesorController = new ProfesorController();
-    private static final EstudianteController estudianteController = new EstudianteController();
-    private static final FacultadController facultadController = new FacultadController();
-    private static final ProgramaController programaController = new ProgramaController();
-    private static final CursoController cursoController = new CursoController();
-    private static final InscripcionController inscripcionController = new InscripcionController();
-    static {
-    PersonaRepository repo = new PersonaJdbcRepository();
-    PersonaService service = new PersonaService(repo);
-    personaController = new PersonaController(service);
-    }
+    private static final InfraFactory factory = new InfraFactory();
+    private static final PersonaController personaController = factory.personaController();
+    private static final ProfesorController profesorController = factory.profesorController();
+    private static final EstudianteController estudianteController = factory.estudianteController();
+    private static final FacultadController facultadController = factory.facultadController();
+    private static final ProgramaController programaController = factory.programaController();
+    private static final CursoController cursoController = factory.cursoController();
+    private static final InscripcionController InscripcionController = factory.inscripcionController();
+
 
     public static void main(String[] args) {
         if (args.length > 0) {
@@ -121,21 +118,6 @@ public class Main {
         }
     }
 
-    private static void submenuNoImplementado(Scanner sc, String modulo) {
-        while (true) {
-            System.out.println("\n=== " + modulo + " ===");
-            System.out.println("[1] Crear");
-            System.out.println("[2] Buscar");
-            System.out.println("[3] Editar");
-            System.out.println("[4] Eliminar");
-            System.out.println("[5] Volver");
-            System.out.println("[0] Cerrar programa");
-            String op = ask(sc, "Opción: ");
-            if ("5".equals(op)) return;
-            if ("0".equals(op)) { System.out.println("¡Hasta luego!"); System.exit(0); }
-            System.out.println("→ " + modulo + " por consola aún no implementado. Usa la interfaz o completa el controller/DAO.");
-        }
-    }
 
     // ===== Persona (FUNCIONAL) =====
     private static void submenuPersona(Scanner sc) {
@@ -162,21 +144,20 @@ public class Main {
 
     // ========== Persona: acciones ==========
     private static void personaCrear(Scanner sc) {
-        System.out.println("\n--- Crear Persona ---");
         try {
             String id = askNumericDouble(sc, "ID (entero): ");
             String nombres   = askNonEmpty(sc, "Nombres: ");
             String apellidos = askNonEmpty(sc, "Apellidos: ");
             String email     = askEmail(sc, "Email: ");
-
-            personaController.insertar(id, nombres, apellidos, email);
-            System.out.println("✔ Persona creada con éxito.");
-
+            personaController.insertar(id, nombres, apellidos, email); // <- instancia
             listarPersonas();
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
+
+
+
 
     private static void personaBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Persona ---");
@@ -188,7 +169,6 @@ public class Main {
             } else {
                 System.out.println("Resultado: " + p);
             }
-            // Mantener tabla “completa” equivalente: listamos todo
             listarPersonas();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -211,7 +191,7 @@ public class Main {
             String email     = askDefaultEmail(sc, "Email [" + actual.getEmail() + "]: ", actual.getEmail());
 
             boolean ok = personaController.actualizar(id, nombres, apellidos, email);
-            System.out.println(ok ? "✔ Persona actualizada." : "× No se pudo actualizar.");
+            System.out.println(ok ? " Persona actualizada." : "× No se pudo actualizar.");
 
             listarPersonas();
         } catch (Exception e) {
@@ -235,7 +215,7 @@ public class Main {
                 return;
             }
             boolean ok = personaController.eliminar(id);
-            System.out.println(ok ? "✔ Persona eliminada." : "× No se pudo eliminar.");
+            System.out.println(ok ? " Persona eliminada." : "× No se pudo eliminar.");
             listarPersonas();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -287,7 +267,7 @@ public class Main {
             String idPersona = askNumeric(sc, "ID Persona (entero): ");
             String contrato  = askNonEmpty(sc, "Contrato (p.ej. Cátedra/Tiempo completo): ");
             profesorController.insertar(idPersona, contrato);
-            System.out.println("✔ Profesor creado.");
+            System.out.println(" Profesor creado.");
             profesorListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -314,7 +294,7 @@ public class Main {
             if (actual == null) { System.out.println("No existe profesor con ID persona " + idPersona); return; }
             String contrato = askDefault(sc, "Contrato [" + actual.getContrato() + "]: ", actual.getContrato());
             boolean ok = profesorController.actualizar(idPersona, contrato);
-            System.out.println(ok ? "✔ Profesor actualizado." : "× No se pudo actualizar.");
+            System.out.println(ok ? "Profesor actualizado." : "× No se pudo actualizar.");
             profesorListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -330,7 +310,7 @@ public class Main {
             String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
             if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
             boolean ok = profesorController.eliminar(idPersona);
-            System.out.println(ok ? "✔ Profesor eliminado." : "× No se pudo eliminar.");
+            System.out.println(ok ? "Profesor eliminado." : "× No se pudo eliminar.");
             profesorListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -378,11 +358,11 @@ public class Main {
     private static void estudianteCrear(Scanner sc) {
         System.out.println("\n--- Crear Estudiante ---");
         try {
-            String idPersona = askNumeric(sc, "ID Persona (entero): ");
-            String codigo    = askNonEmpty(sc, "Código: ");
+            String idPersona  = askNumeric(sc, "ID Persona (entero): ");
+            String codigo     = askNonEmpty(sc, "Código: ");
             String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
-            boolean ok = estudianteController.insertar(idPersona, codigo, idPrograma);
-            System.out.println(ok ? "✔ Estudiante creado." : "× No se pudo crear.");
+            estudianteController.insertar(idPersona, codigo, idPrograma);
+            System.out.println(" Estudiante creado.");
             estudianteListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -413,7 +393,7 @@ public class Main {
                                          (actual.getPrograma()!=null? ", actual="+actual.getPrograma().getId() : "") +
                                          "): ").trim();
             boolean ok = estudianteController.actualizar(idPersona, codigo, idPrograma);
-            System.out.println(ok ? "✔ Estudiante actualizado." : "× No se pudo actualizar.");
+            System.out.println(ok ? "Estudiante actualizado." : "× No se pudo actualizar.");
             estudianteListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -429,7 +409,7 @@ public class Main {
             String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
             if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
             boolean ok = estudianteController.eliminar(idPersona);
-            System.out.println(ok ? "✔ Estudiante eliminado." : "× No se pudo eliminar.");
+            System.out.println(ok ? "Estudiante eliminado." : "× No se pudo eliminar.");
             estudianteListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -483,11 +463,9 @@ public class Main {
                 String id = askNumericDouble(sc, "ID (entero): ");
                 String nombre = askNonEmpty(sc, "Nombre: ");
                 String decanoId = askNumeric(sc, "ID Decano (entero): ");
-
-                // ANTES: boolean ok = facultadController.insertar(...);
                 facultadController.insertar(id, nombre, decanoId); // void
 
-                System.out.println("✔ Facultad creada.");
+                System.out.println("Facultad creada.");
                 facultadListar();
             } catch (Exception e) {
                 System.out.println("× Error: " + e.getMessage());
@@ -518,7 +496,7 @@ public class Main {
             String decanoId = askDefault(sc, "ID Decano [" + (actual.getDecano()==null? "" : actual.getDecano().getId()) + "]: ", 
                                         actual.getDecano()==null? "" : actual.getDecano().getId().toString());
             boolean ok = facultadController.actualizar(id, nombre, decanoId);
-            System.out.println(ok ? "✔ Facultad actualizada." : "× No se pudo actualizar.");
+            System.out.println(ok ? "Facultad actualizada." : "× No se pudo actualizar.");
             facultadListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -534,7 +512,7 @@ public class Main {
             String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
             if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
             boolean ok = facultadController.eliminar(id);
-            System.out.println(ok ? "✔ Facultad eliminada." : "× No se pudo eliminar.");
+            System.out.println(ok ? "Facultad eliminada." : "× No se pudo eliminar.");
             facultadListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -588,11 +566,9 @@ public class Main {
                 String duracion = askNumeric(sc, "Duración (años): ");
                 String registro = ask(sc, "Fecha registro (YYYY-MM-DD): ").trim();
                 String idFacultad = askNumeric(sc, "ID Facultad (entero): ");
-
-                // ANTES: boolean ok = programaController.insertar(...);
                 programaController.insertar(id, nombre, duracion, registro, idFacultad); // void
 
-                System.out.println("✔ Programa creado.");
+                System.out.println("Programa creado.");
                 programaListar();
             } catch (Exception e) {
                 System.out.println("× Error: " + e.getMessage());
@@ -625,7 +601,7 @@ public class Main {
             String idFacultad = askDefault(sc, "ID Facultad [" + (actual.getFacultad()==null? "" : actual.getFacultad().getID()) + "]: ", 
                                           actual.getFacultad()==null? "" : actual.getFacultad().getID().toString());
             boolean ok = programaController.actualizar(id, nombre, duracion, registro, idFacultad);
-            System.out.println(ok ? "✔ Programa actualizado." : "× No se pudo actualizar.");
+            System.out.println(ok ? "Programa actualizado." : "× No se pudo actualizar.");
             programaListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -641,7 +617,7 @@ public class Main {
             String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
             if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
             boolean ok = programaController.eliminar(id);
-            System.out.println(ok ? "✔ Programa eliminado." : "× No se pudo eliminar.");
+            System.out.println(ok ? "Programa eliminado." : "× No se pudo eliminar.");
             programaListar();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
@@ -695,11 +671,8 @@ public class Main {
                 String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
                 String activo = ask(sc, "¿Activo? (S/N): ").trim().toLowerCase(Locale.ROOT);
                 boolean activoBool = activo.equals("s") || activo.equals("si") || activo.equals("sí");
-
-                // ANTES: boolean ok = cursoController.insertar(...);
-                cursoController.insertar(id, nombre, idPrograma, activoBool); // insertar es void
-
-                System.out.println("✔ Curso creado.");
+                cursoController.insertar(id, nombre, idPrograma, activoBool);
+                System.out.println("Curso creado.");
                 cursoListar();
             } catch (Exception e) {
                 System.out.println("× Error: " + e.getMessage());
@@ -725,19 +698,24 @@ public class Main {
         System.out.println("\n--- Editar Curso ---");
         try {
             String id = askNumeric(sc, "ID (entero) a editar: ");
-            com.mycompany.actividad1.model.Curso actual = cursoController.buscar(id);
+            var actual = cursoController.buscar(id);
             if (actual == null) { System.out.println("No existe curso con ID " + id); return; }
+
             String nombre = askDefault(sc, "Nombre [" + actual.getNombre() + "]: ", actual.getNombre());
-            String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío" +
-                                     (actual.getPrograma()!=null? ", actual="+actual.getPrograma().getId() : "") +
-                                     "): ").trim();
-            String activo = ask(sc, "¿Activo? (S/N) [" + (actual.getActivo()? "S" : "N") + "]: ").trim().toLowerCase(Locale.ROOT);
-            boolean activoBool = activo.isEmpty() ? actual.getActivo() : (activo.equals("s") || activo.equals("si") || activo.equals("sí"));
+            String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío"
+                    + (actual.getPrograma()!=null ? ", actual=" + actual.getPrograma().getId() : "")
+                    + "): ").trim();
+            String activo = ask(sc, "¿Activo? (S/N) [" + (actual.getActivo()? "S" : "N") + "]: ")
+                    .trim().toLowerCase(Locale.ROOT);
+            boolean activoBool = activo.isEmpty()
+                    ? Boolean.TRUE.equals(actual.getActivo())
+                    : (activo.equals("s") || activo.equals("si") || activo.equals("sí"));
+
             boolean ok = cursoController.actualizar(id, nombre, idPrograma, activoBool);
-            System.out.println(ok ? "✔ Curso actualizado." : "× No se pudo actualizar.");
+            System.out.println(ok ? "Curso actualizado." : "No se pudo actualizar.");
             cursoListar();
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -745,15 +723,18 @@ public class Main {
         System.out.println("\n--- Eliminar Curso ---");
         try {
             String id = askNumeric(sc, "ID (entero) a eliminar: ");
-            com.mycompany.actividad1.model.Curso actual = cursoController.buscar(id);
+            var actual = cursoController.buscar(id);
             if (actual == null) { System.out.println("No existe curso con ID " + id); return; }
             String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
-            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
+            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) {
+                System.out.println("Cancelado.");
+                return;
+            }
             boolean ok = cursoController.eliminar(id);
-            System.out.println(ok ? "✔ Curso eliminado." : "× No se pudo eliminar.");
+            System.out.println(ok ? "Curso eliminado." : "No se pudo eliminar.");
             cursoListar();
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -799,32 +780,35 @@ public class Main {
     private static void inscripcionCrear(Scanner sc) {
         System.out.println("\n--- Crear Inscripción ---");
         try {
-            String cursoId = askNumeric(sc, "ID Curso (entero): ");
-            String estudianteId = askNumeric(sc, "ID Estudiante (entero): ");
-            String anio = askNumeric(sc, "Año: ");
-            String semestre = askNumeric(sc, "Semestre (1 o 2): ");
-            boolean ok = inscripcionController.insertar(cursoId, estudianteId, anio, semestre);
-            System.out.println(ok ? "✔ Inscripción creada." : "× No se pudo crear.");
+            String cursoId     = askNumeric(sc, "ID Curso (entero): ");
+            String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
+            String anio        = askNumeric(sc, "Año: ");
+            String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
+            var ok = InscripcionController.insertar(cursoId, estudianteId, anio, semestre);
+            System.out.println(ok ? "Inscripción creada." : "No se pudo crear.");
             inscripcionListar();
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private static void inscripcionBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Inscripción ---");
         try {
-            String cursoId = askNumeric(sc, "ID Curso (entero): ");
-            String estudianteId = askNumeric(sc, "ID Estudiante (entero): ");
-            String anio = askNumeric(sc, "Año: ");
-            String semestre = askNumeric(sc, "Semestre (1 o 2): ");
-            com.mycompany.actividad1.model.Inscripcion i = inscripcionController.buscar(cursoId, estudianteId, anio, semestre);
-            if (i == null) System.out.println("No existe inscripción con esos datos");
-            else System.out.println("Resultado: Curso=" + (i.getCurso()==null? "" : i.getCurso().getNombre()) + 
-                                    ", Estudiante=" + (i.getEstudiante()==null? "" : i.getEstudiante().getNombres() + " " + i.getEstudiante().getApellidos()) +
-                                    ", Año=" + i.getAnio() + ", Semestre=" + i.getSemestre());
+            String cursoId     = askNumeric(sc, "ID Curso (entero): ");
+            String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
+            String anio        = askNumeric(sc, "Año: ");
+            String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
+            var i = InscripcionController.buscar(cursoId, estudianteId, anio, semestre);
+            if (i == null) {
+                System.out.println("No existe inscripción con esos datos");
+            } else {
+                System.out.println("Resultado: Curso=" + (i.getCurso()==null? "" : i.getCurso().getNombre())
+                        + ", Estudiante=" + (i.getEstudiante()==null? "" : i.getEstudiante().getNombres() + " " + i.getEstudiante().getApellidos())
+                        + ", Año=" + i.getAnio() + ", Semestre=" + i.getSemestre());
+            }
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
@@ -832,54 +816,56 @@ public class Main {
         System.out.println("\n--- Editar Inscripción ---");
         try {
             System.out.println("Datos actuales:");
-            String cursoIdOld = askNumeric(sc, "ID Curso actual: ");
+            String cursoIdOld      = askNumeric(sc, "ID Curso actual: ");
             String estudianteIdOld = askNumeric(sc, "ID Estudiante actual: ");
-            String anioOld = askNumeric(sc, "Año actual: ");
-            String semestreOld = askNumeric(sc, "Semestre actual: ");
-            
+            String anioOld         = askNumeric(sc, "Año actual: ");
+            String semestreOld     = askNumeric(sc, "Semestre actual: ");
+
             System.out.println("Nuevos datos:");
-            String cursoIdNew = askNumeric(sc, "ID Curso nuevo: ");
+            String cursoIdNew      = askNumeric(sc, "ID Curso nuevo: ");
             String estudianteIdNew = askNumeric(sc, "ID Estudiante nuevo: ");
-            String anioNew = askNumeric(sc, "Año nuevo: ");
-            String semestreNew = askNumeric(sc, "Semestre nuevo: ");
-            
-            boolean ok = inscripcionController.actualizar(cursoIdOld, estudianteIdOld, anioOld, semestreOld,
-                                                         cursoIdNew, estudianteIdNew, anioNew, semestreNew);
-            System.out.println(ok ? "✔ Inscripción actualizada." : "× No se pudo actualizar.");
+            String anioNew         = askNumeric(sc, "Año nuevo: ");
+            String semestreNew     = askNumeric(sc, "Semestre nuevo: ");
+
+            boolean ok = InscripcionController.actualizar(
+                    cursoIdOld, estudianteIdOld, anioOld, semestreOld,
+                    cursoIdNew, estudianteIdNew, anioNew, semestreNew);
+            System.out.println(ok ? "Inscripción actualizada." : "No se pudo actualizar.");
             inscripcionListar();
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private static void inscripcionEliminar(Scanner sc) {
         System.out.println("\n--- Eliminar Inscripción ---");
         try {
-            String cursoId = askNumeric(sc, "ID Curso (entero): ");
-            String estudianteId = askNumeric(sc, "ID Estudiante (entero): ");
-            String anio = askNumeric(sc, "Año: ");
-            String semestre = askNumeric(sc, "Semestre (1 o 2): ");
+            String cursoId     = askNumeric(sc, "ID Curso (entero): ");
+            String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
+            String anio        = askNumeric(sc, "Año: ");
+            String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
             String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
-            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { System.out.println("Cancelado."); return; }
-            boolean ok = inscripcionController.eliminar(cursoId, estudianteId, anio, semestre);
-            System.out.println(ok ? "✔ Inscripción eliminada." : "× No se pudo eliminar.");
+            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) {
+                System.out.println("Cancelado.");
+                return;
+            }
+            boolean ok = InscripcionController.eliminar(cursoId, estudianteId, anio, semestre);
+            System.out.println(ok ? "Inscripción eliminada." : "No se pudo eliminar.");
             inscripcionListar();
         } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private static void inscripcionListar() {
-        try {
-            javax.swing.table.DefaultTableModel modelo = inscripcionController.modeloTablaTodos();
-            System.out.println("\n=== Inscripciones en BD ===");
-            if (modelo.getRowCount() == 0) { System.out.println("(sin registros)"); return; }
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                System.out.println(" - Curso=" + modelo.getValueAt(i,1) + ", Estudiante=" + modelo.getValueAt(i,3) + 
-                                  ", Año=" + modelo.getValueAt(i,4) + ", Semestre=" + modelo.getValueAt(i,5));
-            }
-        } catch (Exception e) {
-            System.out.println("× Error listando inscripciones: " + e.getMessage());
+        var modelo = InscripcionController.modeloTablaTodos();
+        System.out.println("\n=== Inscripciones en BD ===");
+        if (modelo.getRowCount() == 0) { System.out.println("(sin registros)"); return; }
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            System.out.println(" - Curso=" + modelo.getValueAt(i,1)
+                    + ", Estudiante=" + modelo.getValueAt(i,3)
+                    + ", Año=" + modelo.getValueAt(i,4)
+                    + ", Semestre=" + modelo.getValueAt(i,5));
         }
     }
 

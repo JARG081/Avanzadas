@@ -1,67 +1,47 @@
 package controller;
 
-import com.mycompany.actividad1.dao.ProgramaJdbcRepository;
 import com.mycompany.actividad1.model.Programa;
-import repository.ProgramaRepository;
 import service.ProgramaService;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class ProgramaController {
-
     private final ProgramaService service;
 
-    public ProgramaController() {
-        ProgramaRepository repo = new ProgramaJdbcRepository();
-        this.service = new ProgramaService(repo);
-    }
+    public ProgramaController(ProgramaService service) { this.service = service; }
 
-    private static Double parseDoubleOrNull(String s) {
-        if (s == null) return null;
-        String t = s.trim();
-        if (t.isEmpty()) return null;
+    private static Double parseId(String s, String campo){
+        if (s==null || s.isBlank()) throw new IllegalArgumentException(campo+" es obligatorio");
         try {
-            Double v = Double.valueOf(t);
-            if (v < 0) throw new IllegalArgumentException("El ID debe ser positivo");
+            Double v = Double.valueOf(s.trim());
+            if (v < 0) throw new IllegalArgumentException(campo+" debe ser positivo");
             return v;
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("ID inválido: " + s);
-        }
+        } catch (NumberFormatException e){ throw new IllegalArgumentException(campo+" inválido"); }
+    }
+    private static Double parseIdNullable(String s){
+        if (s==null || s.isBlank()) return null;
+        return parseId(s, "ID Facultad");
     }
 
-    // ==== API para UI ====
-    public void insertar(String id, String nombre, String duracion, String registroYYYYMMDD, String idFacultad) {
-        service.registrar(parseDoubleOrNull(id), nombre, duracion, registroYYYYMMDD, parseDoubleOrNull(idFacultad));
+    public void insertar(String id, String nombre, String duracion, String registro, String idFacultad) {
+        service.registrar(parseId(id,"ID Programa"), nombre, duracion, registro, parseIdNullable(idFacultad));
     }
-
-    public boolean actualizar(String id, String nombre, String duracion, String registroYYYYMMDD, String idFacultad) {
-        return service.actualizar(parseDoubleOrNull(id), nombre, duracion, registroYYYYMMDD, parseDoubleOrNull(idFacultad));
+    public boolean actualizar(String id, String nombre, String duracion, String registro, String idFacultad) {
+        return service.actualizar(parseId(id,"ID Programa"), nombre, duracion, registro, parseIdNullable(idFacultad));
     }
-
-    public boolean eliminar(String id) {
-        return service.eliminar(parseDoubleOrNull(id));
-    }
-
-    public Programa buscar(String id) {
-        return service.buscar(parseDoubleOrNull(id));
-    }
-
-    public List<Programa> listar() {
-        return service.listar();
-    }
+    public boolean eliminar(String id){ return service.eliminar(parseId(id,"ID Programa")); }
+    public Programa buscar(String id){ return service.buscar(parseId(id,"ID Programa")); }
+    public List<Programa> listar(){ return service.listar(); }
 
     public DefaultTableModel modeloTablaTodos() {
-        String[] cols = {"ID","Nombre","Duración","Registro","Facultad"};
-        DefaultTableModel m = new DefaultTableModel(cols, 0) {
-            @Override public boolean isCellEditable(int r, int c) { return false; }
+        DefaultTableModel m = new DefaultTableModel(
+            new Object[]{"ID","Nombre","Duración","Registro","Facultad"}, 0) {
+            @Override public boolean isCellEditable(int r,int c){return false;}
         };
         for (Programa p : listar()) {
             m.addRow(new Object[]{
-                p.getId(),
-                p.getNombre(),
-                p.getDuracion(),
-                p.getRegistro()==null? "" : p.getRegistro().toString(),
+                p.getId(), p.getNombre(), p.getDuracion(), p.getRegistro(),
                 p.getFacultad()==null? "" : p.getFacultad().getNombre()
             });
         }

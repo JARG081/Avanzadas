@@ -4,9 +4,9 @@ import com.mycompany.actividad1.model.Curso;
 import java.util.List;
 
 public interface CursoRepository {
-    void insertar(Curso c);
-    boolean actualizar(Curso c);
+    void insertar(Curso curso);
+    boolean actualizar(Curso curso);
     boolean eliminar(Double id);
     Curso buscarPorId(Double id);
-    List<Curso> listar(); // join con programa para mostrar su nombre
+    List<Curso> listar();
 }

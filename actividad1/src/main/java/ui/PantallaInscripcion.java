@@ -1,8 +1,10 @@
 package ui;
 
 import com.mycompany.actividad1.model.Inscripcion;
-import controller.InscripcionController;
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
+import controller.InscripcionController;
+import com.mycompany.actividad1.factory.InfraFactory;
 
 
 
@@ -205,7 +207,8 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private Double  oldEstId   = null;
     private Integer oldAnio    = null;
     private Integer oldSem     = null;
-    private final InscripcionController inscController = new InscripcionController();
+    private final InfraFactory factory = new InfraFactory();
+    private final InscripcionController inscController = factory.inscripcionController();
     private void ingresInsfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresInsfBtnActionPerformed
             try {
                 boolean ok = inscController.insertar(
@@ -220,7 +223,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                 limpiarCamposInscripcion();
             } catch (IllegalArgumentException iae) {
                 JOptionPane.showMessageDialog(this, iae.getMessage());
-            } catch (Exception e) {
+            } catch (HeadlessException e) {
                 JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
             }
         }
@@ -248,7 +251,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
             limpiarCamposInscripcion();
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_actuaInsBtnActionPerformed
@@ -281,7 +284,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
             cargarTablaInscripciones(); // tabla siempre con todo
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_buscainsBtnActionPerformed
@@ -333,7 +336,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_delInsBtnActionPerformed
