@@ -1,28 +1,28 @@
 package com.mycompany.actividad1;
 
+import com.mycompany.actividad1.adapter.DatabaseAdapter;
+import com.mycompany.actividad1.factory.InfraFactory;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Database {
-    private static final String URL = "jdbc:h2:./src/main/java/com/mycompany/actividad1/bd"; 
-    private static final String USER = "sa";
-    private static final String PASSWORD = "";
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    private static DatabaseAdapter adapter;
+    
+    static {
+        InfraFactory factory = new InfraFactory();
+        adapter = factory.databaseAdapter();
+        adapter.initDatabase();
     }
-
+    
+    public static Connection getConnection() throws SQLException {
+        return adapter.getConnection();
+    }
+    
     public static void initDatabase() {
-        try (Connection conn = getConnection(); 
-             Statement stmt = conn.createStatement()) {
-            stmt.execute("CREATE TABLE IF NOT EXISTS PERSONA (" +
-                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                         "nombre VARCHAR(255), " +
-                         "edad INT)");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        adapter.initDatabase();
+    }
+    
+    public static String getDatabaseType() {
+        return adapter.getDatabaseType();
     }
 }
