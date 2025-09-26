@@ -14,7 +14,7 @@ public class InscripcionDAO {
         String sql = "INSERT INTO inscripcion (curso_id, estudiante_id, anio, semestre) VALUES (?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, i.getCurso().getID());
+            ps.setDouble(1, i.getCurso().getID());
             ps.setDouble(2, i.getEstudiante().getId());
             ps.setInt(3, i.getAnio());
             ps.setInt(4, i.getSemestre());
@@ -35,13 +35,13 @@ public class InscripcionDAO {
             "WHERE i.curso_id = ? AND i.estudiante_id = ? AND i.anio = ? AND i.semestre = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, cursoId);
+            ps.setDouble(1, cursoId);
             ps.setDouble(2, estudianteId);
             ps.setInt(3, anio);
             ps.setInt(4, semestre);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    Curso curso = new Curso(rs.getInt("c_id"), rs.getString("c_nombre"), null, true);
+                    Curso curso = new Curso(rs.getDouble("c_id"), rs.getString("c_nombre"), null, true);
                     Estudiante est = new Estudiante(
                         rs.getDouble("e_id"),
                         rs.getString("nombres"),
@@ -73,7 +73,7 @@ public class InscripcionDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                Curso curso = new Curso(rs.getInt("c_id"), rs.getString("c_nombre"), null, true);
+                Curso curso = new Curso(rs.getDouble("c_id"), rs.getString("c_nombre"), null, true);
                 Estudiante est = new Estudiante(
                     rs.getDouble("e_id"),
                     rs.getString("nombres"),
@@ -95,7 +95,7 @@ public class InscripcionDAO {
                      "WHERE curso_id = ? AND estudiante_id = ? AND anio = ? AND semestre = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, nueva.getCurso().getID());
+            ps.setDouble(1, nueva.getCurso().getID());
             ps.setDouble(2, nueva.getEstudiante().getId());
             ps.setInt(3, nueva.getAnio());
             ps.setInt(4, nueva.getSemestre());
@@ -112,7 +112,7 @@ public class InscripcionDAO {
         String sql = "DELETE FROM inscripcion WHERE curso_id = ? AND estudiante_id = ? AND anio = ? AND semestre = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, cursoId);
+            ps.setDouble(1, cursoId);
             ps.setDouble(2, estudianteId);
             ps.setInt(3, anio);
             ps.setInt(4, semestre);
@@ -125,7 +125,7 @@ public class InscripcionDAO {
         String sql = "SELECT 1 FROM inscripcion WHERE curso_id = ? AND estudiante_id = ? AND anio = ? AND semestre = ? LIMIT 1";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, cursoId);
+            ps.setDouble(1, cursoId);
             ps.setDouble(2, estudianteId);
             ps.setInt(3, anio);
             ps.setInt(4, semestre);

@@ -31,15 +31,9 @@ public class Profesor {
     public String getNombres() { return persona != null ? persona.getNombres() : ""; }
     public String getApellidos() { return persona != null ? persona.getApellidos() : ""; }
 
-    // ---- COMPATIBILIDAD con controladores/tablas ----
-    // Muchos controladores esperan p.getId(). Lo exponemos como alias del idPersona.
-    public Long getId() {
-        // Preferimos el ID real de Persona si está disponible:
+    public Double getId() {
         if (persona != null && persona.getId() != null) return persona.getId();
-        // Si no hay Persona cargada, usamos el idPersona (double) como Long
-        return (long) idPersona;
+        return (Double) idPersona;
     }
-
-    // Si en algún lado usan getID() (mayúscula), también lo damos:
-    public Long getID() { return getId(); }
+    public Double getID() { return getId(); }
 }

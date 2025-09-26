@@ -16,13 +16,13 @@ public class CursoDAO {
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, curso.getID());         // <-- int
+            stmt.setDouble(1, curso.getID());        
             stmt.setString(2, curso.getNombre());
 
             if (curso.getPrograma() != null && curso.getPrograma().getId() != null) {
-                stmt.setDouble(3, curso.getPrograma().getId()); // <-- double
+                stmt.setDouble(3, curso.getPrograma().getId());
             } else {
-                stmt.setNull(3, Types.DOUBLE); // <-- consistente con Double
+                stmt.setNull(3, Types.DOUBLE);
             }
 
             stmt.setBoolean(4, curso.getActivo() != null ? curso.getActivo() : false);
@@ -45,7 +45,7 @@ public class CursoDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Integer id = rs.getInt("id");
+                Double id = rs.getDouble("id");
                 String nombre = rs.getString("nombre");
 
                 Programa p = null;
@@ -74,7 +74,7 @@ public class CursoDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     Curso curso = new Curso();
-                    curso.setID(rs.getInt("id"));
+                    curso.setID(rs.getDouble("id"));
                     curso.setNombre(rs.getString("nombre"));
 
                     double progId = rs.getDouble("id_programa");
@@ -107,7 +107,7 @@ public class CursoDAO {
             }
 
             ps.setBoolean(3, curso.getActivo() != null ? curso.getActivo() : false);
-            ps.setInt(4, curso.getID());                         // int
+            ps.setDouble(4, curso.getID());                         // int
 
             return ps.executeUpdate() > 0;
         }

@@ -1,12 +1,12 @@
 package com.mycompany.actividad1.model;
 
 public class Curso {
-   private Integer ID;
+   private Double ID;
    private String nombre;
    private Programa programa;
    private Boolean activo;
 
-   public Curso(Integer ID, String nombre, Programa programa, Boolean activo) {
+   public Curso(Double ID, String nombre, Programa programa, Boolean activo) {
       this.ID = ID;
       this.nombre = nombre;
       this.programa = programa;
@@ -16,13 +16,13 @@ public class Curso {
     public Curso() {
     }
     
-    public Integer getId() { return this.ID; } 
+    public Double getId() { return this.ID; } 
     
-   public Integer getID() {
+   public Double getID() {
       return this.ID;
    }
 
-   public void setID(Integer ID) {
+   public void setID(Double ID) {
       this.ID = ID;
    }
 

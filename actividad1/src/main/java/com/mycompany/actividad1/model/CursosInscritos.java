@@ -10,7 +10,6 @@ public class CursosInscritos implements Servicios {
     private final List<Inscripcion> listado = new ArrayList<>();
     private final InscripcionDAO dao = new InscripcionDAO();
 
-    // Cargar todo desde BD al iniciar (opcional)
     public void cargarDatos() {
         listado.clear();
         try {
@@ -20,13 +19,16 @@ public class CursosInscritos implements Servicios {
         }
     }
 
-    // Alta en memoria y BD (si quieres persistir inmediatamente)
     public boolean inscribirCurso(Inscripcion i) {
         if (i == null || i.getCurso() == null || i.getEstudiante() == null
                 || i.getAnio() == null || i.getSemestre() == null) return false;
         try {
-            if (dao.existe(i.getCurso().getID(), i.getEstudiante().getId(), i.getAnio(), i.getSemestre())) {
-                return false; // ya existe
+            if (dao.existe(
+                i.getCurso().getID().intValue(),
+                i.getEstudiante().getId().intValue(),
+                i.getAnio(),
+                i.getSemestre())) {
+            return false;
             }
             boolean ok = dao.insertar(i);
             if (ok) listado.add(i);
@@ -41,10 +43,15 @@ public class CursosInscritos implements Servicios {
         if (i == null || i.getCurso() == null || i.getEstudiante() == null
                 || i.getAnio() == null || i.getSemestre() == null) return false;
         try {
-            boolean ok = dao.eliminar(i.getCurso().getID(), i.getEstudiante().getId(), i.getAnio(), i.getSemestre());
+           boolean ok = dao.eliminar(
+                i.getCurso().getID().intValue(),
+                i.getEstudiante().getId().intValue(),
+                i.getAnio(),
+                i.getSemestre()
+            );
             if (ok) listado.remove(i);
             return ok;
-        } catch (SQLException e) {
+        } catch (SQLException e) {//exception never trhown
             e.printStackTrace();
             return false;
         }
@@ -55,8 +62,8 @@ public class CursosInscritos implements Servicios {
         try {
             boolean ok = dao.actualizar(
                 nueva,
-                viejaClave.getCurso().getID(),
-                viejaClave.getEstudiante().getId(),
+                viejaClave.getCurso().getID().intValue(),
+                viejaClave.getEstudiante().getId().intValue(),
                 viejaClave.getAnio(),
                 viejaClave.getSemestre()
             );
@@ -66,7 +73,7 @@ public class CursosInscritos implements Servicios {
                 if (idx >= 0) listado.set(idx, nueva);
             }
             return ok;
-        } catch (SQLException e) {
+        } catch (SQLException e) {//esception neve thrown
             e.printStackTrace();
             return false;
         }

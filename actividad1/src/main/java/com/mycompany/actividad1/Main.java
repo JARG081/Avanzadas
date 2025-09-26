@@ -8,6 +8,11 @@ import controller.ProgramaController;
 import controller.CursoController;
 import controller.InscripcionController;
 import com.mycompany.actividad1.model.Persona;
+import repository.PersonaRepository;
+import com.mycompany.actividad1.dao.PersonaJdbcRepository;
+
+
+
 import ui.Pantalla;
 
 import javax.swing.*;
@@ -15,37 +20,39 @@ import java.awt.GraphicsEnvironment;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import service.PersonaService;
 
 public class Main {
 
-    //se hizo el push?
-    private static final PersonaController personaController = new PersonaController();
+
+    private static final PersonaController personaController;
     private static final ProfesorController profesorController = new ProfesorController();
     private static final EstudianteController estudianteController = new EstudianteController();
     private static final FacultadController facultadController = new FacultadController();
     private static final ProgramaController programaController = new ProgramaController();
     private static final CursoController cursoController = new CursoController();
     private static final InscripcionController inscripcionController = new InscripcionController();
+    static {
+    PersonaRepository repo = new PersonaJdbcRepository();
+    PersonaService service = new PersonaService(repo);
+    personaController = new PersonaController(service);
+    }
 
     public static void main(String[] args) {
-        // Atajos opcionales por parámetro:
-        //   --console  => forza consola
-        //   --gui      => forza interfaz
         if (args.length > 0) {
             String a0 = args[0].toLowerCase(Locale.ROOT);
             if ("--console".equals(a0)) { runConsoleMenus(); return; }
             if ("--gui".equals(a0))     { launchGUI();       return; }
         }
 
-        // Preguntar modo
         if (System.console() != null) {
             askModeInConsole();
         } else if (!GraphicsEnvironment.isHeadless()) {
             askModeInDialog();
         } else {
-            // Sin UI disponible, ir a consola
             runConsoleMenus();
         }
+        
     }
 
     // ========== GUI ==========
@@ -157,7 +164,7 @@ public class Main {
     private static void personaCrear(Scanner sc) {
         System.out.println("\n--- Crear Persona ---");
         try {
-            String id = askNumeric(sc, "ID (entero): ");
+            String id = askNumericDouble(sc, "ID (entero): ");
             String nombres   = askNonEmpty(sc, "Nombres: ");
             String apellidos = askNonEmpty(sc, "Apellidos: ");
             String email     = askEmail(sc, "Email: ");
@@ -174,7 +181,7 @@ public class Main {
     private static void personaBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Persona ---");
         try {
-            String id = askNumeric(sc, "ID (entero): ");
+            String id = askNumericDouble(sc, "ID (entero): ");
             Persona p = personaController.buscar(id);
             if (p == null) {
                 System.out.println("No se encontró persona con ID " + id);
@@ -470,24 +477,28 @@ public class Main {
         }
     }
 
-    private static void facultadCrear(Scanner sc) {
-        System.out.println("\n--- Crear Facultad ---");
-        try {
-            String id = askNumeric(sc, "ID (entero): ");
-            String nombre = askNonEmpty(sc, "Nombre: ");
-            String decanoId = askNumeric(sc, "ID Decano (entero): ");
-            boolean ok = facultadController.insertar(id, nombre, decanoId);
-            System.out.println(ok ? "✔ Facultad creada." : "× No se pudo crear.");
-            facultadListar();
-        } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+        private static void facultadCrear(Scanner sc) {
+            System.out.println("\n--- Crear Facultad ---");
+            try {
+                String id = askNumericDouble(sc, "ID (entero): ");
+                String nombre = askNonEmpty(sc, "Nombre: ");
+                String decanoId = askNumeric(sc, "ID Decano (entero): ");
+
+                // ANTES: boolean ok = facultadController.insertar(...);
+                facultadController.insertar(id, nombre, decanoId); // void
+
+                System.out.println("✔ Facultad creada.");
+                facultadListar();
+            } catch (Exception e) {
+                System.out.println("× Error: " + e.getMessage());
+            }
         }
-    }
+
 
     private static void facultadBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Facultad ---");
         try {
-            String id = askNumeric(sc, "ID (entero): ");
+            String id = askNumericDouble(sc, "ID (entero): ");
             com.mycompany.actividad1.model.Facultad f = facultadController.buscar(id);
             if (f == null) System.out.println("No existe facultad con ID " + id);
             else System.out.println("Resultado: ID=" + f.getID() + ", Nombre=" + f.getNombre() + 
@@ -569,26 +580,30 @@ public class Main {
         }
     }
 
-    private static void programaCrear(Scanner sc) {
-        System.out.println("\n--- Crear Programa ---");
-        try {
-            String id = askNumeric(sc, "ID (entero): ");
-            String nombre = askNonEmpty(sc, "Nombre: ");
-            String duracion = askNumeric(sc, "Duración (años): ");
-            String registro = ask(sc, "Fecha registro (YYYY-MM-DD): ").trim();
-            String idFacultad = askNumeric(sc, "ID Facultad (entero): ");
-            boolean ok = programaController.insertar(id, nombre, duracion, registro, idFacultad);
-            System.out.println(ok ? "✔ Programa creado." : "× No se pudo crear.");
-            programaListar();
-        } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+        private static void programaCrear(Scanner sc) {
+            System.out.println("\n--- Crear Programa ---");
+            try {
+                String id = askNumericDouble(sc, "ID (entero): ");
+                String nombre = askNonEmpty(sc, "Nombre: ");
+                String duracion = askNumeric(sc, "Duración (años): ");
+                String registro = ask(sc, "Fecha registro (YYYY-MM-DD): ").trim();
+                String idFacultad = askNumeric(sc, "ID Facultad (entero): ");
+
+                // ANTES: boolean ok = programaController.insertar(...);
+                programaController.insertar(id, nombre, duracion, registro, idFacultad); // void
+
+                System.out.println("✔ Programa creado.");
+                programaListar();
+            } catch (Exception e) {
+                System.out.println("× Error: " + e.getMessage());
+            }
         }
-    }
+
 
     private static void programaBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Programa ---");
         try {
-            String id = askNumeric(sc, "ID (entero): ");
+            String id = askNumericDouble(sc, "ID (entero): ");
             com.mycompany.actividad1.model.Programa p = programaController.buscar(id);
             if (p == null) System.out.println("No existe programa con ID " + id);
             else System.out.println("Resultado: ID=" + p.getId() + ", Nombre=" + p.getNombre() + 
@@ -607,8 +622,8 @@ public class Main {
             String nombre = askDefault(sc, "Nombre [" + actual.getNombre() + "]: ", actual.getNombre());
             String duracion = askDefault(sc, "Duración [" + actual.getDuracion() + "]: ", String.valueOf(actual.getDuracion()));
             String registro = askDefault(sc, "Fecha registro [" + actual.getRegistro() + "]: ", actual.getRegistro().toString());
-            String idFacultad = askDefault(sc, "ID Facultad [" + (actual.getFacultad()==null? "" : actual.getFacultad().getId()) + "]: ", 
-                                          actual.getFacultad()==null? "" : actual.getFacultad().getId().toString());
+            String idFacultad = askDefault(sc, "ID Facultad [" + (actual.getFacultad()==null? "" : actual.getFacultad().getID()) + "]: ", 
+                                          actual.getFacultad()==null? "" : actual.getFacultad().getID().toString());
             boolean ok = programaController.actualizar(id, nombre, duracion, registro, idFacultad);
             System.out.println(ok ? "✔ Programa actualizado." : "× No se pudo actualizar.");
             programaListar();
@@ -672,25 +687,30 @@ public class Main {
         }
     }
 
-    private static void cursoCrear(Scanner sc) {
-        System.out.println("\n--- Crear Curso ---");
-        try {
-            String id = askNumeric(sc, "ID (entero): ");
-            String nombre = askNonEmpty(sc, "Nombre: ");
-            String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
-            String activo = ask(sc, "¿Activo? (S/N): ").trim().toLowerCase(Locale.ROOT);
-            boolean ok = cursoController.insertar(id, nombre, idPrograma, activo.equals("s") || activo.equals("si") || activo.equals("sí"));
-            System.out.println(ok ? "✔ Curso creado." : "× No se pudo crear.");
-            cursoListar();
-        } catch (Exception e) {
-            System.out.println("× Error: " + e.getMessage());
+        private static void cursoCrear(Scanner sc) {
+            System.out.println("\n--- Crear Curso ---");
+            try {
+                String id = askNumericDouble(sc, "ID (entero): ");
+                String nombre = askNonEmpty(sc, "Nombre: ");
+                String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
+                String activo = ask(sc, "¿Activo? (S/N): ").trim().toLowerCase(Locale.ROOT);
+                boolean activoBool = activo.equals("s") || activo.equals("si") || activo.equals("sí");
+
+                // ANTES: boolean ok = cursoController.insertar(...);
+                cursoController.insertar(id, nombre, idPrograma, activoBool); // insertar es void
+
+                System.out.println("✔ Curso creado.");
+                cursoListar();
+            } catch (Exception e) {
+                System.out.println("× Error: " + e.getMessage());
+            }
         }
-    }
+
 
     private static void cursoBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Curso ---");
         try {
-            String id = askNumeric(sc, "ID (entero): ");
+            String id = askNumericDouble(sc, "ID (entero): ");
             com.mycompany.actividad1.model.Curso c = cursoController.buscar(id);
             if (c == null) System.out.println("No existe curso con ID " + id);
             else System.out.println("Resultado: ID=" + c.getID() + ", Nombre=" + c.getNombre() + 
@@ -912,4 +932,13 @@ public class Main {
         }
         return s;
     }
+    private static String askNumericDouble(Scanner sc, String prompt) {
+    String s = ask(sc, prompt);
+    while (!s.matches("\\d+(\\.\\d+)?")) {
+        System.out.println("  -> Debe ser un número (entero o decimal positivo).");
+        s = ask(sc, prompt);
+    }
+    return s;
+}
+
 }

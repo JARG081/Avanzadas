@@ -21,32 +21,12 @@ public class PersonaDAO {
         }
     }
 
-    public List<Persona> listar() throws SQLException {
-        List<Persona> lista = new ArrayList<>();
-        String sql = "SELECT id, nombres, apellidos, email FROM persona ORDER BY id ASC";
-
+    public Persona buscarPorId(double id) throws SQLException {
+        String sql = "SELECT id, nombres, apellidos, email FROM persona WHERE id = ?";
         try (Connection conn = Database.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Persona persona = new Persona(
-                        rs.getDouble("id"),          
-                        rs.getString("nombres"),
-                        rs.getString("apellidos"),
-                        rs.getString("email")
-                );
-                lista.add(persona);
-            }
-        }
-        return lista;
-    }
-    public Persona buscarPorId(Double id) throws SQLException {
-        String sql = "SELECT * FROM persona WHERE id = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setDouble(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Persona(
                         rs.getDouble("id"),
@@ -60,6 +40,23 @@ public class PersonaDAO {
         return null;
     }
 
+    public List<Persona> listar() throws SQLException {
+        String sql = "SELECT id, nombres, apellidos, email FROM persona ORDER BY id";
+        List<Persona> out = new ArrayList<>();
+        try (Connection conn = Database.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                out.add(new Persona(
+                    rs.getDouble("id"),
+                    rs.getString("nombres"),
+                    rs.getString("apellidos"),
+                    rs.getString("email")
+                ));
+            }
+        }
+        return out;
+    }
     
     public boolean actualizar(Persona persona) throws SQLException {
     String sql = "UPDATE persona SET nombres = ?, apellidos = ?, email = ? WHERE id = ?";
@@ -77,14 +74,15 @@ public class PersonaDAO {
 }
 
 
-    public boolean eliminar(long id) throws SQLException {
+    public boolean eliminar(double id) throws SQLException {
         String sql = "DELETE FROM persona WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
+            stmt.setDouble(1, id); // <-- antes era setLong
             int filas = stmt.executeUpdate();
-            return filas > 0; // true si se eliminó, false si no había registro
+            return filas > 0;
         }
     }
+
 
 }

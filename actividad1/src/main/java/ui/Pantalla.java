@@ -1,10 +1,6 @@
 package ui;
-import com.mycompany.actividad1.Database;
-import com.mycompany.actividad1.dao.FacultadDAO;
-import com.mycompany.actividad1.dao.PersonaDAO;
-import com.mycompany.actividad1.dao.ProgramaDAO;
 import com.mycompany.actividad1.dao.CursoDAO;
-import com.mycompany.actividad1.dao.ProfesorDAO;
+import com.mycompany.actividad1.dao.PersonaJdbcRepository;
 import com.mycompany.actividad1.model.Curso;
 import com.mycompany.actividad1.model.Estudiante;
 import com.mycompany.actividad1.model.Facultad;
@@ -17,17 +13,16 @@ import controller.FacultadController;
 import controller.ProgramaController;
 import controller.CursoController;
 import controller.EstudianteController;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import repository.PersonaRepository;
+import service.PersonaService;
 
 /**
  *
  * @author josem
  */
 public class Pantalla extends javax.swing.JFrame {
+    private PersonaController personaController;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Pantalla.class.getName());
 
@@ -36,6 +31,9 @@ public class Pantalla extends javax.swing.JFrame {
      */
     public Pantalla() {
         initComponents();
+        PersonaRepository repo = new PersonaJdbcRepository();
+        PersonaService service = new PersonaService(repo);
+        personaController = new PersonaController(service);
         cargarTablaPers();
         cargarTablaFacu();
         cargarTablaPrograma();
@@ -43,7 +41,7 @@ public class Pantalla extends javax.swing.JFrame {
         cargarTablaProfesores();
         cargarTablaEstudiantes();
     }
-    private final PersonaController personaController = new PersonaController();
+    
     private final ProfesorController profesorController = new ProfesorController();
     private final FacultadController facultadController = new FacultadController();
     private final ProgramaController programaController = new ProgramaController();
@@ -944,7 +942,6 @@ public class Pantalla extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nomPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomPersonaActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_nomPersonaActionPerformed
 
     private void ingresPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresPersonaBtnActionPerformed
@@ -957,15 +954,15 @@ public class Pantalla extends javax.swing.JFrame {
         );
         JOptionPane.showMessageDialog(this, "Persona registrada con éxito");
         cargarTablaPers();
-        jTable1.setModel(personaController.modeloTablaTodas()); // refresca tabla
-        //imprimir en consola:
+        jTable1.setModel(personaController.modeloTablaTodas());
         personaController.listar().forEach(System.out::println);
-
     } catch (IllegalArgumentException iae) {
         JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al registrar: " + ex.getMessage());
+    } catch (RuntimeException ex) { 
+        JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
     }
+
+
     limpiarCamposPersona();
     }//GEN-LAST:event_ingresPersonaBtnActionPerformed
 
@@ -982,8 +979,7 @@ public class Pantalla extends javax.swing.JFrame {
             return;
         }
 
-        // Mostrar en la tabla para confirmar
-        jTable1.setModel(personaController.modeloTablaDe(persona));
+        jTable1.setModel(personaController.modeloTablaTodas());
 
         int opcion = JOptionPane.showConfirmDialog(
             this,
@@ -1008,8 +1004,8 @@ public class Pantalla extends javax.swing.JFrame {
         cargarTablaPers();
     } catch (IllegalArgumentException iae) {
         JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+    } catch (RuntimeException ex) { 
+        JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());         
         cargarTablaPers();
     }
         limpiarCamposPersona();
@@ -1025,7 +1021,6 @@ public class Pantalla extends javax.swing.JFrame {
 
             Persona p = personaController.buscar(idTxt);
             if (p != null) {
-                // llenar inputs
                 idPersona.setText(String.valueOf(p.getId()));
                 nomPersona.setText(p.getNombres());
                 apePersona.setText(p.getApellidos());
@@ -1038,9 +1033,10 @@ public class Pantalla extends javax.swing.JFrame {
 
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        } catch (RuntimeException ex) { 
+            JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
         }
+
     }//GEN-LAST:event_buscaPersonaBtnActionPerformed
 
     private void idFacultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idFacultadActionPerformed
@@ -1064,30 +1060,31 @@ public class Pantalla extends javax.swing.JFrame {
         jTable1.setModel(personaController.modeloTablaTodas());
         personaController.listar().forEach(System.out::println);
 
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar: " + ex.getMessage());
-    }
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (RuntimeException ex) { 
+            JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
+        }
+
        limpiarCamposPersona();
     }//GEN-LAST:event_actuaPersonaBtnActionPerformed
 
     private void ingresFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresFacuBtnActionPerformed
         try {
-            boolean ok = facultadController.insertar(
+            facultadController.insertar(
                 idFacultad.getText().trim(),
                 nomFacultad.getText().trim(),
                 decFacultad.getText().trim()
             );
-            JOptionPane.showMessageDialog(this, ok ? "Facultad insertada correctamente."
-                                                   : "No se pudo insertar la facultad.");
+            JOptionPane.showMessageDialog(this, "Facultad insertada correctamente.");
             cargarTablaFacu();
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al insertar: " + e.getMessage());
+        } finally {
+            limpiarCamposFacultad();
         }
-        limpiarCamposFacultad();
     }//GEN-LAST:event_ingresFacuBtnActionPerformed
 
     private void actFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actFacuBtnActionPerformed
@@ -1130,7 +1127,7 @@ public class Pantalla extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt);
             }
 
-            cargarTablaFacu(); // deja la tabla con todas las tuplas
+            cargarTablaFacu();
 
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
@@ -1147,7 +1144,6 @@ public class Pantalla extends javax.swing.JFrame {
             return;
         }
 
-        // Buscar para mostrar datos en confirmación
         Facultad f = facultadController.buscar(idTxt);
         if (f == null) {
             JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt);
@@ -1174,7 +1170,7 @@ public class Pantalla extends javax.swing.JFrame {
                                                    : "No se pudo eliminar la facultad.");
             cargarTablaFacu();
         } else {
-            cargarTablaFacu(); // limpiar cualquier filtro/selección previa
+            cargarTablaFacu();
         }
 
     } catch (IllegalArgumentException iae) {
@@ -1223,7 +1219,6 @@ public class Pantalla extends javax.swing.JFrame {
                 return;
             }
 
-            // Confirmación
             int opcion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro que desea eliminar este programa?\n\n" +
@@ -1269,8 +1264,6 @@ public class Pantalla extends javax.swing.JFrame {
                 regPrograma.setText(prog.getRegistro().toString());
                 facPrograma.setText(prog.getFacultad() == null ? "" : String.valueOf(prog.getFacultad().getID()));
                 JOptionPane.showMessageDialog(this, "Programa encontrado.");
-                // Si quisieras mostrar solo éste en tabla:
-                // jTable3.setModel(programaController.modeloTablaDe(prog));
             } else {
                 JOptionPane.showMessageDialog(this, "Programa no encontrado.");
                 cargarTablaPrograma();
@@ -1288,7 +1281,7 @@ public class Pantalla extends javax.swing.JFrame {
                 idPrograma.getText().trim(),
                 nomPrograma.getText().trim(),
                 durPrograma.getText().trim(),
-                regPrograma.getText().trim(),     // YYYY-MM-DD
+                regPrograma.getText().trim(),
                 facPrograma.getText().trim()
             );
             JOptionPane.showMessageDialog(this, ok ? "Programa actualizado correctamente."
@@ -1304,28 +1297,28 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void ingresProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresProgBtnActionPerformed
         try {
-            boolean ok = programaController.insertar(
+            programaController.insertar(
                 idPrograma.getText().trim(),
                 nomPrograma.getText().trim(),
                 durPrograma.getText().trim(),
-                regPrograma.getText().trim(),     // YYYY-MM-DD
+                regPrograma.getText().trim(),
                 facPrograma.getText().trim()
             );
-            JOptionPane.showMessageDialog(this, ok ? "Programa insertado correctamente."
-                                                   : "No se pudo insertar el programa.");
+            JOptionPane.showMessageDialog(this, "Programa insertado correctamente.");
             cargarTablaPrograma();
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        } finally {
+            limpiarCamposPrograma();
         }
-        limpiarCamposPrograma();
     }//GEN-LAST:event_ingresProgBtnActionPerformed
 
     private void ingresCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresCursoBtnActionPerformed
     try {
         Curso curso = new Curso();
-        curso.setID(Integer.valueOf(idCurso.getText()));
+        curso.setID(Double.valueOf(idCurso.getText()));
         curso.setNombre(nomCurso.getText());
 
         Programa programa = new Programa();
@@ -1350,7 +1343,7 @@ public class Pantalla extends javax.swing.JFrame {
     private void actuaCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaCursoBtnActionPerformed
             try {
         Curso curso = new Curso();
-        curso.setID(Integer.valueOf(idCurso.getText()));
+        curso.setID(Double.valueOf(idCurso.getText()));
         curso.setNombre(nomCurso.getText());
 
         Programa programa = new Programa();
@@ -1385,7 +1378,6 @@ public class Pantalla extends javax.swing.JFrame {
         Curso curso = dao.buscarPorId((int) id);
 
         if (curso != null) {
-            // Mostrar solo el curso encontrado
             javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel();
             modelo.addColumn("ID");
             modelo.addColumn("Nombre");
@@ -1402,7 +1394,7 @@ public class Pantalla extends javax.swing.JFrame {
             jTable4.setModel(modelo);
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró curso con ID: " + id);
-            cargarTablaCurso(); // 👉 recarga la tabla con todos los cursos
+            cargarTablaCurso();
         }
 
     } catch (Exception e) {
@@ -1418,14 +1410,13 @@ public class Pantalla extends javax.swing.JFrame {
             return;
         }
 
-        // 1) Buscar para mostrar datos antes de confirmar
         Curso curso = CursoController.buscar(idTxt);
         if (curso == null) {
             JOptionPane.showMessageDialog(this, "No se encontró curso con ID: " + idTxt);
             return;
         }
 
-        // 2) Armar info del programa (si el DAO no trae nombre, mostramos el ID)
+
         String progInfo;
         if (curso.getPrograma() == null) {
             progInfo = "(sin programa)";
@@ -1435,7 +1426,7 @@ public class Pantalla extends javax.swing.JFrame {
             progInfo = "ID: " + curso.getPrograma().getId();
         }
 
-        // 3) Confirmación
+
         int opcion = JOptionPane.showConfirmDialog(
             this,
             "¿Está seguro que desea eliminar este curso?\n\n" +
@@ -1448,7 +1439,6 @@ public class Pantalla extends javax.swing.JFrame {
             JOptionPane.WARNING_MESSAGE
         );
 
-        // 4) Eliminar y refrescar
         if (opcion == JOptionPane.YES_OPTION) {
             boolean eliminado = CursoController.eliminar(idTxt);
             JOptionPane.showMessageDialog(this,
@@ -1457,7 +1447,7 @@ public class Pantalla extends javax.swing.JFrame {
             cargarTablaCurso();
             limpiarCamposCurso();
         } else {
-            cargarTablaCurso(); // deja la tabla con todas las filas
+            cargarTablaCurso();
         }
 
     } catch (IllegalArgumentException iae) {
@@ -1496,15 +1486,15 @@ public class Pantalla extends javax.swing.JFrame {
         );
         JOptionPane.showMessageDialog(this, "Profesor insertado correctamente.");
                 cargarTablaProfesores();
-
     } catch (IllegalArgumentException iae) {
         JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (SQLException sqle) {
-        JOptionPane.showMessageDialog(this,
-            "Error SQL: " + sqle.getMessage() + "\nCódigo: " + sqle.getErrorCode() + "\nEstado: " + sqle.getSQLState());
+    } catch (RuntimeException rex) { // aquí caen errores envueltos desde JDBC
+        String msg = "Error al insertar profesor: " + mensajeError(rex);
+        JOptionPane.showMessageDialog(this, msg);
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
     }
+
     limpiarCamposProfesor();
 }
 
@@ -1541,15 +1531,14 @@ private void btnBuscarActionPerformed() {
 
             Profesor profesor = profesorController.buscar(idTxt);
             if (profesor != null) {
-                idPersonaP.setText(String.valueOf(profesor.getIdPersona())); // o getId()
+                idPersonaP.setText(String.valueOf(profesor.getIdPersona()));
                 contratoProfesor.setSelectedItem(profesor.getContrato());
                 JOptionPane.showMessageDialog(this, "Profesor encontrado");
             } else {
                 JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
             }
 
-            cargarTablaProfesores(); // mantiene todas las filas
-
+            cargarTablaProfesores(); 
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception e) {
@@ -1565,14 +1554,12 @@ private void btnBuscarActionPerformed() {
             return;
         }
 
-        // 1) Buscar para mostrar datos antes de confirmar (opcional pero recomendado)
         Profesor profesor = profesorController.buscar(idTxt);
         if (profesor == null) {
             JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
             return;
         }
 
-        // 2) Preparar texto de confirmación (si tienes Persona anidada, muestra nombre)
         String nombres = "";
         String apellidos = "";
         if (profesor.getPersona() != null) {
@@ -1598,7 +1585,6 @@ private void btnBuscarActionPerformed() {
                    : "Error al eliminar profesor.");
             cargarTablaProfesores();
         } else {
-            // Cancelado → refresca por si habías filtrado la tabla
             cargarTablaProfesores();
         }
 
@@ -1619,7 +1605,7 @@ private void btnBuscarActionPerformed() {
         boolean ok = estudianteController.insertar(
             idPersonaE.getText().trim(),
             codigoEst.getText().trim(),
-            idProgramaE.getText().trim() // puede ir vacío
+            idProgramaE.getText().trim()
         );
         JOptionPane.showMessageDialog(this, ok ? "Estudiante insertado correctamente."
                                                : "No se pudo insertar el estudiante.");
@@ -1820,8 +1806,8 @@ private void btnBuscarActionPerformed() {
     private void cargarTablaPers() {
         try {
             jTable1.setModel(personaController.modeloTablaTodas());
-        } catch (java.sql.SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar la tabla: " + ex.getMessage());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
         }
     }
 
@@ -1837,7 +1823,7 @@ private void btnBuscarActionPerformed() {
     private void cargarTablaFacu() {
         try {
             jTable2.setModel(facultadController.modeloTablaTodas());
-        } catch (java.sql.SQLException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
         }
     }
@@ -1849,32 +1835,27 @@ private void btnBuscarActionPerformed() {
     }
 
 
-
     private void cargarTablaPrograma() {
         try {
             jTable3.setModel(programaController.modeloTablaTodos());
-        } catch (java.sql.SQLException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
         }
     }
 
-private void limpiarCamposPrograma() {
-    idPrograma.setText("");
-    nomPrograma.setText("");
-    durPrograma.setText("");
-    regPrograma.setText("");
-    facPrograma.setText("");
-}
-
+    private void limpiarCamposPrograma() {
+        idPrograma.setText("");
+        nomPrograma.setText("");
+        durPrograma.setText("");
+        regPrograma.setText("");
+        facPrograma.setText("");
+    }
 
 
     private void cargarTablaCurso() {
-        try {
-            jTable4.setModel(CursoController.modeloTablaTodos());
-        } catch (java.sql.SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
-        }
+        jTable4.setModel(CursoController.modeloTablaTodos());
     }
+
 
     private void limpiarCamposCurso() {
         idCurso.setText("");
@@ -1886,23 +1867,28 @@ private void limpiarCamposPrograma() {
     private void cargarTablaProfesores() {
         try {
             jTable5.setModel(profesorController.modeloTablaTodos());
-        } catch (java.sql.SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Error al cargar la tabla: " + ex.getMessage());
+        } catch (RuntimeException ex) { 
+            JOptionPane.showMessageDialog(this, "Error al cargar la tabla: " + mensajeError(ex));
         }
+    }
+
+    private void cargarTablaEstudiantes() {
+        try {
+            jTable6.setModel(estudianteController.modeloTablaTodos());
+        } catch (RuntimeException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar la tabla: " + mensajeError(ex));
+        }
+    }
+
+    private String mensajeError(Throwable ex) {
+        Throwable cause = ex.getCause();
+        return (cause != null ? cause.getMessage() : ex.getMessage());
     }
 
     private void limpiarCamposProfesor() {
         idPersonaP.setText("");
-        contratoProfesor.setSelectedIndex(0); // o setSelectedItem("Seleccione...")
+        contratoProfesor.setSelectedIndex(0);
     }
-    private void cargarTablaEstudiantes() {
-    try {
-        jTable6.setModel(estudianteController.modeloTablaTodos());
-    } catch (java.sql.SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar tabla: " + ex.getMessage());
-    }
-}
-
     private void limpiarCamposEstudiante() {
     idPersonaE.setText("");
     codigoEst.setText("");

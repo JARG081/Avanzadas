@@ -44,18 +44,18 @@ public class Inscripcion {
         if (this == o) return true;
         if (!(o instanceof Inscripcion)) return false;
         Inscripcion that = (Inscripcion) o;
-        Integer cursoId = (curso == null ? null : curso.getID());
-        Long estId = (estudiante == null ? null : estudiante.getId());
-        Integer cursoId2 = (that.curso == null ? null : that.curso.getID());
-        Long estId2 = (that.estudiante == null ? null : that.estudiante.getId());
+        Double cursoId = (curso == null ? null : curso.getID());//double no puede ser int
+        Double estId = (estudiante == null ? null : estudiante.getId());
+        Double cursoId2 = (that.curso == null ? null : that.curso.getID());//double no puede ser int
+        Double estId2 = (that.estudiante == null ? null : that.estudiante.getId());
         return Objects.equals(cursoId, cursoId2)
             && Objects.equals(estId, estId2)
             && Objects.equals(anio, that.anio)
             && Objects.equals(semestre, that.semestre);
     }
     @Override public int hashCode() {
-        Integer cursoId = (curso == null ? null : curso.getID());
-        Long estId = (estudiante == null ? null : estudiante.getId());
+        Double cursoId = (curso == null ? null : curso.getID());
+        Double estId = (estudiante == null ? null : estudiante.getId());
         return Objects.hash(cursoId, estId, anio, semestre);
     }
 }

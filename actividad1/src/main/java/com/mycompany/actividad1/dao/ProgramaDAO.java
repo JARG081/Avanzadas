@@ -49,7 +49,7 @@ public class ProgramaDAO {
                         null
                 );
 
-                Programa programa = new Programa(
+                Programa programa = new Programa(//cannot aply to given types
                         rs.getDouble("id"),
                         rs.getString("nombre"),
                         rs.getInt("duracion"),
@@ -70,7 +70,7 @@ public class ProgramaDAO {
                      "f.id as facultad_id, f.nombre as facultad_nombre " +
                      "FROM programa p JOIN facultad f ON p.id_facultad = f.id WHERE p.id = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+            stmt.setDouble(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -80,7 +80,7 @@ public class ProgramaDAO {
                         null
                 );
 
-                return new Programa(
+                return new Programa(//cannot aply to given types
                         rs.getDouble("id"),
                         rs.getString("nombre"),
                         rs.getInt("duracion"),

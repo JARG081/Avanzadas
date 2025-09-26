@@ -22,10 +22,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     initComponents();
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); // <- clave
     setLocationRelativeTo(null);
-    cargarTablaInscripciones();
-    cargarTablaInscripciones();
-    
-
+    cargarTablaInscripciones(); 
     }
 
     /**
@@ -204,9 +201,8 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private Integer oldCursoId = null;
-    private Long    oldEstId   = null;
+    private Double  oldCursoId = null;
+    private Double  oldEstId   = null;
     private Integer oldAnio    = null;
     private Integer oldSem     = null;
     private final InscripcionController inscController = new InscripcionController();
@@ -266,14 +262,14 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                 semestreIns.getText().trim()
             );
             if (i != null) {
-                // llenar inputs
                 idCursoIns.setText(String.valueOf(i.getCurso().getID()));
                 idEstudianteIns.setText(String.valueOf(i.getEstudiante().getId()));
                 anioIns.setText(String.valueOf(i.getAnio()));
                 semestreIns.setText(String.valueOf(i.getSemestre()));
 
-                // guardar PK vieja
-                oldCursoId = i.getCurso().getID();
+                oldCursoId = (i.getCurso() == null || i.getCurso().getID() == null)
+                            ? null
+                            : i.getCurso().getID().doubleValue();
                 oldEstId   = i.getEstudiante().getId();
                 oldAnio    = i.getAnio();
                 oldSem     = i.getSemestre();
@@ -367,7 +363,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 private void cargarTablaInscripciones() {
     try {
         jTableIns.setModel(inscController.modeloTablaTodos());
-    } catch (java.sql.SQLException ex) {
+    } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error al cargar inscripciones: " + ex.getMessage());
     }
 }

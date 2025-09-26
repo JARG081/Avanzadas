@@ -1,43 +1,64 @@
 package com.mycompany.actividad1.model;
 
-import java.util.Objects;
-
 public class Persona {
-    private final Long id;          // puede ser null antes de persistir
-    private final String nombres;
-    private final String apellidos;
-    private final String email;
 
-    public Persona(Long id, String nombres, String apellidos, String email) {
+    private Double id;         // Ojo: mantengo Double porque así lo estás usando en el proyecto
+    private String nombres;
+    private String apellidos;
+    private String email;
+
+    // Constructor “tolerante”: NO valida duro (para no romper al leer datos viejos desde la BD)
+    public Persona(Double id, String nombres, String apellidos, String email) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
+        this.email = email; // sin throws aquí
+    }
+
+    // Getters / Setters
+    public Double getId() {
+        return id;
+    }
+
+    public void setId(Double id) {
+        this.id = id;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    // Setter con validación “suave”: solo valida si viene algo no vacío
+    public void setEmail(String email) {
+        if (email != null && !email.isBlank() && !email.contains("@")) {
+            throw new IllegalArgumentException("Email inválido");
+        }
         this.email = email;
     }
 
-    // Compatibilidad con código existente que pasa Double
-    public Persona(Double ID, String nombres, String apellidos, String email) {
-        this(ID == null ? null : ID.longValue(), nombres, apellidos, email);
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "id=" + id +
+                ", nombres='" + (nombres == null ? "" : nombres) + '\'' +
+                ", apellidos='" + (apellidos == null ? "" : apellidos) + '\'' +
+                ", email='" + (email == null ? "" : email) + '\'' +
+                '}';
     }
-
-    public Long getId() { return id; }
-    // Getter alterno si en algún sitio llaman getID()
-    public Long getID() { return id; }
-
-    public String getNombres() { return nombres; }
-    public String getApellidos() { return apellidos; }
-    public String getEmail() { return email; }
-
-    @Override public String toString() {
-        return "Persona{id=" + id + ", nombres='" + nombres + "', apellidos='" + apellidos + "', email='" + email + "'}";
-    }
-
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Persona)) return false;
-        Persona p = (Persona) o;
-        // si id es null, no las consideres iguales (aún no persistidas)
-        return id != null && Objects.equals(id, p.id);
-    }
-    @Override public int hashCode() { return id == null ? 0 : id.hashCode(); }
 }
