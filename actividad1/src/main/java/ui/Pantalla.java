@@ -1,19 +1,9 @@
 package ui;
 
-import com.mycompany.actividad1.dao.PersonaJdbcRepository;
-import com.mycompany.actividad1.factory.InfraFactory;
-import com.mycompany.actividad1.model.Curso;
-import com.mycompany.actividad1.model.Estudiante;
-import com.mycompany.actividad1.model.Facultad;
-import com.mycompany.actividad1.model.Persona;
-import com.mycompany.actividad1.model.Profesor;
-import com.mycompany.actividad1.model.Programa;
-import controller.PersonaController;
-import controller.CursoController;
-import controller.ProfesorController;
-import controller.FacultadController;
-import controller.ProgramaController;
-import controller.EstudianteController;
+import com.mycompany.actividad1.dao.*;
+import com.mycompany.actividad1.factory.app.AppFactory;
+import com.mycompany.actividad1.model.*;
+import controller.*;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import repository.PersonaRepository;
@@ -45,7 +35,7 @@ public class Pantalla extends javax.swing.JFrame {
         cargarTablaEstudiantes();
     }
     
-    private final InfraFactory factory = new InfraFactory();
+    private static final AppFactory factory = new AppFactory();
 
     private final ProfesorController   profesorController   = factory.profesorController();
     private final FacultadController   facultadController   = factory.facultadController();

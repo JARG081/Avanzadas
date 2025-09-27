@@ -6,7 +6,6 @@ import com.mycompany.actividad1.model.Programa;
 import repository.ProgramaRepository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
                     p.setRegistro(d); // SIN toLocalDate()
                     Double idFac = rs.getDouble("id_facultad");
                     if (!rs.wasNull()) {
-                        Facultad f = new Facultad();//no puede usar constructor con lo dado
+                        Facultad f = new Facultad();
                         f.setID(idFac);
                         f.setNombre(rs.getString("facultad_nombre"));
                         p.setFacultad(f);
@@ -122,7 +121,7 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
                 p.setRegistro(d);
                 Double idFac = rs.getDouble("id_facultad");
                 if (!rs.wasNull()) {
-                    Facultad f = new Facultad();//no puede usar constructor con lo dado
+                    Facultad f = new Facultad();
                     f.setID(idFac);
                     f.setNombre(rs.getString("facultad_nombre"));
                     p.setFacultad(f);

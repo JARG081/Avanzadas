@@ -2,7 +2,6 @@ package service;
 
 import com.mycompany.actividad1.model.Estudiante;
 import com.mycompany.actividad1.model.Programa;
-import repository.EstudianteRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +34,7 @@ public class EstudianteService {
         }
         Programa p = new Programa();
         p.setId(idProg);
-        return p; // si quieres validar existencia real, luego metemos ProgramaRepository
+        return p;
     }
 
     public void registrar(Double idPersona, String codigo, String idProgramaStr,
@@ -43,7 +42,7 @@ public class EstudianteService {
         validarId(idPersona);
         validarCodigo(codigo);
         Estudiante e = new Estudiante(idPersona, nombres, apellidos, email, codigo.trim(), programaFrom(idProgramaStr));
-        repo.insertar(e); // void
+        repo.insertar(e);
     }
 
     public Estudiante buscar(Double idPersona) {

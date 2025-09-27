@@ -3,8 +3,6 @@ package service;
 import com.mycompany.actividad1.model.Facultad;
 import com.mycompany.actividad1.model.Programa;
 import repository.ProgramaRepository;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 

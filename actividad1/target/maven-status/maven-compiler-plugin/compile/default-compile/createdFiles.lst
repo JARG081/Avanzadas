@@ -6,6 +6,7 @@ service\FacultadService.class
 ui\Pantalla$12.class
 com\mycompany\actividad1\dao\InscripcionJdbcRepository.class
 com\mycompany\actividad1\model\Curso.class
+com\mycompany\actividad1\adapter\H2DatabaseAdapter.class
 controller\ProfesorController$1.class
 ui\Pantalla$3.class
 controller\CursoController$1.class
@@ -35,6 +36,7 @@ ui\Pantalla$6.class
 ui\Pantalla$25.class
 service\ProfesorService.class
 controller\PersonaController.class
+com\mycompany\actividad1\adapter\DatabaseAdapter.class
 ui\Pantalla$30.class
 ui\Pantalla$13.class
 controller\EstudianteController.class
@@ -44,6 +46,7 @@ com\mycompany\actividad1\factory\InfraFactory.class
 ui\Pantalla$7.class
 ui\Pantalla$39.class
 ui\Pantalla$29.class
+com\mycompany\actividad1\adapter\OracleDatabaseAdapter.class
 com\mycompany\actividad1\dao\EstudianteJdbcRepository.class
 ui\Pantalla$16.class
 repository\InscripcionRepository.class
@@ -70,10 +73,12 @@ controller\EstudianteController$1.class
 ui\Pantalla$34.class
 com\mycompany\actividad1\model\Programa.class
 com\mycompany\actividad1\model\CursoProfesor.class
+com\mycompany\actividad1\adapter\MySQLDatabaseAdapter.class
 ui\Pantalla$2.class
 controller\InscripcionController.class
 com\mycompany\actividad1\model\Servicios.class
 com\mycompany\actividad1\dao\ProgramaJdbcRepository.class
+com\mycompany\actividad1\factory\domain\DomainFactory.class
 ui\Pantalla$21.class
 ui\Pantalla$11.class
 ui\Pantalla$17.class
@@ -83,6 +88,7 @@ controller\PersonaController$1.class
 service\InscripcionService.class
 ui\Pantalla$33.class
 service\PersonaService.class
+com\mycompany\actividad1\factory\app\AppFactory.class
 com\mycompany\actividad1\dao\PersonaJdbcRepository.class
 controller\FacultadController$1.class
 com\mycompany\actividad1\model\Inscripcion.class

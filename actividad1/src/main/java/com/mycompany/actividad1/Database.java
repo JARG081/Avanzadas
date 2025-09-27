@@ -1,7 +1,7 @@
 package com.mycompany.actividad1;
 
 import com.mycompany.actividad1.adapter.DatabaseAdapter;
-import com.mycompany.actividad1.factory.InfraFactory;
+import com.mycompany.actividad1.factory.domain.DomainFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -9,7 +9,7 @@ public class Database {
     private static DatabaseAdapter adapter;
     
     static {
-        InfraFactory factory = new InfraFactory();
+        DomainFactory factory = new DomainFactory();
         adapter = factory.databaseAdapter();
         adapter.initDatabase();
     }

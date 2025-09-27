@@ -4,7 +4,7 @@ import com.mycompany.actividad1.model.Inscripcion;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import controller.InscripcionController;
-import com.mycompany.actividad1.factory.InfraFactory;
+import com.mycompany.actividad1.factory.app.AppFactory;
 
 
 
@@ -207,7 +207,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private Double  oldEstId   = null;
     private Integer oldAnio    = null;
     private Integer oldSem     = null;
-    private final InfraFactory factory = new InfraFactory();
+    private final AppFactory factory = new AppFactory();
     private final InscripcionController inscController = factory.inscripcionController();
     private void ingresInsfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresInsfBtnActionPerformed
             try {

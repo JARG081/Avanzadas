@@ -27,11 +27,11 @@ public class PersonaController {
 
 
     public void insertar(String id, String nombres, String apellidos, String email) {
-        service.registrar(parseDouble(id), nombres, apellidos, email); // service.registrar acepta Double
+        service.registrar(parseDouble(id), nombres, apellidos, email); 
     }
 
     public boolean actualizar(String id, String nombres, String apellidos, String email) {
-        return service.actualizar(parseDouble(id), nombres, apellidos, email); // Double → OK
+        return service.actualizar(parseDouble(id), nombres, apellidos, email); 
     }
 
     public boolean eliminar(String id) {

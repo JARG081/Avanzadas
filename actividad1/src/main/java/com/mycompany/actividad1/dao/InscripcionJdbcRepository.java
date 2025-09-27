@@ -80,7 +80,6 @@ public class InscripcionJdbcRepository implements InscripcionRepository {
     @Override
     public boolean actualizar(Inscripcion nueva,
                               Double idCursoOld, Double idEstOld, Integer anioOld, Integer semOld) {
-        // actualizar PK → delete+insert o UPDATE sobre todos los campos clave
         final String sql =
             "UPDATE inscripcion SET curso_id=?, estudiante_id=?, anio=?, semestre=? " +
             "WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=?";

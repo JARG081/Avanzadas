@@ -16,7 +16,7 @@ public class PersonaJdbcRepository implements PersonaRepository {
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setDouble(1, persona.getId());     // IDs como DOUBLE
+            ps.setDouble(1, persona.getId());    
             ps.setString(2, persona.getNombres());
             ps.setString(3, persona.getApellidos());
             ps.setString(4, persona.getEmail());

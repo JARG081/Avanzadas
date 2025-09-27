@@ -8,5 +8,5 @@ public interface ProgramaRepository {
     boolean actualizar(Programa p);
     boolean eliminar(Double id);
     Programa buscarPorId(Double id);
-    List<Programa> listar(); // join con facultad para mostrar su nombre
+    List<Programa> listar();
 }

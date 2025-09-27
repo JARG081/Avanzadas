@@ -1,17 +1,8 @@
 package com.mycompany.actividad1;
 
-import com.mycompany.actividad1.factory.InfraFactory;
-import controller.ProfesorController;
-import controller.EstudianteController;
-import controller.FacultadController;
-import controller.ProgramaController;
-import controller.CursoController;
-import controller.InscripcionController;
-import com.mycompany.actividad1.model.Persona;
-import controller.PersonaController;
-
-
-
+import com.mycompany.actividad1.factory.app.AppFactory;
+import controller.*;
+import com.mycompany.actividad1.model.*;
 
 import ui.Pantalla;
 
@@ -21,11 +12,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-
 public class Main {
 
-
-    private static final InfraFactory factory = new InfraFactory();
+    private static final AppFactory factory = new AppFactory();
     private static final PersonaController personaController = factory.personaController();
     private static final ProfesorController profesorController = factory.profesorController();
     private static final EstudianteController estudianteController = factory.estudianteController();
@@ -784,7 +773,7 @@ public class Main {
             String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
             String anio        = askNumeric(sc, "Año: ");
             String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
-            var ok = InscripcionController.insertar(cursoId, estudianteId, anio, semestre);
+            var ok = InscripcionController.insertar(cursoId, estudianteId, anio, semestre);//non static method
             System.out.println(ok ? "Inscripción creada." : "No se pudo crear.");
             inscripcionListar();
         } catch (Exception e) {
@@ -799,7 +788,7 @@ public class Main {
             String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
             String anio        = askNumeric(sc, "Año: ");
             String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
-            var i = InscripcionController.buscar(cursoId, estudianteId, anio, semestre);
+            var i = InscripcionController.buscar(cursoId, estudianteId, anio, semestre);//non static method
             if (i == null) {
                 System.out.println("No existe inscripción con esos datos");
             } else {
@@ -827,7 +816,7 @@ public class Main {
             String anioNew         = askNumeric(sc, "Año nuevo: ");
             String semestreNew     = askNumeric(sc, "Semestre nuevo: ");
 
-            boolean ok = InscripcionController.actualizar(
+            boolean ok = InscripcionController.actualizar(//non static method
                     cursoIdOld, estudianteIdOld, anioOld, semestreOld,
                     cursoIdNew, estudianteIdNew, anioNew, semestreNew);
             System.out.println(ok ? "Inscripción actualizada." : "No se pudo actualizar.");
@@ -849,7 +838,7 @@ public class Main {
                 System.out.println("Cancelado.");
                 return;
             }
-            boolean ok = InscripcionController.eliminar(cursoId, estudianteId, anio, semestre);
+            boolean ok = InscripcionController.eliminar(cursoId, estudianteId, anio, semestre);//non static method
             System.out.println(ok ? "Inscripción eliminada." : "No se pudo eliminar.");
             inscripcionListar();
         } catch (Exception e) {
@@ -858,7 +847,7 @@ public class Main {
     }
 
     private static void inscripcionListar() {
-        var modelo = InscripcionController.modeloTablaTodos();
+        var modelo = InscripcionController.modeloTablaTodos();//non static method
         System.out.println("\n=== Inscripciones en BD ===");
         if (modelo.getRowCount() == 0) { System.out.println("(sin registros)"); return; }
         for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -869,7 +858,7 @@ public class Main {
         }
     }
 
-    // ========== Helpers de entrada ==========
+
     private static String ask(Scanner sc, String prompt) {
         System.out.print(prompt);
         String s = sc.nextLine();

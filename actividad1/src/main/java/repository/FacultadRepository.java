@@ -8,5 +8,5 @@ public interface FacultadRepository {
     boolean actualizar(Facultad f);
     boolean eliminar(Double id);
     Facultad buscarPorId(Double id);
-    List<Facultad> listar();  // sugerido: con join para traer nombre del decano
+    List<Facultad> listar();
 }
