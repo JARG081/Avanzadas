@@ -18,8 +18,12 @@ public class AppFactory {
     public FacultadController facultadController()       { return new FacultadController(domain.facultadService()); }
     public ProgramaController programaController()       { return new ProgramaController(domain.programaService()); }
     public CursoController cursoController()             { return new CursoController(domain.cursoService()); }
-    public InscripcionController inscripcionController() { return new InscripcionController(domain.inscripcionService()); }
+    public CursosInscritosController cursosInscritosController(){ return new CursosInscritosController(domain.cursosInscritosService()); }
 
     public String activeDb() { return domain.getActiveDatabase(); }
     public DomainFactory domain() { return domain; } 
+
+    public CursosInscritosController inscripcionController() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

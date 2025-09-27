@@ -21,7 +21,7 @@ public class Main {
     private static final FacultadController facultadController = factory.facultadController();
     private static final ProgramaController programaController = factory.programaController();
     private static final CursoController cursoController = factory.cursoController();
-    private static final InscripcionController InscripcionController = factory.inscripcionController();
+    private static final CursosInscritosController InscripcionController = factory.inscripcionController();
 
 
     public static void main(String[] args) {

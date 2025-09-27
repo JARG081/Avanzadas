@@ -5,7 +5,7 @@ public class Facultad {
     private String nombre;
     private Persona decano;
 
-    public Facultad() {} // <-- IMPORTANTE
+    public Facultad() {}
 
     public Facultad(Double ID, String nombre, Persona decano) {
         this.ID = ID;

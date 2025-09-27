@@ -5,27 +5,24 @@ import com.mycompany.actividad1.model.Curso;
 import com.mycompany.actividad1.model.Estudiante;
 import com.mycompany.actividad1.model.Inscripcion;
 import com.mycompany.actividad1.model.Programa;
-import repository.InscripcionRepository;
+import repository.CursosInscritosRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InscripcionJdbcRepository implements InscripcionRepository {
+public class CursosInscritosJdbc implements CursosInscritosRepository {
 
     @Override
     public boolean insertar(Inscripcion insc) {
         final String sql = "INSERT INTO inscripcion (curso_id, estudiante_id, anio, semestre) VALUES (?,?,?,?)";
-        try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, insc.getCurso().getID());
             ps.setDouble(2, insc.getEstudiante().getId());
             ps.setInt(3, insc.getAnio());
             ps.setInt(4, insc.getSemestre());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error insertando inscripción", e);
-        }
+        } catch (SQLException e) { throw new RuntimeException("Error insertando inscripción", e); }
     }
 
     @Override
@@ -40,8 +37,7 @@ public class InscripcionJdbcRepository implements InscripcionRepository {
             "LEFT JOIN persona pe ON pe.id = i.estudiante_id " +
             "LEFT JOIN estudiante e ON e.id_persona = pe.id " +
             "WHERE i.curso_id=? AND i.estudiante_id=? AND i.anio=? AND i.semestre=?";
-        try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, idCurso);
             ps.setDouble(2, idEstudiante);
             ps.setInt(3, anio);
@@ -72,62 +68,49 @@ public class InscripcionJdbcRepository implements InscripcionRepository {
 
                 return new Inscripcion(cu, anio, semestre, es);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error buscando inscripción", e);
-        }
+        } catch (SQLException e) { throw new RuntimeException("Error buscando inscripción", e); }
     }
 
     @Override
-    public boolean actualizar(Inscripcion nueva,
-                              Double idCursoOld, Double idEstOld, Integer anioOld, Integer semOld) {
+    public boolean actualizar(Inscripcion nueva, Double idCursoOld, Double idEstOld, Integer anioOld, Integer semOld) {
         final String sql =
             "UPDATE inscripcion SET curso_id=?, estudiante_id=?, anio=?, semestre=? " +
             "WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=?";
-        try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, nueva.getCurso().getID());
             ps.setDouble(2, nueva.getEstudiante().getId());
             ps.setInt(3, nueva.getAnio());
             ps.setInt(4, nueva.getSemestre());
-
             ps.setDouble(5, idCursoOld);
             ps.setDouble(6, idEstOld);
             ps.setInt(7, anioOld);
             ps.setInt(8, semOld);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando inscripción", e);
-        }
+        } catch (SQLException e) { throw new RuntimeException("Error actualizando inscripción", e); }
     }
 
     @Override
     public boolean eliminar(Double idCurso, Double idEstudiante, Integer anio, Integer semestre) {
         final String sql = "DELETE FROM inscripcion WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=?";
-        try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, idCurso);
             ps.setDouble(2, idEstudiante);
             ps.setInt(3, anio);
             ps.setInt(4, semestre);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando inscripción", e);
-        }
+        } catch (SQLException e) { throw new RuntimeException("Error eliminando inscripción", e); }
     }
 
     @Override
     public boolean existe(Double idCurso, Double idEstudiante, Integer anio, Integer semestre) {
         final String sql = "SELECT 1 FROM inscripcion WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=? LIMIT 1";
-        try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, idCurso);
             ps.setDouble(2, idEstudiante);
             ps.setInt(3, anio);
             ps.setInt(4, semestre);
             try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error verificando existencia de inscripción", e);
-        }
+        } catch (SQLException e) { throw new RuntimeException("Error verificando existencia de inscripción", e); }
     }
 
     @Override
@@ -143,9 +126,7 @@ public class InscripcionJdbcRepository implements InscripcionRepository {
             "LEFT JOIN estudiante e ON e.id_persona = pe.id " +
             "ORDER BY i.anio DESC, i.semestre DESC, c.id";
         List<Inscripcion> out = new ArrayList<>();
-        try (Connection c = Database.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Curso cu = new Curso();
                 cu.setID(rs.getDouble("c_id"));
@@ -168,9 +149,7 @@ public class InscripcionJdbcRepository implements InscripcionRepository {
                 );
                 out.add(new Inscripcion(cu, rs.getInt("anio"), rs.getInt("semestre"), es));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error listando inscripciones", e);
-        }
+        } catch (SQLException e) { throw new RuntimeException("Error listando inscripciones", e); }
         return out;
     }
 }

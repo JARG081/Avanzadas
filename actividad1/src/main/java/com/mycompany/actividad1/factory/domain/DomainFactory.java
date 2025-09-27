@@ -52,7 +52,7 @@ public class DomainFactory {
     public FacultadRepository facultadRepository()       { return new FacultadJdbcRepository(); }
     public ProgramaRepository programaRepository()       { return new ProgramaJdbcRepository(); }
     public CursoRepository cursoRepository()             { return new CursoJdbcRepository(); }
-    public InscripcionRepository inscripcionRepository() { return new InscripcionJdbcRepository(); }
+    public CursosInscritosRepository cursosInscritosRepository(){ return new CursosInscritosJdbc(); }
 
     // === Services ===
     public PersonaService personaService()         { return new PersonaService(personaRepository()); }
@@ -61,5 +61,5 @@ public class DomainFactory {
     public FacultadService facultadService()       { return new FacultadService(facultadRepository()); }
     public ProgramaService programaService()       { return new ProgramaService(programaRepository()); }
     public CursoService cursoService()             { return new CursoService(cursoRepository()); }
-    public InscripcionService inscripcionService() { return new InscripcionService(inscripcionRepository()); }
+    public CursosInscritosService cursosInscritosService(){ return new CursosInscritosService(cursosInscritosRepository()); }
 }

@@ -11,6 +11,8 @@ public class Estudiante extends Persona {
         this.programa = programa;
     }
 
+    public Estudiante() {}
+
     public String getCodigo() { return codigo; }
     public void setCodigo(String codigo) { this.codigo = codigo; }
 
