@@ -1,9 +1,8 @@
 package com.mycompany.actividad1;
 
 import com.mycompany.actividad1.factory.app.AppFactory;
-import controller.*;
 import com.mycompany.actividad1.model.*;
-
+import controller.*;
 import ui.Pantalla;
 
 import javax.swing.*;
@@ -11,69 +10,77 @@ import java.awt.GraphicsEnvironment;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import ui.PantallaInscripcion;
+
 
 public class Main {
+    private static volatile ui.Pantalla UI;
+    private static volatile ui.PantallaInscripcion UI2;     
+    private static final long BOOT_T0 = System.nanoTime();
+    private static void log(String msg){
+        long ms = (System.nanoTime() - BOOT_T0) / 1_000_000;
+        System.out.println("[BOOT +" + ms + " ms] " + msg);
+    }
+    private static final boolean DEBUG = true;
+    private static void dbg(String msg){ if (DEBUG) System.out.println("[DBG] " + msg); }
+
 
     private static final AppFactory factory = new AppFactory();
-    private static final PersonaController personaController = factory.personaController();
-    private static final ProfesorController profesorController = factory.profesorController();
+    private static final PersonaController personaController       = factory.personaController();
+    private static final ProfesorController profesorController     = factory.profesorController();
     private static final EstudianteController estudianteController = factory.estudianteController();
-    private static final FacultadController facultadController = factory.facultadController();
-    private static final ProgramaController programaController = factory.programaController();
-    private static final CursoController cursoController = factory.cursoController();
-    private static final CursosInscritosController InscripcionController = factory.inscripcionController();
+    private static final FacultadController facultadController     = factory.facultadController();
+    private static final ProgramaController programaController     = factory.programaController();
+    private static final CursoController cursoController           = factory.cursoController();
+    private static final CursosInscritosController inscController  = factory.cursosInscritosController();
 
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            String a0 = args[0].toLowerCase(Locale.ROOT);
-            if ("--console".equals(a0)) { runConsoleMenus(); return; }
-            if ("--gui".equals(a0))     { launchGUI();       return; }
-        }
+        log("Iniciando aplicación… DB activa=" + factory.activeDb());
 
-        if (System.console() != null) {
-            askModeInConsole();
-        } else if (!GraphicsEnvironment.isHeadless()) {
-            askModeInDialog();
-        } else {
-            runConsoleMenus();
-        }
-        
+        // Hilo consola
+        Thread consoleThread = new Thread(() -> {
+            try {
+                if (System.console() != null || GraphicsEnvironment.isHeadless()) {
+                    log("Consola: iniciando menús…");
+                    runConsoleMenus();
+                } else {
+                    log("Consola (stdin): iniciando menús…");
+                    runConsoleMenus();
+                }
+                log("Consola: finalizada.");
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }, "console-menu");
+        consoleThread.start();
+        //Hilo GUI
+        launchGUI();
+
     }
 
-    // ========== GUI ==========
-    private static void launchGUI() {
+        // ========== GUI ==========
+        private static void launchGUI() {
+        log("Preparando GUI (EDT)...");
         SwingUtilities.invokeLater(() -> {
-            Pantalla pantalla = new Pantalla();
-            pantalla.setLocationRelativeTo(null);
-            pantalla.setVisible(true);
+            try {
+                Pantalla p = new Pantalla();
+                UI = p;
+                p.setLocationRelativeTo(null);
+                p.setVisible(true);
+
+                PantallaInscripcion w = new PantallaInscripcion();
+                UI2 = w;
+                w.setLocationRelativeTo(null);
+                w.setVisible(true);
+
+                // refresco inicial
+                if (UI  != null) UI.recargarTodo();
+                if (UI2 != null) UI2.recargarTodo();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
         });
-    }
-
-    private static void askModeInConsole() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("¿Cómo deseas iniciar la aplicación?");
-        System.out.println("[1] Interfaz gráfica");
-        System.out.println("[2] Consola (menú de clases)");
-        String opt = ask(sc, "Selecciona 1 o 2: ").trim();
-        if ("2".equals(opt)) runConsoleMenus();
-        else launchGUI();
-    }
-
-    private static void askModeInDialog() {
-        Object[] options = {"Interfaz", "Consola"};
-        int choice = JOptionPane.showOptionDialog(
-                null,
-                "¿Cómo deseas iniciar la aplicación?",
-                "Arranque",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]
-        );
-        if (choice == 1) runConsoleMenus();
-        else launchGUI();
     }
 
     // ========== MENÚS EN CONSOLA ==========
@@ -88,8 +95,7 @@ public class Main {
             System.out.println("[5] Programa");
             System.out.println("[6] Curso");
             System.out.println("[7] Inscripción");
-            System.out.println("[8] Abrir Interfaz Gráfica");
-            System.out.println("[0] Cerrar programa");
+            System.out.println("[0] Volver / Salir de la consola (la GUI sigue)");
             String op = ask(sc, "Opción: ");
 
             switch (op) {
@@ -100,12 +106,28 @@ public class Main {
                 case "5": submenuPrograma(sc); break;
                 case "6": submenuCurso(sc); break;
                 case "7": submenuInscripcion(sc); break;
-                case "8": launchGUI(); return;
-                case "0": System.out.println("¡Hasta luego!"); return;
+                case "0": return;
                 default:  System.out.println("Opción inválida.");
             }
         }
     }
+
+        private static void refreshUIAsync() {
+        Pantalla p  = UI;
+        PantallaInscripcion p2 = UI2;
+        if (p != null || p2 != null) {
+            System.out.println("[UI] refreshUIAsync() solicitado");
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    if (p  != null) { System.out.println("[UI] -> Pantalla.recargarTodo()"); p.recargarTodo(); }
+                    if (p2 != null) { System.out.println("[UI] -> PantallaInscripcion.recargarTodo()"); p2.recargarTodo(); }
+                } catch (Exception ex) {
+                    System.out.println("× Error refrescando UI: " + ex.getMessage());
+                }
+            });
+        }
+    }
+
 
 
     // ===== Persona (FUNCIONAL) =====
@@ -125,7 +147,7 @@ public class Main {
                 case "3": personaEditar(sc);  break;
                 case "4": personaEliminar(sc);break;
                 case "5": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
@@ -138,9 +160,11 @@ public class Main {
             String nombres   = askNonEmpty(sc, "Nombres: ");
             String apellidos = askNonEmpty(sc, "Apellidos: ");
             String email     = askEmail(sc, "Email: ");
-            personaController.insertar(id, nombres, apellidos, email); // <- instancia
+            personaController.insertar(id, nombres, apellidos, email);
             listarPersonas();
+            refreshUIAsync();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
     }
@@ -159,6 +183,7 @@ public class Main {
                 System.out.println("Resultado: " + p);
             }
             listarPersonas();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
@@ -183,6 +208,7 @@ public class Main {
             System.out.println(ok ? " Persona actualizada." : "× No se pudo actualizar.");
 
             listarPersonas();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
@@ -206,6 +232,7 @@ public class Main {
             boolean ok = personaController.eliminar(id);
             System.out.println(ok ? " Persona eliminada." : "× No se pudo eliminar.");
             listarPersonas();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
@@ -244,7 +271,7 @@ public class Main {
                 case "4": profesorEliminar(sc);break;
                 case "5": profesorListar();    break;
                 case "6": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
@@ -258,6 +285,7 @@ public class Main {
             profesorController.insertar(idPersona, contrato);
             System.out.println(" Profesor creado.");
             profesorListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
@@ -285,10 +313,11 @@ public class Main {
             boolean ok = profesorController.actualizar(idPersona, contrato);
             System.out.println(ok ? "Profesor actualizado." : "× No se pudo actualizar.");
             profesorListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
-    }
+}
 
     private static void profesorEliminar(Scanner sc) {
         System.out.println("\n--- Eliminar Profesor ---");
@@ -301,6 +330,7 @@ public class Main {
             boolean ok = profesorController.eliminar(idPersona);
             System.out.println(ok ? "Profesor eliminado." : "× No se pudo eliminar.");
             profesorListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
@@ -338,7 +368,7 @@ public class Main {
                 case "4": estudianteEliminar(sc);break;
                 case "5": estudianteListar();    break;
                 case "6": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
@@ -353,10 +383,11 @@ public class Main {
             estudianteController.insertar(idPersona, codigo, idPrograma);
             System.out.println(" Estudiante creado.");
             estudianteListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
-    }
+   }
 
     private static void estudianteBuscar(Scanner sc) {
         System.out.println("\n--- Buscar Estudiante ---");
@@ -369,6 +400,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void estudianteEditar(Scanner sc) {
@@ -384,9 +416,11 @@ public class Main {
             boolean ok = estudianteController.actualizar(idPersona, codigo, idPrograma);
             System.out.println(ok ? "Estudiante actualizado." : "× No se pudo actualizar.");
             estudianteListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void estudianteEliminar(Scanner sc) {
@@ -400,9 +434,11 @@ public class Main {
             boolean ok = estudianteController.eliminar(idPersona);
             System.out.println(ok ? "Estudiante eliminado." : "× No se pudo eliminar.");
             estudianteListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void estudianteListar() {
@@ -419,9 +455,9 @@ public class Main {
         } catch (Exception e) {
             System.out.println("× Error listando estudiantes: " + e.getMessage());
         }
+        
     }
 
-    // ========== Facultad (CONSOLA) ==========
     private static void submenuFacultad(Scanner sc) {
         while (true) {
             System.out.println("\n=== Facultad ===");
@@ -440,7 +476,7 @@ public class Main {
                 case "4": facultadEliminar(sc);break;
                 case "5": facultadListar();    break;
                 case "6": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
@@ -456,9 +492,11 @@ public class Main {
 
                 System.out.println("Facultad creada.");
                 facultadListar();
+                refreshUIAsync();
             } catch (Exception e) {
                 System.out.println("× Error: " + e.getMessage());
             }
+
         }
 
 
@@ -473,6 +511,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+
     }
 
     private static void facultadEditar(Scanner sc) {
@@ -487,9 +526,11 @@ public class Main {
             boolean ok = facultadController.actualizar(id, nombre, decanoId);
             System.out.println(ok ? "Facultad actualizada." : "× No se pudo actualizar.");
             facultadListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void facultadEliminar(Scanner sc) {
@@ -503,9 +544,11 @@ public class Main {
             boolean ok = facultadController.eliminar(id);
             System.out.println(ok ? "Facultad eliminada." : "× No se pudo eliminar.");
             facultadListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void facultadListar() {
@@ -520,6 +563,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("× Error listando facultades: " + e.getMessage());
         }
+        
     }
 
     // ========== Programa (CONSOLA) ==========
@@ -541,10 +585,11 @@ public class Main {
                 case "4": programaEliminar(sc);break;
                 case "5": programaListar();    break;
                 case "6": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
+        
     }
 
         private static void programaCrear(Scanner sc) {
@@ -559,9 +604,11 @@ public class Main {
 
                 System.out.println("Programa creado.");
                 programaListar();
+                refreshUIAsync();
             } catch (Exception e) {
                 System.out.println("× Error: " + e.getMessage());
             }
+            
         }
 
 
@@ -576,6 +623,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void programaEditar(Scanner sc) {
@@ -592,9 +640,11 @@ public class Main {
             boolean ok = programaController.actualizar(id, nombre, duracion, registro, idFacultad);
             System.out.println(ok ? "Programa actualizado." : "× No se pudo actualizar.");
             programaListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void programaEliminar(Scanner sc) {
@@ -608,9 +658,11 @@ public class Main {
             boolean ok = programaController.eliminar(id);
             System.out.println(ok ? "Programa eliminado." : "× No se pudo eliminar.");
             programaListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void programaListar() {
@@ -646,7 +698,7 @@ public class Main {
                 case "4": cursoEliminar(sc);break;
                 case "5": cursoListar();    break;
                 case "6": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
@@ -663,9 +715,11 @@ public class Main {
                 cursoController.insertar(id, nombre, idPrograma, activoBool);
                 System.out.println("Curso creado.");
                 cursoListar();
+                refreshUIAsync();
             } catch (Exception e) {
                 System.out.println("× Error: " + e.getMessage());
             }
+            
         }
 
 
@@ -681,6 +735,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("× Error: " + e.getMessage());
         }
+        
     }
 
     private static void cursoEditar(Scanner sc) {
@@ -703,9 +758,11 @@ public class Main {
             boolean ok = cursoController.actualizar(id, nombre, idPrograma, activoBool);
             System.out.println(ok ? "Curso actualizado." : "No se pudo actualizar.");
             cursoListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+        
     }
 
     private static void cursoEliminar(Scanner sc) {
@@ -722,9 +779,11 @@ public class Main {
             boolean ok = cursoController.eliminar(id);
             System.out.println(ok ? "Curso eliminado." : "No se pudo eliminar.");
             cursoListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+        
     }
 
     private static void cursoListar() {
@@ -760,7 +819,7 @@ public class Main {
                 case "4": inscripcionEliminar(sc);break;
                 case "5": inscripcionListar();    break;
                 case "6": return;
-                case "0": System.out.println("¡Hasta luego!"); System.exit(0);
+                case "0": System.out.println("¡Hasta luego!"); return;
                 default:  System.out.println("Opción inválida.");
             }
         }
@@ -773,9 +832,10 @@ public class Main {
             String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
             String anio        = askNumeric(sc, "Año: ");
             String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
-            var ok = InscripcionController.insertar(cursoId, estudianteId, anio, semestre);//non static method
+            var ok = inscController.insertar(cursoId, estudianteId, anio, semestre);
             System.out.println(ok ? "Inscripción creada." : "No se pudo crear.");
             inscripcionListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -788,7 +848,7 @@ public class Main {
             String estudianteId= askNumeric(sc, "ID Estudiante (entero): ");
             String anio        = askNumeric(sc, "Año: ");
             String semestre    = askNumeric(sc, "Semestre (1 o 2): ");
-            var i = InscripcionController.buscar(cursoId, estudianteId, anio, semestre);//non static method
+            var i = inscController.buscar(cursoId, estudianteId, anio, semestre);
             if (i == null) {
                 System.out.println("No existe inscripción con esos datos");
             } else {
@@ -816,11 +876,12 @@ public class Main {
             String anioNew         = askNumeric(sc, "Año nuevo: ");
             String semestreNew     = askNumeric(sc, "Semestre nuevo: ");
 
-            boolean ok = InscripcionController.actualizar(//non static method
+            boolean ok = inscController.actualizar(
                     cursoIdOld, estudianteIdOld, anioOld, semestreOld,
                     cursoIdNew, estudianteIdNew, anioNew, semestreNew);
             System.out.println(ok ? "Inscripción actualizada." : "No se pudo actualizar.");
             inscripcionListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -838,16 +899,17 @@ public class Main {
                 System.out.println("Cancelado.");
                 return;
             }
-            boolean ok = InscripcionController.eliminar(cursoId, estudianteId, anio, semestre);//non static method
+            boolean ok = inscController.eliminar(cursoId, estudianteId, anio, semestre);
             System.out.println(ok ? "Inscripción eliminada." : "No se pudo eliminar.");
             inscripcionListar();
+            refreshUIAsync();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
     private static void inscripcionListar() {
-        var modelo = InscripcionController.modeloTablaTodos();//non static method
+        var modelo = inscController.modeloTablaTodos();
         System.out.println("\n=== Inscripciones en BD ===");
         if (modelo.getRowCount() == 0) { System.out.println("(sin registros)"); return; }
         for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -860,32 +922,34 @@ public class Main {
 
 
     private static String ask(Scanner sc, String prompt) {
-        System.out.print(prompt);
-        String s = sc.nextLine();
-        return s == null ? "" : s.trim();
+    System.out.print(prompt);
+    String s = sc.nextLine();
+    return s == null ? "" : s.trim();
     }
 
     private static String askNonEmpty(Scanner sc, String prompt) {
-        String s = ask(sc, prompt);
-        while (s.isEmpty()) {
-            System.out.println("  -> Campo requerido.");
-            s = ask(sc, prompt);
-        }
-        return s;
+    String s = ask(sc, prompt);
+    while (s.isEmpty()) {
+        System.out.println("  -> Campo requerido.");
+        s = ask(sc, prompt);
+    }
+    dbg("Leído (non-empty): '" + s + "' para " + prompt);
+    return s;
     }
 
     private static String askEmail(Scanner sc, String prompt) {
-        String s = ask(sc, prompt);
-        while (s.isEmpty() || !s.contains("@")) {
-            System.out.println("  -> Email inválido.");
-            s = ask(sc, prompt);
-        }
-        return s;
+    String s = ask(sc, prompt);
+    while (s.isEmpty() || !s.contains("@")) {
+        System.out.println("  -> Email inválido.");
+        s = ask(sc, prompt);
+    }
+    dbg("Leído (email): '" + s + "'");
+    return s;
     }
 
     private static String askDefault(Scanner sc, String prompt, String def) {
         String s = ask(sc, prompt);
-        return s.isEmpty() ? def : s;
+        return null;
     }
 
     private static String askDefaultEmail(Scanner sc, String prompt, String def) {
@@ -896,7 +960,7 @@ public class Main {
             s = ask(sc, prompt);
             if (s.isEmpty()) return def;
         }
-        return s;
+        return null;
     }
 
     private static String askNumeric(Scanner sc, String prompt) {
@@ -905,7 +969,7 @@ public class Main {
             System.out.println("  -> Debe ser número entero positivo.");
             s = ask(sc, prompt);
         }
-        return s;
+        return null;
     }
     private static String askNumericDouble(Scanner sc, String prompt) {
     String s = ask(sc, prompt);
@@ -913,7 +977,9 @@ public class Main {
         System.out.println("  -> Debe ser un número (entero o decimal positivo).");
         s = ask(sc, prompt);
     }
+    dbg("ID leído: '" + s + "'");
     return s;
-}
+    }
+
 
 }

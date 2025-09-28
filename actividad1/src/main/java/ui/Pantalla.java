@@ -1860,7 +1860,21 @@ private void btnBuscarActionPerformed() {
     idPersonaE.setText("");
     codigoEst.setText("");
     idProgramaE.setText("");
-}
+    }
+    public void recargarTodo() {
+    System.out.println("[UI] Pantalla.recargarTodo()");
+    cargarTablaPers();
+    limpiarCamposPersona();
+    cargarTablaProfesores();
+    limpiarCamposProfesor();
+    cargarTablaEstudiantes();
+    limpiarCamposEstudiante();
+    cargarTablaFacu();
+    limpiarCamposFacultad();
+    cargarTablaPrograma();
+    cargarTablaCurso();
+    limpiarCamposCurso();
+    }
 
 }
 

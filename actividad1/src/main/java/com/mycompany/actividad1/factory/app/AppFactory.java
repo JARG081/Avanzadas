@@ -23,7 +23,4 @@ public class AppFactory {
     public String activeDb() { return domain.getActiveDatabase(); }
     public DomainFactory domain() { return domain; } 
 
-    public CursosInscritosController inscripcionController() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

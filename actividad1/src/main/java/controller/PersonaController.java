@@ -27,8 +27,11 @@ public class PersonaController {
 
 
     public void insertar(String id, String nombres, String apellidos, String email) {
-        service.registrar(parseDouble(id), nombres, apellidos, email); 
+        System.out.println("[DBG] PersonaController.insertar id="+id+
+            " nom="+nombres+" ape="+apellidos+" mail="+email);
+        service.registrar(parseDouble(id), nombres, apellidos, email);
     }
+
 
     public boolean actualizar(String id, String nombres, String apellidos, String email) {
         return service.actualizar(parseDouble(id), nombres, apellidos, email); 

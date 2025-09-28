@@ -22,7 +22,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
      */
     public PantallaInscripcion() {
     initComponents();
-    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); // <- clave
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setLocationRelativeTo(null);
     cargarTablaInscripciones(); 
     }
@@ -208,7 +208,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private Integer oldAnio    = null;
     private Integer oldSem     = null;
     private final AppFactory factory = new AppFactory();
-    private final CursosInscritosController inscController = factory.inscripcionController();
+    private final CursosInscritosController inscController = factory.cursosInscritosController();
     private void ingresInsfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresInsfBtnActionPerformed
             try {
                 boolean ok = inscController.insertar(
@@ -363,24 +363,29 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private javax.swing.JTable jTableIns;
     private javax.swing.JTextField semestreIns;
     // End of variables declaration//GEN-END:variables
-private void cargarTablaInscripciones() {
-    try {
-        jTableIns.setModel(inscController.modeloTablaTodos());
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Error al cargar inscripciones: " + ex.getMessage());
+    private void cargarTablaInscripciones() {
+        try {
+            jTableIns.setModel(inscController.modeloTablaTodos());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar inscripciones: " + ex.getMessage());
+        }
     }
-}
 
-private void limpiarCamposInscripcion() {
-    idCursoIns.setText("");
-    idEstudianteIns.setText("");
-    anioIns.setText("");
-    semestreIns.setText("");
-    oldCursoId = null;
-    oldEstId   = null;
-    oldAnio    = null;
-    oldSem     = null;
-}
+    private void limpiarCamposInscripcion() {
+        idCursoIns.setText("");
+        idEstudianteIns.setText("");
+        anioIns.setText("");
+        semestreIns.setText("");
+        oldCursoId = null;
+        oldEstId   = null;
+        oldAnio    = null;
+        oldSem     = null;
+    }
+    public void recargarTodo() {
+    System.out.println("[UI] PantallaInscripcion.recargarTodo()");
+    cargarTablaInscripciones();
+    limpiarCamposInscripcion();
+    }
 
 
 }

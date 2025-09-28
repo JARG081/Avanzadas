@@ -38,7 +38,6 @@ public class PersonaService {
 
     // ===== Operaciones =====
 
-    // El repo.insertar(...) es void → este método también
     public void registrar(Double id, String nombres, String apellidos, String email) {
         validarIdPositivo(id);
         validarNombreObligatorio(nombres, "Nombres");
@@ -46,7 +45,7 @@ public class PersonaService {
         validarEmailObligatorio(email);
 
         Persona p = new Persona(id, nombres.trim(), apellidos.trim(), email.trim());
-        repo.insertar(p); // void
+        repo.insertar(p);
     }
 
     public Persona buscar(Double id) {
