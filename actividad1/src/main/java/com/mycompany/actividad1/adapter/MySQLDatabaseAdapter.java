@@ -25,51 +25,56 @@ public class MySQLDatabaseAdapter implements DatabaseAdapter {
     public void initDatabase() {
         try (Connection conn = getConnection(); 
              Statement stmt = conn.createStatement()) {
-            
+          
             // Crear tablas específicas para MySQL
             stmt.execute("CREATE TABLE IF NOT EXISTS PERSONA (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "nombre VARCHAR(255), " +
-                        "edad INT)");
+                        "id DOUBLE AUTO_INCREMENT PRIMARY KEY, " +
+                        "nombres VARCHAR(100), " +
+                        "apellidos VARCHAR(100), " +
+                        "email VARCHAR(120))");
                         
             stmt.execute("CREATE TABLE IF NOT EXISTS FACULTAD (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "nombre VARCHAR(255), " +
-                        "ubicacion VARCHAR(255))");
+                        "id DOUBLE AUTO_INCREMENT PRIMARY KEY, " +
+                        "nombre VARCHAR(120), " +
+                        "id_decano DOUBLE, " +
+                        "FOREIGN KEY (id_decano) REFERENCES PERSONA(id))");
                         
             stmt.execute("CREATE TABLE IF NOT EXISTS PROGRAMA (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "nombre VARCHAR(255), " +
-                        "facultad_id INT, " +
-                        "FOREIGN KEY (facultad_id) REFERENCES FACULTAD(id))");
+                        "id DOUBLE AUTO_INCREMENT PRIMARY KEY, " +
+                        "nombre VARCHAR(120), " +
+                        "duracion DOUBLE, " +
+                        "registro DATE, " +
+                        "id_facultad DOUBLE, " +
+                        "FOREIGN KEY (id_facultad) REFERENCES FACULTAD(id))");
                         
             stmt.execute("CREATE TABLE IF NOT EXISTS PROFESOR (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "persona_id INT, " +
-                        "especialidad VARCHAR(255), " +
-                        "FOREIGN KEY (persona_id) REFERENCES PERSONA(id))");
+                        "id DOUBLE AUTO_INCREMENT PRIMARY KEY, " +
+                        "id_persona DOUBLE, " +
+                        "contrato ENUM('Trabajo', 'Servicios'), " +
+                        "FOREIGN KEY (id_persona) REFERENCES PERSONA(id))");
                         
             stmt.execute("CREATE TABLE IF NOT EXISTS ESTUDIANTE (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "persona_id INT, " +
-                        "programa_id INT, " +
-                        "semestre INT, " +
-                        "FOREIGN KEY (persona_id) REFERENCES PERSONA(id), " +
-                        "FOREIGN KEY (programa_id) REFERENCES PROGRAMA(id))");
+                        "id_persona DOUBLE PRIMARY KEY, " +
+                        "codigo DOUBLE, " +
+                        "id_programa DOUBLE, " +
+                        "activo BOOLEAN, " +
+                        "promedio DOUBLE, " +
+                        "FOREIGN KEY (id_persona) REFERENCES PERSONA(id), " +
+                        "FOREIGN KEY (id_programa) REFERENCES PROGRAMA(id))");
                         
             stmt.execute("CREATE TABLE IF NOT EXISTS CURSO (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id DOUBLE AUTO_INCREMENT PRIMARY KEY, " +
                         "nombre VARCHAR(255), " +
-                        "creditos INT, " +
-                        "programa_id INT, " +
-                        "FOREIGN KEY (programa_id) REFERENCES PROGRAMA(id))");
+                        "id_programa DOUBLE, " +
+                        "activo BOOLEAN, " +
+                        "FOREIGN KEY (id_programa) REFERENCES PROGRAMA(id))");
                         
             stmt.execute("CREATE TABLE IF NOT EXISTS INSCRIPCION (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "estudiante_id INT, " +
-                        "curso_id INT, " +
-                        "fecha_inscripcion DATE, " +
-                        "FOREIGN KEY (estudiante_id) REFERENCES ESTUDIANTE(id), " +
+                        "curso_id DOUBLE AUTO_INCREMENT PRIMARY KEY, " +
+                        "estudiante_id DOUBLE, " +
+                        "anio INT, " +
+                        "semestre INT, " +
+                        "FOREIGN KEY (estudiante_id) REFERENCES ESTUDIANTE(id_persona), " +
                         "FOREIGN KEY (curso_id) REFERENCES CURSO(id))");
                         
         } catch (SQLException e) {
