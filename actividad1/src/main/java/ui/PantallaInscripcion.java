@@ -209,44 +209,45 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     private Integer oldSem     = null;
     private final AppFactory factory = new AppFactory();
     private final CursosInscritosController inscController = factory.cursosInscritosController();
+    
+    
     private void ingresInsfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresInsfBtnActionPerformed
-            try {
-                boolean ok = inscController.insertar(
-                    idCursoIns.getText().trim(),
-                    idEstudianteIns.getText().trim(),
-                    anioIns.getText().trim(),
-                    semestreIns.getText().trim()
-                );
-                JOptionPane.showMessageDialog(this, ok ? "Inscripción registrada."
-                                                       : "No se pudo registrar la inscripción.");
-                cargarTablaInscripciones();
-                limpiarCamposInscripcion();
-            } catch (IllegalArgumentException iae) {
-                JOptionPane.showMessageDialog(this, iae.getMessage());
-            } catch (HeadlessException e) {
-                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-            }
+        try {
+            var dto = inscController.build(
+                idCursoIns.getText().trim(),
+                idEstudianteIns.getText().trim(),
+                anioIns.getText().trim(),
+                semestreIns.getText().trim()
+            );
+            boolean ok = inscController.insertar(dto);
+            JOptionPane.showMessageDialog(this, ok ? "Inscripción registrada." : "No se pudo registrar.");
+            cargarTablaInscripciones();
+            limpiarCamposInscripcion();
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
+    }
 
         private void btnBuscarActionPerformed() {
     }//GEN-LAST:event_ingresInsfBtnActionPerformed
 
     private void actuaInsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaInsBtnActionPerformed
         try {
-            if (oldCursoId == null || oldEstId == null || oldAnio == null || oldSem == null) {
+            if (oldCursoId==null || oldEstId==null || oldAnio==null || oldSem==null) {
                 JOptionPane.showMessageDialog(this, "Primero busque la inscripción a actualizar.");
                 return;
             }
-            boolean ok = inscController.actualizar(
-                String.valueOf(oldCursoId), String.valueOf(oldEstId),
-                String.valueOf(oldAnio),    String.valueOf(oldSem),
+            var oldDto = new dto.InscripcionDTO(oldCursoId, oldEstId, oldAnio, oldSem);
+            var newDto = inscController.build(
                 idCursoIns.getText().trim(),
                 idEstudianteIns.getText().trim(),
                 anioIns.getText().trim(),
                 semestreIns.getText().trim()
             );
-            JOptionPane.showMessageDialog(this, ok ? "Inscripción actualizada."
-                                                   : "No se pudo actualizar.");
+            boolean ok = inscController.actualizar(oldDto, newDto);
+            JOptionPane.showMessageDialog(this, ok ? "Inscripción actualizada." : "No se pudo actualizar.");
             cargarTablaInscripciones();
             limpiarCamposInscripcion();
         } catch (IllegalArgumentException iae) {
@@ -258,30 +259,29 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 
     private void buscainsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscainsBtnActionPerformed
         try {
-            Inscripcion i = inscController.buscar(
+            var key = inscController.build(
                 idCursoIns.getText().trim(),
                 idEstudianteIns.getText().trim(),
                 anioIns.getText().trim(),
                 semestreIns.getText().trim()
             );
-            if (i != null) {
-                idCursoIns.setText(String.valueOf(i.getCurso().getID()));
-                idEstudianteIns.setText(String.valueOf(i.getEstudiante().getId()));
-                anioIns.setText(String.valueOf(i.getAnio()));
-                semestreIns.setText(String.valueOf(i.getSemestre()));
+            var dto = inscController.buscar(key);
+            if (dto != null) {
+                idCursoIns.setText(String.valueOf(dto.getCursoId()));
+                idEstudianteIns.setText(String.valueOf(dto.getEstudianteId()));
+                anioIns.setText(String.valueOf(dto.getAnio()));
+                semestreIns.setText(String.valueOf(dto.getSemestre()));
 
-                oldCursoId = (i.getCurso() == null || i.getCurso().getID() == null)
-                            ? null
-                            : i.getCurso().getID().doubleValue();
-                oldEstId   = i.getEstudiante().getId();
-                oldAnio    = i.getAnio();
-                oldSem     = i.getSemestre();
+                oldCursoId = dto.getCursoId();
+                oldEstId   = dto.getEstudianteId();
+                oldAnio    = dto.getAnio();
+                oldSem     = dto.getSemestre();
 
                 JOptionPane.showMessageDialog(this, "Inscripción encontrada.");
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró la inscripción.");
             }
-            cargarTablaInscripciones(); // tabla siempre con todo
+            cargarTablaInscripciones();
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (HeadlessException e) {
@@ -290,55 +290,47 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     }//GEN-LAST:event_buscainsBtnActionPerformed
 
     private void delInsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delInsBtnActionPerformed
-        try {
-            // buscar para mostrar datos previos
-            Inscripcion i = inscController.buscar(
-                idCursoIns.getText().trim(),
-                idEstudianteIns.getText().trim(),
-                anioIns.getText().trim(),
-                semestreIns.getText().trim()
-            );
-            if (i == null) {
-                JOptionPane.showMessageDialog(this, "No se encontró la inscripción.");
-                return;
-            }
+            try {
+           var key = inscController.build(
+               idCursoIns.getText().trim(),
+               idEstudianteIns.getText().trim(),
+               anioIns.getText().trim(),
+               semestreIns.getText().trim()
+           );
+           var dto = inscController.buscar(key);
+           if (dto == null) {
+               JOptionPane.showMessageDialog(this, "No se encontró la inscripción.");
+               return;
+           }
+           String alumno = dto.getEstudianteNombre()==null? ("ID "+dto.getEstudianteId())
+                           : (dto.getEstudianteNombre()+" ["+dto.getEstudianteId()+"]");
+           String curso = dto.getCursoNombre()==null? ("ID "+dto.getCursoId())
+                           : (dto.getCursoNombre()+" ("+dto.getCursoId()+")");
 
-            String alumno = i.getEstudiante()==null ? "" :
-                    (i.getEstudiante().getNombres()+" "+i.getEstudiante().getApellidos()+" ["+i.getEstudiante().getId()+"]");
-            String curso = i.getCurso()==null ? "" : (i.getCurso().getNombre()+" ("+i.getCurso().getID()+")");
-
-            int opcion = JOptionPane.showConfirmDialog(
-                this,
-                "¿Eliminar esta inscripción?\n\n" +
-                "Curso: " + curso + "\n" +
-                "Estudiante: " + alumno + "\n" +
-                "Año: " + i.getAnio() + "\n" +
-                "Semestre: " + i.getSemestre(),
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-            );
-
-            if (opcion == JOptionPane.YES_OPTION) {
-                boolean ok = inscController.eliminar(
-                    String.valueOf(i.getCurso().getID()),
-                    String.valueOf(i.getEstudiante().getId()),
-                    String.valueOf(i.getAnio()),
-                    String.valueOf(i.getSemestre())
-                );
-                JOptionPane.showMessageDialog(this, ok ? "Inscripción eliminada."
-                                                       : "No se pudo eliminar.");
-                cargarTablaInscripciones();
-                limpiarCamposInscripcion();
-            } else {
-                cargarTablaInscripciones();
-            }
-
-        } catch (IllegalArgumentException iae) {
-            JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-        }
+           int opcion = JOptionPane.showConfirmDialog(
+               this,
+               "¿Eliminar esta inscripción?\n\n" +
+               "Curso: " + curso + "\n" +
+               "Estudiante: " + alumno + "\n" +
+               "Año: " + dto.getAnio() + "\n" +
+               "Semestre: " + dto.getSemestre(),
+               "Confirmar eliminación",
+               JOptionPane.YES_NO_OPTION,
+               JOptionPane.WARNING_MESSAGE
+           );
+           if (opcion == JOptionPane.YES_OPTION) {
+               boolean ok = inscController.eliminar(dto);
+               JOptionPane.showMessageDialog(this, ok ? "Inscripción eliminada." : "No se pudo eliminar.");
+               cargarTablaInscripciones();
+               limpiarCamposInscripcion();
+           } else {
+               cargarTablaInscripciones();
+           }
+       } catch (IllegalArgumentException iae) {
+           JOptionPane.showMessageDialog(this, iae.getMessage());
+       } catch (HeadlessException e) {
+           JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+       }
     }//GEN-LAST:event_delInsBtnActionPerformed
 
     private void idCursoInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idCursoInsActionPerformed
@@ -365,7 +357,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private void cargarTablaInscripciones() {
         try {
-            jTableIns.setModel(inscController.modeloTablaTodos());
+        jTableIns.setModel(inscController.modeloTablaTodos());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar inscripciones: " + ex.getMessage());
         }

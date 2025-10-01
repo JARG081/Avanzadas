@@ -1,10 +1,13 @@
 package controller;
 
 import com.mycompany.actividad1.model.Curso;
+import dto.CursoDTO;
 import service.CursoService;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.stream.Collectors;
+import mapper.CursoMapper;
 
 public class CursoController {
     private final CursoService service;
@@ -31,37 +34,43 @@ public class CursoController {
         return service.actualizar(parseId(id,"ID Curso"), nombre, parseIdNullable(idPrograma), activo);
     }
     public boolean eliminar(String id) { return service.eliminar(parseId(id,"ID Curso")); }
-    public Curso buscar(String id)     { return service.buscar(parseId(id,"ID Curso")); }
-    public List<Curso> listar()        { return service.listar(); }
+    
+    public CursoDTO buscarDTO(String id) {
+        Curso c = service.buscar(parseId(id,"ID Curso"));
+        return CursoMapper.toDTO(c);
+    }
+    public List<CursoDTO> listarDTO() {
+        return service.listar().stream().map(CursoMapper::toDTO).collect(Collectors.toList());
+    }
 
-    public DefaultTableModel modeloTablaTodos() {
+    public DefaultTableModel modeloTablaTodosDTO() {
         DefaultTableModel m = new DefaultTableModel(
             new Object[]{"ID","Nombre","Programa","Activo"}, 0) {
             @Override public boolean isCellEditable(int r,int c){return false;}
         };
-        for (Curso c : listar()) {
+        for (CursoDTO c : listarDTO()) {
             m.addRow(new Object[]{
-                c.getID(), c.getNombre(),
-                c.getPrograma()==null? "" : c.getPrograma().getNombre(),
+                c.getId(), c.getNombre(),
+                c.getProgramaNombre()!=null ? c.getProgramaNombre() :
+                    (c.getProgramaId()!=null ? c.getProgramaId() : ""),
                 c.getActivo()
             });
         }
         return m;
     }
-    public DefaultTableModel modeloTablaDe(Curso c) {
-    DefaultTableModel m = new DefaultTableModel(
-        new Object[]{"ID","Nombre","Programa","Activo"}, 0) {
-        @Override public boolean isCellEditable(int r,int col){ return false; }
-    };
-    if (c != null) {
-        m.addRow(new Object[]{
-            c.getID(),
-            c.getNombre(),
-            c.getPrograma()==null ? "" : c.getPrograma().getNombre(),
-            c.getActivo()
-        });
+    public DefaultTableModel modeloTablaDeDTO(CursoDTO c) {
+        DefaultTableModel m = new DefaultTableModel(
+            new Object[]{"ID","Nombre","Programa","Activo"}, 0) {
+            @Override public boolean isCellEditable(int r,int col){ return false; }
+        };
+        if (c != null) {
+            m.addRow(new Object[]{
+                c.getId(), c.getNombre(),
+                c.getProgramaNombre()!=null ? c.getProgramaNombre() :
+                    (c.getProgramaId()!=null ? c.getProgramaId() : ""),
+                c.getActivo()
+            });
+        }
+        return m;
     }
-    return m;
-}
-
 }

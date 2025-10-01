@@ -4,6 +4,7 @@ import com.mycompany.actividad1.dao.*;
 import com.mycompany.actividad1.factory.app.AppFactory;
 import com.mycompany.actividad1.model.*;
 import controller.*;
+import dto.CursoDTO;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import repository.PersonaRepository;
@@ -942,25 +943,22 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_nomPersonaActionPerformed
 
     private void ingresPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresPersonaBtnActionPerformed
-    try {
-        personaController.insertar(
-            idPersona.getText().trim(),
-            nomPersona.getText().trim(),
-            apePersona.getText().trim(),
-            emailPersona.getText().trim()
-        );
-        JOptionPane.showMessageDialog(this, "Persona registrada con éxito");
-        cargarTablaPers();
-        jTable1.setModel(personaController.modeloTablaTodas());
-        personaController.listar().forEach(System.out::println);
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (RuntimeException ex) { 
-        JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
-    }
-
-
-    limpiarCamposPersona();
+        try {
+            dto.PersonaDTO dto = new dto.PersonaDTO(
+                Double.valueOf(idPersona.getText().trim()),
+                nomPersona.getText().trim(),
+                apePersona.getText().trim(),
+                emailPersona.getText().trim()
+            );
+            personaController.insertar(dto);
+            JOptionPane.showMessageDialog(this, "Persona registrada con éxito");
+            jTable1.setModel(personaController.modeloTablaTodas());
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (RuntimeException ex) {
+            JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
+        }
+        limpiarCamposPersona();
     }//GEN-LAST:event_ingresPersonaBtnActionPerformed
 
     private void idPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPersonaActionPerformed
@@ -968,55 +966,41 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_idPersonaActionPerformed
 
     private void delPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delPersonaBtnActionPerformed
-    try {
-        String idTxt = idPersona.getText().trim();
-        Persona persona = personaController.buscar(idTxt);
-        if (persona == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + idTxt);
-            return;
-        }
+        try {
+            String idTxt = idPersona.getText().trim();
+            dto.PersonaDTO p = personaController.buscar(idTxt);
+            if (p == null) { JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + idTxt); return; }
 
-        jTable1.setModel(personaController.modeloTablaTodas());
-
-        int opcion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Está seguro que desea eliminar este registro?\n\n" +
-            "ID: " + persona.getId() + "\n" +
-            "Nombre: " + persona.getNombres() + "\n" +
-            "Apellido: " + persona.getApellidos() + "\n" +
-            "Email: " + persona.getEmail(),
-            "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        );
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            boolean ok = personaController.eliminar(idTxt);
-            JOptionPane.showMessageDialog(this,
-                ok ? "Se eliminó correctamente." : "No se pudo eliminar (no existe).");
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea eliminar este registro?\n\n" +
+                "ID: " + p.getId() + "\n" +
+                "Nombre: " + p.getNombres() + "\n" +
+                "Apellido: " + p.getApellidos() + "\n" +
+                "Email: " + p.getEmail(),
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            if (opcion == JOptionPane.YES_OPTION) {
+                boolean ok = personaController.eliminar(idTxt);
+                JOptionPane.showMessageDialog(this, ok ? "Se eliminó correctamente." : "No se pudo eliminar (no existe).");
+            }
             jTable1.setModel(personaController.modeloTablaTodas());
-        } else {
-            jTable1.setModel(personaController.modeloTablaTodas());
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (RuntimeException ex) {
+            JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
         }
-        cargarTablaPers();
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (RuntimeException ex) { 
-        JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());         
-        cargarTablaPers();
-    }
         limpiarCamposPersona();
     }//GEN-LAST:event_delPersonaBtnActionPerformed
 
     private void buscaPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaPersonaBtnActionPerformed
         try {
             String idTxt = idPersona.getText().trim();
-            if (idTxt.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar");
-                return;
-            }
+            if (idTxt.isEmpty()) { JOptionPane.showMessageDialog(this, "Ingrese un ID para buscar"); return; }
 
-            Persona p = personaController.buscar(idTxt);
+            dto.PersonaDTO p = personaController.buscar(idTxt);
             if (p != null) {
                 idPersona.setText(String.valueOf(p.getId()));
                 nomPersona.setText(p.getNombres());
@@ -1026,14 +1010,12 @@ public class Pantalla extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró persona con ID: " + idTxt);
             }
-            cargarTablaPers();
-
+            jTable1.setModel(personaController.modeloTablaTodas());
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (RuntimeException ex) { 
+        } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
         }
-
     }//GEN-LAST:event_buscaPersonaBtnActionPerformed
 
     private void idFacultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idFacultadActionPerformed
@@ -1041,38 +1023,32 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_idFacultadActionPerformed
 
     private void actuaPersonaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaPersonaBtnActionPerformed
-    try {
-        boolean actualizado = personaController.actualizar(
-            idPersona.getText().trim(),
-            nomPersona.getText().trim(),
-            apePersona.getText().trim(),
-            emailPersona.getText().trim()
-        );
-
-        JOptionPane.showMessageDialog(this,
-            actualizado ? "Persona actualizada con éxito" : "No se pudo actualizar la persona");
-
-        cargarTablaPers();
-        cargarTablaFacu();
-        jTable1.setModel(personaController.modeloTablaTodas());
-        personaController.listar().forEach(System.out::println);
-
+        try {
+            dto.PersonaDTO dto = new dto.PersonaDTO(
+                Double.valueOf(idPersona.getText().trim()),
+                nomPersona.getText().trim(),
+                apePersona.getText().trim(),
+                emailPersona.getText().trim()
+            );
+            boolean actualizado = personaController.actualizar(dto);
+            JOptionPane.showMessageDialog(this, actualizado ? "Persona actualizada con éxito" : "No se pudo actualizar la persona");
+            jTable1.setModel(personaController.modeloTablaTodas());
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (RuntimeException ex) { 
+        } catch (RuntimeException ex) {
             JOptionPane.showMessageDialog(this, "Error técnico: " + ex.getMessage());
         }
-
-       limpiarCamposPersona();
+        limpiarCamposPersona();
     }//GEN-LAST:event_actuaPersonaBtnActionPerformed
 
     private void ingresFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresFacuBtnActionPerformed
-        try {
-            facultadController.insertar(
+         try {
+            dto.FacultadDTO dto = facultadController.buildFromStrings(
                 idFacultad.getText().trim(),
                 nomFacultad.getText().trim(),
                 decFacultad.getText().trim()
             );
+            facultadController.insertar(dto);
             JOptionPane.showMessageDialog(this, "Facultad insertada correctamente.");
             cargarTablaFacu();
         } catch (IllegalArgumentException iae) {
@@ -1086,11 +1062,12 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void actFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actFacuBtnActionPerformed
         try {
-            boolean ok = facultadController.actualizar(
+            dto.FacultadDTO dto = facultadController.buildFromStrings(
                 idFacultad.getText().trim(),
                 nomFacultad.getText().trim(),
                 decFacultad.getText().trim()
             );
+            boolean ok = facultadController.actualizar(dto);
             JOptionPane.showMessageDialog(this, ok ? "Facultad actualizada correctamente."
                                                    : "No se pudo actualizar la facultad.");
             cargarTablaFacu();
@@ -1105,27 +1082,18 @@ public class Pantalla extends javax.swing.JFrame {
     private void buscaFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaFacuBtnActionPerformed
         try {
             String idTxt = idFacultad.getText().trim();
-            if (idTxt.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese el ID de la facultad.");
-                return;
-            }
+            if (idTxt.isEmpty()) { JOptionPane.showMessageDialog(this, "Ingrese el ID de la facultad."); return; }
 
-            Facultad f = facultadController.buscar(idTxt);
+            dto.FacultadDTO f = facultadController.buscar(idTxt);
             if (f != null) {
-                idFacultad.setText(String.valueOf(f.getID()));
+                idFacultad.setText(String.valueOf(f.getId()));
                 nomFacultad.setText(f.getNombre());
-                if (f.getDecano() != null && f.getDecano().getId() != null) {
-                    decFacultad.setText(String.valueOf(f.getDecano().getId()));
-                } else {
-                    decFacultad.setText("");
-                }
+                decFacultad.setText(f.getDecanoId()==null? "" : String.valueOf(f.getDecanoId()));
                 JOptionPane.showMessageDialog(this, "Facultad encontrada.");
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt);
             }
-
             cargarTablaFacu();
-
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception ex) {
@@ -1134,48 +1102,38 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_buscaFacuBtnActionPerformed
 
     private void delFacuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delFacuBtnActionPerformed
-    try {
-        String idTxt = idFacultad.getText().trim();
-        if (idTxt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese el ID de la facultad.");
-            return;
+        try {
+            String idTxt = idFacultad.getText().trim();
+            if (idTxt.isEmpty()) { JOptionPane.showMessageDialog(this, "Ingrese el ID de la facultad."); return; }
+
+            dto.FacultadDTO f = facultadController.buscar(idTxt);
+            if (f == null) { JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt); return; }
+
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea eliminar la facultad?\n\n" +
+                "ID: " + f.getId() + "\n" +
+                "Nombre: " + f.getNombre() + "\n" +
+                "Decano: " + (f.getDecanoNombre()==null? "(sin decano)" : f.getDecanoNombre()),
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                boolean ok = facultadController.eliminar(idTxt);
+                JOptionPane.showMessageDialog(this, ok ? "Facultad eliminada correctamente."
+                                                       : "No se pudo eliminar la facultad.");
+                cargarTablaFacu();
+            } else {
+                cargarTablaFacu();
+            }
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar: " + ex.getMessage());
         }
-
-        Facultad f = facultadController.buscar(idTxt);
-        if (f == null) {
-            JOptionPane.showMessageDialog(this, "No se encontró la facultad con ID " + idTxt);
-            return;
-        }
-
-        String decanoNom = (f.getDecano() == null) ? "(sin decano)"
-            : (f.getDecano().getNombres() + " " + f.getDecano().getApellidos());
-
-        int opcion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Está seguro que desea eliminar la facultad?\n\n" +
-            "ID: " + f.getID() + "\n" +
-            "Nombre: " + f.getNombre() + "\n" +
-            "Decano: " + decanoNom,
-            "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        );
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            boolean ok = facultadController.eliminar(idTxt);
-            JOptionPane.showMessageDialog(this, ok ? "Facultad eliminada correctamente."
-                                                   : "No se pudo eliminar la facultad.");
-            cargarTablaFacu();
-        } else {
-            cargarTablaFacu();
-        }
-
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Error al eliminar: " + ex.getMessage());
-    }
-    limpiarCamposFacultad();
+        limpiarCamposFacultad();
     }//GEN-LAST:event_delFacuBtnActionPerformed
 
     private void nomFacultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomFacultadActionPerformed
@@ -1205,25 +1163,19 @@ public class Pantalla extends javax.swing.JFrame {
     private void delProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delProgBtnActionPerformed
         try {
             String idTxt = idPrograma.getText().trim();
-            if (idTxt.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese un ID de programa para eliminar");
-                return;
-            }
+            if (idTxt.isEmpty()) { JOptionPane.showMessageDialog(this, "Ingrese un ID de programa para eliminar"); return; }
 
-            Programa programa = programaController.buscar(idTxt);
-            if (programa == null) {
-                JOptionPane.showMessageDialog(this, "No se encontró programa con ID: " + idTxt);
-                return;
-            }
+            dto.ProgramaDTO p = programaController.buscar(idTxt);
+            if (p == null) { JOptionPane.showMessageDialog(this, "No se encontró programa con ID: " + idTxt); return; }
 
             int opcion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro que desea eliminar este programa?\n\n" +
-                "ID: " + programa.getId() + "\n" +
-                "Nombre: " + programa.getNombre() + "\n" +
-                "Duración: " + programa.getDuracion() + "\n" +
-                "Facultad: " + (programa.getFacultad() == null ? "" : programa.getFacultad().getNombre()) + "\n" +
-                "Registro: " + programa.getRegistro(),
+                "ID: " + p.getId() + "\n" +
+                "Nombre: " + p.getNombre() + "\n" +
+                "Duración: " + p.getDuracion() + "\n" +
+                "Facultad: " + (p.getFacultadNombre()==null? "" : p.getFacultadNombre()) + "\n" +
+                "Registro: " + p.getRegistro(),
                 "Confirmar eliminación",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
@@ -1232,13 +1184,12 @@ public class Pantalla extends javax.swing.JFrame {
             if (opcion == JOptionPane.YES_OPTION) {
                 boolean eliminado = programaController.eliminar(idTxt);
                 JOptionPane.showMessageDialog(this,
-                    eliminado ? "Programa eliminado correctamente: " + programa.getNombre()
+                    eliminado ? "Programa eliminado correctamente: " + p.getNombre()
                               : "No se pudo eliminar. El registro ya no existe.");
                 cargarTablaPrograma();
             } else {
                 cargarTablaPrograma();
             }
-
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (Exception e) {
@@ -1250,17 +1201,16 @@ public class Pantalla extends javax.swing.JFrame {
     private void buscaProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaProgBtnActionPerformed
         try {
             String idTxt = idPrograma.getText().trim();
-            if (idTxt.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Ingrese el ID del programa.");
-                return;
-            }
-            Programa prog = programaController.buscar(idTxt);
-            if (prog != null) {
-                nomPrograma.setText(prog.getNombre());
-                durPrograma.setText(String.valueOf(prog.getDuracion()));
-                regPrograma.setText(prog.getRegistro().toString());
-                facPrograma.setText(prog.getFacultad() == null ? "" : String.valueOf(prog.getFacultad().getID()));
+            if (idTxt.isEmpty()) { JOptionPane.showMessageDialog(this, "Ingrese el ID del programa."); return; }
+
+            dto.ProgramaDTO p = programaController.buscar(idTxt);
+            if (p != null) {
+                nomPrograma.setText(p.getNombre());
+                durPrograma.setText(String.valueOf(p.getDuracion()));
+                regPrograma.setText(p.getRegistro());
+                facPrograma.setText(p.getIdFacultad()==null? "" : String.valueOf(p.getIdFacultad()));
                 JOptionPane.showMessageDialog(this, "Programa encontrado.");
+                jTable3.setModel(programaController.modeloTablaDe(p));
             } else {
                 JOptionPane.showMessageDialog(this, "Programa no encontrado.");
                 cargarTablaPrograma();
@@ -1274,13 +1224,14 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void actProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actProgBtnActionPerformed
         try {
-            boolean ok = programaController.actualizar(
+            dto.ProgramaDTO dto = programaController.buildFromStrings(
                 idPrograma.getText().trim(),
                 nomPrograma.getText().trim(),
                 durPrograma.getText().trim(),
                 regPrograma.getText().trim(),
                 facPrograma.getText().trim()
             );
+            boolean ok = programaController.actualizar(dto);
             JOptionPane.showMessageDialog(this, ok ? "Programa actualizado correctamente."
                                                    : "No se pudo actualizar el programa.");
             cargarTablaPrograma();
@@ -1294,13 +1245,14 @@ public class Pantalla extends javax.swing.JFrame {
 
     private void ingresProgBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresProgBtnActionPerformed
         try {
-            programaController.insertar(
+            dto.ProgramaDTO dto = programaController.buildFromStrings(
                 idPrograma.getText().trim(),
                 nomPrograma.getText().trim(),
                 durPrograma.getText().trim(),
                 regPrograma.getText().trim(),
                 facPrograma.getText().trim()
             );
+            programaController.insertar(dto);
             JOptionPane.showMessageDialog(this, "Programa insertado correctamente.");
             cargarTablaPrograma();
         } catch (IllegalArgumentException iae) {
@@ -1362,9 +1314,10 @@ public class Pantalla extends javax.swing.JFrame {
                 return;
             }
 
-            com.mycompany.actividad1.model.Curso curso = cursoController.buscar(idTexto);
-            if (curso != null) {
-                jTable4.setModel(cursoController.modeloTablaDe(curso));
+            //DTO
+            CursoDTO dto = cursoController.buscarDTO(idTexto);
+            if (dto != null) {
+                jTable4.setModel(cursoController.modeloTablaDeDTO(dto));
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró curso con ID: " + idTexto);
                 cargarTablaCurso();
@@ -1377,42 +1330,42 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_buscaCursoBtnActionPerformed
 
     private void delCursoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delCursoBtnActionPerformed
-    try {
+        try {
         String idTxt = idCurso.getText().trim();
         if (idTxt.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un ID de curso para eliminar");
             return;
         }
-
-        Curso curso = cursoController.buscar(idTxt); 
-        if (curso == null) {
+        // buscar con DTO
+        CursoDTO dto = cursoController.buscarDTO(idTxt);
+        if (dto == null) {
             JOptionPane.showMessageDialog(this, "No se encontró curso con ID: " + idTxt);
             return;
         }
 
         String progInfo;
-        if (curso.getPrograma() == null) {
-            progInfo = "(sin programa)";
-        } else if (curso.getPrograma().getNombre() != null) {
-            progInfo = curso.getPrograma().getNombre() + " (ID: " + curso.getPrograma().getId() + ")";
+        if (dto.getProgramaNombre() != null && !dto.getProgramaNombre().isBlank()) {
+            progInfo = dto.getProgramaNombre() + (dto.getProgramaId() != null ? " (ID: " + dto.getProgramaId() + ")" : "");
+        } else if (dto.getProgramaId() != null) {
+            progInfo = "ID: " + dto.getProgramaId();
         } else {
-            progInfo = "ID: " + curso.getPrograma().getId();
+            progInfo = "(sin programa)";
         }
 
         int opcion = JOptionPane.showConfirmDialog(
             this,
             "¿Está seguro que desea eliminar este curso?\n\n" +
-            "ID: " + curso.getID() + "\n" +
-            "Nombre: " + curso.getNombre() + "\n" +
+            "ID: " + dto.getId() + "\n" +
+            "Nombre: " + (dto.getNombre()) + "\n" +
             "Programa: " + progInfo + "\n" +
-            "Activo: " + (Boolean.TRUE.equals(curso.getActivo()) ? "Sí" : "No"),
+            "Activo: " + (Boolean.TRUE.equals(dto.getActivo()) ? "Sí" : "No"),
             "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION,
+            JOptionPane.YES_NO_OPTION,  
             JOptionPane.WARNING_MESSAGE
         );
 
         if (opcion == JOptionPane.YES_OPTION) {
-            boolean eliminado = cursoController.eliminar(idTxt); 
+            boolean eliminado = cursoController.eliminar(idTxt);
             JOptionPane.showMessageDialog(this,
                 eliminado ? "Curso eliminado correctamente."
                           : "No se pudo eliminar. El registro ya no existe.");
@@ -1451,44 +1404,45 @@ public class Pantalla extends javax.swing.JFrame {
     }//GEN-LAST:event_contratoProfesorActionPerformed
 
     private void ingresProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresProfBtnActionPerformed
-    try {
-            profesorController.insertar(
-            idPersonaP.getText().trim(),
-            contratoProfesor.getSelectedItem()
-        );
-        JOptionPane.showMessageDialog(this, "Profesor insertado correctamente.");
-                cargarTablaProfesores();
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (RuntimeException rex) { 
-        String msg = "Error al insertar profesor: " + mensajeError(rex);
-        JOptionPane.showMessageDialog(this, msg);
-    }
+        try {
+            String idTxt = idPersonaP.getText().trim();
+            String contrato = String.valueOf(contratoProfesor.getSelectedItem()).trim();
 
-    limpiarCamposProfesor();
+            dto.ProfesorDTO dto = new dto.ProfesorDTO(Double.valueOf(idTxt), contrato);
+            profesorController.insertar(dto);
+
+            JOptionPane.showMessageDialog(this, "Profesor insertado correctamente.");
+            cargarTablaProfesores();
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (RuntimeException rex) {
+            JOptionPane.showMessageDialog(this, "Error al insertar profesor: " + rex.getMessage());
+        }
+        limpiarCamposProfesor();
 }
 
-
+/*
 private void btnBuscarActionPerformed() {
     }//GEN-LAST:event_ingresProfBtnActionPerformed
-
+*/
     private void actuaProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaProfBtnActionPerformed
-    try {
-        boolean ok = profesorController.actualizar(
-            idPersonaP.getText().trim(),
-            contratoProfesor.getSelectedItem()
-        );
-        JOptionPane.showMessageDialog(this,
-            ok ? "Profesor actualizado correctamente."
-               : "Error al actualizar profesor.");
-        cargarTablaProfesores();
+        try {
+            String idTxt = idPersonaP.getText().trim();
+            String contrato = String.valueOf(contratoProfesor.getSelectedItem()).trim();
 
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (HeadlessException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
-    limpiarCamposProfesor();
+            dto.ProfesorDTO dto = new dto.ProfesorDTO(Double.valueOf(idTxt), contrato);
+            boolean ok = profesorController.actualizar(dto);
+
+            JOptionPane.showMessageDialog(this,
+                ok ? "Profesor actualizado correctamente." : "Error al actualizar profesor.");
+
+            cargarTablaProfesores();
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+        limpiarCamposProfesor();
     }//GEN-LAST:event_actuaProfBtnActionPerformed
 
     private void buscaProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaProfBtnActionPerformed
@@ -1499,7 +1453,7 @@ private void btnBuscarActionPerformed() {
                 return;
             }
 
-            Profesor profesor = profesorController.buscar(idTxt);
+            dto.ProfesorDTO profesor = profesorController.buscar(idTxt);
             if (profesor != null) {
                 idPersonaP.setText(String.valueOf(profesor.getIdPersona()));
                 contratoProfesor.setSelectedItem(profesor.getContrato());
@@ -1508,7 +1462,7 @@ private void btnBuscarActionPerformed() {
                 JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
             }
 
-            cargarTablaProfesores(); 
+            cargarTablaProfesores();
         } catch (IllegalArgumentException iae) {
             JOptionPane.showMessageDialog(this, iae.getMessage());
         } catch (HeadlessException e) {
@@ -1517,53 +1471,49 @@ private void btnBuscarActionPerformed() {
     }//GEN-LAST:event_buscaProfBtnActionPerformed
 
     private void delProfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delProfBtnActionPerformed
-    try {
-        String idTxt = idPersonaP.getText().trim();
-        if (idTxt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese un ID de persona.");
-            return;
+        try {
+            String idTxt = idPersonaP.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un ID de persona.");
+                return;
+            }
+
+            dto.ProfesorDTO profesor = profesorController.buscar(idTxt);
+            if (profesor == null) {
+                JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
+                return;
+            }
+
+            String nombres = profesor.getNombres() == null ? "" : profesor.getNombres();
+            String apellidos = profesor.getApellidos() == null ? "" : profesor.getApellidos();
+
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea eliminar este registro?\n\n" +
+                "ID Persona: " + profesor.getIdPersona() + "\n" +
+                "Contrato: " + profesor.getContrato() +
+                ((nombres.isEmpty() && apellidos.isEmpty()) ? "" : ("\nNombre: " + nombres + " " + apellidos)),
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                boolean ok = profesorController.eliminar(idTxt);
+                JOptionPane.showMessageDialog(this,
+                    ok ? "Profesor eliminado correctamente."
+                       : "Error al eliminar profesor.");
+                cargarTablaProfesores();
+            } else {
+                cargarTablaProfesores();
+            }
+
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-
-        Profesor profesor = profesorController.buscar(idTxt);
-        if (profesor == null) {
-            JOptionPane.showMessageDialog(this, "Profesor no encontrado.");
-            return;
-        }
-
-        String nombres = "";
-        String apellidos = "";
-        if (profesor.getPersona() != null) {
-            nombres = profesor.getPersona().getNombres();
-            apellidos = profesor.getPersona().getApellidos();
-        }
-
-        int opcion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Está seguro que desea eliminar este registro?\n\n" +
-            "ID Persona: " + profesor.getIdPersona() + "\n" +
-            "Contrato: " + profesor.getContrato() +
-            ((nombres.isEmpty() && apellidos.isEmpty()) ? "" : ("\nNombre: " + nombres + " " + apellidos)),
-            "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        );
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            boolean ok = profesorController.eliminar(idTxt);
-            JOptionPane.showMessageDialog(this,
-                ok ? "Profesor eliminado correctamente."
-                   : "Error al eliminar profesor.");
-            cargarTablaProfesores();
-        } else {
-            cargarTablaProfesores();
-        }
-
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (HeadlessException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
-    limpiarCamposProfesor();
+        limpiarCamposProfesor();
     }//GEN-LAST:event_delProfBtnActionPerformed
 
     private void idPersonaEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idPersonaEActionPerformed
@@ -1572,11 +1522,14 @@ private void btnBuscarActionPerformed() {
 
     private void ingresEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresEstBtnActionPerformed
         try {
-            estudianteController.insertar(
-                idPersonaE.getText().trim(),
-                codigoEst.getText().trim(),
-                idProgramaE.getText().trim()
-            );
+            Double idPers = Double.valueOf(idPersonaE.getText().trim());
+            String codigo = codigoEst.getText().trim();
+            String progTxt = idProgramaE.getText().trim();
+            Double idProg = progTxt.isEmpty()? null : Double.valueOf(progTxt);
+
+            dto.EstudianteDTO dto = new dto.EstudianteDTO(idPers, codigo, idProg);
+            estudianteController.insertar(dto);
+
             JOptionPane.showMessageDialog(this, "Estudiante insertado correctamente.");
             cargarTablaEstudiantes();
             limpiarCamposEstudiante();
@@ -1588,91 +1541,98 @@ private void btnBuscarActionPerformed() {
     }//GEN-LAST:event_ingresEstBtnActionPerformed
 
     private void actuaEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaEstBtnActionPerformed
-           try {
-        boolean ok = estudianteController.actualizar(
-            idPersonaE.getText().trim(),
-            codigoEst.getText().trim(),
-            idProgramaE.getText().trim()
-        );
-        JOptionPane.showMessageDialog(this, ok ? "Estudiante actualizado correctamente."
-                                               : "No se pudo actualizar el estudiante.");
-        cargarTablaEstudiantes();
-        limpiarCamposEstudiante();
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (HeadlessException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
+        try {
+            Double idPers = Double.valueOf(idPersonaE.getText().trim());
+            String codigo = codigoEst.getText().trim();
+            String progTxt = idProgramaE.getText().trim();
+            Double idProg = progTxt.isEmpty()? null : Double.valueOf(progTxt);
+
+            dto.EstudianteDTO dto = new dto.EstudianteDTO(idPers, codigo, idProg);
+            boolean ok = estudianteController.actualizar(dto);
+
+            JOptionPane.showMessageDialog(this, ok ? "Estudiante actualizado correctamente."
+                                                   : "No se pudo actualizar el estudiante.");
+            cargarTablaEstudiantes();
+            limpiarCamposEstudiante();
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_actuaEstBtnActionPerformed
 
     private void buscaEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaEstBtnActionPerformed
-            try {
-        String idTxt = idPersonaE.getText().trim();
-        if (idTxt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese ID de persona.");
-            return;
+        try {
+            String idTxt = idPersonaE.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese ID de persona.");
+                return;
+            }
+            dto.EstudianteDTO e = estudianteController.buscar(idTxt);
+            if (e != null) {
+                idPersonaE.setText(String.valueOf(e.getIdPersona()));
+                codigoEst.setText(e.getCodigo());
+                idProgramaE.setText(e.getIdPrograma()==null? "" : String.valueOf(e.getIdPrograma()));
+                JOptionPane.showMessageDialog(this, "Estudiante encontrado.");
+                jTable2.setModel(estudianteController.modeloTablaDe(e));
+            } else {
+                JOptionPane.showMessageDialog(this, "No existe Estudiante con ese ID de persona.");
+                cargarTablaEstudiantes();
+            }
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-        Estudiante e = estudianteController.buscar(idTxt);
-        if (e != null) {
-            idPersonaE.setText(String.valueOf(e.getId()));
-            codigoEst.setText(e.getCodigo());
-            idProgramaE.setText(e.getPrograma() == null ? "" : String.valueOf(e.getPrograma().getId()));
-            JOptionPane.showMessageDialog(this, "Estudiante encontrado.");
-        } else {
-            JOptionPane.showMessageDialog(this, "No existe Estudiante con ese ID de persona.");
-        }
-        cargarTablaEstudiantes();
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (HeadlessException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_buscaEstBtnActionPerformed
 
     private void delEstBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delEstBtnActionPerformed
-            try {
-        String idTxt = idPersonaE.getText().trim();
-        if (idTxt.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Ingrese ID de persona.");
-            return;
+        try {
+            String idTxt = idPersonaE.getText().trim();
+            if (idTxt.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese ID de persona.");
+                return;
+            }
+
+            dto.EstudianteDTO e = estudianteController.buscar(idTxt);
+            if (e == null) {
+                JOptionPane.showMessageDialog(this, "No existe Estudiante con ese ID de persona.");
+                return;
+            }
+
+            String progNombre = (e.getProgramaNombre()==null || e.getProgramaNombre().isBlank())
+                    ? (e.getIdPrograma()==null ? "(sin programa)" : "ID: "+e.getIdPrograma())
+                    : e.getProgramaNombre();
+
+            int opcion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Eliminar este estudiante?\n\n" +
+                "ID Persona: " + e.getIdPersona() + "\n" +
+                "Nombre: " + (e.getNombres()==null? "" : e.getNombres()) + " " +
+                             (e.getApellidos()==null? "" : e.getApellidos()) + "\n" +
+                "Email: " + (e.getEmail()==null? "" : e.getEmail()) + "\n" +
+                "Código: " + e.getCodigo() + "\n" +
+                "Programa: " + progNombre,
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                boolean ok = estudianteController.eliminar(idTxt);
+                JOptionPane.showMessageDialog(this, ok ? "Estudiante eliminado."
+                                                       : "No se pudo eliminar.");
+                cargarTablaEstudiantes();
+                limpiarCamposEstudiante();
+            } else {
+                cargarTablaEstudiantes();
+            }
+
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(this, iae.getMessage());
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-
-        Estudiante e = estudianteController.buscar(idTxt);
-        if (e == null) {
-            JOptionPane.showMessageDialog(this, "No existe Estudiante con ese ID de persona.");
-            return;
-        }
-
-        String progNombre = (e.getPrograma() == null) ? "(sin programa)" : e.getPrograma().getNombre();
-
-        int opcion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Eliminar este estudiante?\n\n" +
-            "ID Persona: " + e.getId() + "\n" +
-            "Nombre: " + e.getNombres() + " " + e.getApellidos() + "\n" +
-            "Email: " + e.getEmail() + "\n" +
-            "Código: " + e.getCodigo() + "\n" +
-            "Programa: " + progNombre,
-            "Confirmar eliminación",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
-        );
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            boolean ok = estudianteController.eliminar(idTxt);
-            JOptionPane.showMessageDialog(this, ok ? "Estudiante eliminado."
-                                                   : "No se pudo eliminar.");
-            cargarTablaEstudiantes();
-            limpiarCamposEstudiante();
-        } else {
-            cargarTablaEstudiantes();
-        }
-
-    } catch (IllegalArgumentException iae) {
-        JOptionPane.showMessageDialog(this, iae.getMessage());
-    } catch (HeadlessException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
     }//GEN-LAST:event_delEstBtnActionPerformed
 
     private void inscripcionesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inscripcionesBtnActionPerformed
@@ -1822,7 +1782,7 @@ private void btnBuscarActionPerformed() {
 
 
     private void cargarTablaCurso() {
-        jTable4.setModel(cursoController.modeloTablaTodos());
+        jTable4.setModel(cursoController.modeloTablaTodosDTO());
     }
 
 

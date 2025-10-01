@@ -1,14 +1,16 @@
+// src/main/java/controller/ProfesorController.java
 package controller;
 
-import service.ProfesorService;
 import com.mycompany.actividad1.model.Profesor;
+import dto.ProfesorDTO;
+import mapper.ProfesorMapper;
+import service.ProfesorService;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class ProfesorController {
     private final ProfesorService service;
-
     public ProfesorController(ProfesorService service) { this.service = service; }
 
     private static Double parseId(String s) {
@@ -19,27 +21,31 @@ public class ProfesorController {
             return v;
         } catch (NumberFormatException e) { throw new IllegalArgumentException("ID Persona inválido"); }
     }
-    private static String normalize(Object o){ return o==null? "" : o.toString().trim(); }
+    private static String norm(Object o){ return o==null? "" : o.toString().trim(); }
 
-    public void insertar(String idPersonaTxt, Object contratoComboValue) {
-        String contrato = normalize(contratoComboValue);
+    // ===== CRUD DTO =====
+    public void insertar(ProfesorDTO dto) {
+        String contrato = norm(dto.getContrato());
         if (contrato.isBlank()) throw new IllegalArgumentException("Debe seleccionar un contrato.");
-        service.registrar(parseId(idPersonaTxt), contrato);
+        service.registrar(dto.getIdPersona(), contrato);
     }
-    public boolean actualizar(String idPersonaTxt, Object contratoComboValue) {
-        String contrato = normalize(contratoComboValue);
+    public boolean actualizar(ProfesorDTO dto) {
+        String contrato = norm(dto.getContrato());
         if (contrato.isBlank()) throw new IllegalArgumentException("Debe seleccionar un contrato.");
-        return service.actualizar(parseId(idPersonaTxt), contrato);
+        return service.actualizar(dto.getIdPersona(), contrato);
     }
     public boolean eliminar(String idPersonaTxt) { return service.eliminar(parseId(idPersonaTxt)); }
-    public Profesor buscar(String idPersonaTxt)   { return service.buscar(parseId(idPersonaTxt)); }
-    public List<Profesor> listar()                { return service.listar(); }
+    public ProfesorDTO buscar(String idPersonaTxt) {
+        Profesor m = service.buscar(parseId(idPersonaTxt));
+        return ProfesorMapper.toDTO(m);
+    }
+    public List<ProfesorDTO> listar() { return ProfesorMapper.toDTOs(service.listar()); }
 
     public DefaultTableModel modeloTablaTodos() {
         DefaultTableModel m = new DefaultTableModel(new Object[]{"ID Persona","Contrato"}, 0) {
             @Override public boolean isCellEditable(int r,int c){ return false; }
         };
-        for (Profesor p : listar()) m.addRow(new Object[]{ p.getId(), p.getContrato() });
+        for (ProfesorDTO p : listar()) m.addRow(new Object[]{ p.getIdPersona(), p.getContrato() });
         return m;
     }
 }
