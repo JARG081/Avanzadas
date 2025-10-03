@@ -17,6 +17,7 @@ public class Main {
     private static volatile ui.Pantalla UI;
     private static volatile ui.PantallaInscripcion UI2;     
     private static final long BOOT_T0 = System.nanoTime();
+    
     private static void log(String msg){
         long ms = (System.nanoTime() - BOOT_T0) / 1_000_000;
         System.out.println("[BOOT +" + ms + " ms] " + msg);
@@ -37,51 +38,98 @@ public class Main {
 
     public static void main(String[] args) {
         log("Iniciando aplicación… DB activa=" + factory.activeDb());
+          factory.cursoService().addObserver(curso -> {
+            final String prog = (curso.getPrograma()!=null)
+                ? (curso.getPrograma().getNombre()!=null && !curso.getPrograma().getNombre().isBlank()
+                    ? curso.getPrograma().getNombre()
+                    : String.valueOf(curso.getPrograma().getId()))
+                : "(sin programa)";
 
-        // Hilo consola
-        Thread consoleThread = new Thread(() -> {
-            try {
-                if (System.console() != null || GraphicsEnvironment.isHeadless()) {
-                    log("Consola: iniciando menús…");
-                    runConsoleMenus();
-                } else {
-                    log("Consola (stdin): iniciando menús…");
-                    runConsoleMenus();
+            System.out.println("→ Curso registrado: ID=" + curso.getID()
+                + ", Nombre=" + curso.getNombre()
+                + ", Programa=" + prog
+                + ", Activo=" + (Boolean.TRUE.equals(curso.getActivo()) ? "Sí" : "No"));
+
+            javax.swing.SwingUtilities.invokeLater(() -> {
+              try {
+                if (UI != null) {
+                  javax.swing.JOptionPane.showMessageDialog(
+                      UI,
+                      "Curso registrado:\n" +
+                      "ID: " + curso.getID() + "\n" +
+                      "Nombre: " + curso.getNombre() + "\n" +
+                      "Programa: " + prog + "\n" +
+                      "Activo: " + (Boolean.TRUE.equals(curso.getActivo()) ? "Sí" : "No"));
+                  UI.recargarTodo();
                 }
-                log("Consola: finalizada.");
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-        }, "console-menu");
-        consoleThread.start();
-        //Hilo GUI
-        launchGUI();
+                if (UI2 != null) UI2.recargarTodo();
+              } catch (Exception ex) {
+                System.out.println("[OBS] Error refrescando UI: " + ex.getMessage());
+              }
+            });
+          });
 
-    }
+            // Hilo consola
+            Thread consoleThread = new Thread(() -> {
+                try {
+                    if (System.console() != null || GraphicsEnvironment.isHeadless()) {
+                        log("Consola: iniciando menús…");
+                        runConsoleMenus();
+                    } else {
+                        log("Consola (stdin): iniciando menús…");
+                        runConsoleMenus();
+                    }
+                    log("Consola: finalizada.");
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }, "console-menu");
+            consoleThread.start();
+            //Hilo GUI
+            launchGUI();
 
-        // ========== GUI ==========
+        }
+
+            // ========== GUI ==========
         private static void launchGUI() {
-        log("Preparando GUI (EDT)...");
-        SwingUtilities.invokeLater(() -> {
-            try {
-                Pantalla p = new Pantalla();
+            log("Preparando GUI (EDT)...");
+            SwingUtilities.invokeLater(() -> {
+              try {
+                // Instancia única de controladores desde la misma factory
+                Pantalla p = new Pantalla(
+                    factory.personaController(),
+                    factory.profesorController(),
+                    factory.facultadController(),
+                    factory.programaController(),
+                    factory.cursoController(),
+                    factory.estudianteController()
+                );
                 UI = p;
+                p.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                 p.setLocationRelativeTo(null);
                 p.setVisible(true);
 
-                PantallaInscripcion w = new PantallaInscripcion();
+                PantallaInscripcion w = new PantallaInscripcion(
+                    factory.personaController(),
+                    factory.profesorController(),
+                    factory.facultadController(),
+                    factory.programaController(),
+                    factory.cursoController(),
+                    factory.estudianteController()
+                );
                 UI2 = w;
+                w.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
                 w.setLocationRelativeTo(null);
                 w.setVisible(true);
 
-                // refresco inicial
                 if (UI  != null) UI.recargarTodo();
                 if (UI2 != null) UI2.recargarTodo();
-            } catch (Throwable t) {
+              } catch (Throwable t) {
                 t.printStackTrace();
-            }
-        });
-    }
+              }
+            });
+          }
+
 
     // ========== MENÚS EN CONSOLA ==========
     private static void runConsoleMenus() {

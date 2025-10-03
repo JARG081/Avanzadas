@@ -94,6 +94,7 @@ ui\Pantalla$2.class
 com\mycompany\actividad1\dao\ProgramaJdbcRepository.class
 com\mycompany\actividad1\factory\domain\DomainFactory.class
 ui\Pantalla$21.class
+Observer\CursoObserver.class
 ui\Pantalla$11.class
 repository\CursosInscritosRepository.class
 dto\InscripcionesPersonasDTO.class

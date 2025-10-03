@@ -2,7 +2,6 @@ package ui;
 
 import com.mycompany.actividad1.dao.*;
 import com.mycompany.actividad1.factory.app.AppFactory;
-import com.mycompany.actividad1.model.*;
 import controller.*;
 import dto.CursoDTO;
 import java.awt.HeadlessException;
@@ -16,18 +15,33 @@ import service.PersonaService;
  * @author josem
  */
 public class Pantalla extends javax.swing.JFrame {
-    private PersonaController personaController;
+    
+    private final PersonaController    personaController;
+    private final ProfesorController   profesorController;
+    private final FacultadController   facultadController;
+    private final ProgramaController   programaController;
+    private final CursoController      cursoController;
+    private final EstudianteController estudianteController;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Pantalla.class.getName());
 
     /**
      * Creates new form Pantalla
      */
-    public Pantalla() {
+    public Pantalla(PersonaController personaController,
+        ProfesorController profesorController,
+        FacultadController facultadController,
+        ProgramaController programaController,
+        CursoController cursoController,
+        EstudianteController estudianteController) {
+        
+        this.personaController    = personaController;
+        this.profesorController   = profesorController;
+        this.facultadController   = facultadController;
+        this.programaController   = programaController;
+        this.cursoController      = cursoController;
+        this.estudianteController = estudianteController;
         initComponents();
-        PersonaRepository repo = new PersonaJdbcRepository();
-        PersonaService service = new PersonaService(repo);
-        personaController = new PersonaController(service);
         cargarTablaPers();
         cargarTablaFacu();
         cargarTablaPrograma();
@@ -35,14 +49,13 @@ public class Pantalla extends javax.swing.JFrame {
         cargarTablaProfesores();
         cargarTablaEstudiantes();
     }
-    
-    private static final AppFactory factory = new AppFactory();
 
-    private final ProfesorController   profesorController   = factory.profesorController();
-    private final FacultadController   facultadController   = factory.facultadController();
-    private final ProgramaController   programaController   = factory.programaController();
-    private final CursoController      cursoController      = factory.cursoController();  
-    private final EstudianteController estudianteController = factory.estudianteController();   
+    public Pantalla() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    //private static final AppFactory factory = new AppFactory();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

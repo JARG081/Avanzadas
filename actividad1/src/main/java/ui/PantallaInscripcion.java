@@ -5,6 +5,12 @@ import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import controller.CursosInscritosController;
 import com.mycompany.actividad1.factory.app.AppFactory;
+import controller.CursoController;
+import controller.EstudianteController;
+import controller.FacultadController;
+import controller.PersonaController;
+import controller.ProfesorController;
+import controller.ProgramaController;
 
 
 
@@ -25,6 +31,10 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setLocationRelativeTo(null);
     cargarTablaInscripciones(); 
+    }
+
+    public PantallaInscripcion(PersonaController personaController, ProfesorController profesorController, FacultadController facultadController, ProgramaController programaController, CursoController cursoController, EstudianteController estudianteController) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
