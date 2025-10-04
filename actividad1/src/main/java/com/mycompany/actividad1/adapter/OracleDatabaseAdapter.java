@@ -10,10 +10,20 @@ public class OracleDatabaseAdapter implements DatabaseAdapter {
     private final String user;
     private final String password;
 
-    public OracleDatabaseAdapter(String url, String user, String password) {
+    private static OracleDatabaseAdapter instance;
+
+    private OracleDatabaseAdapter(String url, String user, String password) {
+        System.out.println("[OracleDatabaseAdapter] Instancia creada");
         this.url = url;
         this.user = user;
         this.password = password;
+    }
+
+    public static synchronized OracleDatabaseAdapter getInstance(String url, String user, String password) {
+        if (instance == null) {
+            instance = new OracleDatabaseAdapter(url, user, password);
+        }
+        return instance;
     }
 
     @Override
@@ -85,5 +95,19 @@ public class OracleDatabaseAdapter implements DatabaseAdapter {
     @Override
     public String getDatabaseType() {
         return "Oracle";
+    }
+
+    @Override
+    public String getServerTime() {
+        try (Connection conn = getConnection();
+             java.sql.Statement stmt = conn.createStatement();
+             java.sql.ResultSet rs = stmt.executeQuery("SELECT CURRENT_TIMESTAMP FROM dual")) {
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "(error obteniendo hora)";
     }
 }

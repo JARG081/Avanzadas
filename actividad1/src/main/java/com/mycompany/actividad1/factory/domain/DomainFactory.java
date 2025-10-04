@@ -15,13 +15,25 @@ public class DomainFactory {
 
     private static Properties loadProps() {
         Properties p = new Properties();
-        try (InputStream in = DomainFactory.class.getClassLoader()
+        
+        // Cargar configuraciones de base de datos
+        try (InputStream dbIn = DomainFactory.class.getClassLoader()
                 .getResourceAsStream("database.properties")) {
-            if (in == null) throw new RuntimeException("No se pudo encontrar database.properties");
-            p.load(in);
+            if (dbIn == null) throw new RuntimeException("No se pudo encontrar database.properties");
+            p.load(dbIn);
         } catch (IOException e) {
             throw new RuntimeException("Error cargando database.properties", e);
         }
+        
+        // Cargar configuración de BD activa
+        try (InputStream configIn = DomainFactory.class.getClassLoader()
+                .getResourceAsStream("configurationDB.properties")) {
+            if (configIn == null) throw new RuntimeException("No se pudo encontrar configurationDB.properties");
+            p.load(configIn);
+        } catch (IOException e) {
+            throw new RuntimeException("Error cargando configurationDB.properties", e);
+        }
+        
         return p;
     }
 
@@ -29,15 +41,15 @@ public class DomainFactory {
     public DatabaseAdapter databaseAdapter() {
         String activeDb = properties.getProperty("database.active", "h2").toLowerCase();
         return switch (activeDb) {
-            case "h2" -> new H2DatabaseAdapter(
+            case "h2" -> H2DatabaseAdapter.getInstance(
                     properties.getProperty("h2.url"),
                     properties.getProperty("h2.user"),
                     properties.getProperty("h2.password"));
-            case "mysql" -> new MySQLDatabaseAdapter(
+            case "mysql" -> MySQLDatabaseAdapter.getInstance(
                     properties.getProperty("mysql.url"),
                     properties.getProperty("mysql.user"),
                     properties.getProperty("mysql.password"));
-            case "oracle" -> new OracleDatabaseAdapter(
+            case "oracle" -> OracleDatabaseAdapter.getInstance(
                     properties.getProperty("oracle.url"),
                     properties.getProperty("oracle.user"),
                     properties.getProperty("oracle.password"));

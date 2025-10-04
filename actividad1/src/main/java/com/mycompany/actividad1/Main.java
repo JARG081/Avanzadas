@@ -38,6 +38,7 @@ public class Main {
 
     public static void main(String[] args) {
         log("Iniciando aplicación… DB activa=" + factory.activeDb());
+        log("Hora del servidor: " + factory.domain().databaseAdapter().getServerTime());
           factory.cursoService().addObserver(curso -> {
             final String prog = (curso.getPrograma()!=null)
                 ? (curso.getPrograma().getNombre()!=null && !curso.getPrograma().getNombre().isBlank()

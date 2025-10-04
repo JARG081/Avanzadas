@@ -10,10 +10,20 @@ public class MySQLDatabaseAdapter implements DatabaseAdapter {
     private final String user;
     private final String password;
 
-    public MySQLDatabaseAdapter(String url, String user, String password) {
+    private static MySQLDatabaseAdapter instance;
+
+    private MySQLDatabaseAdapter(String url, String user, String password) {
+        System.out.println("[MySQLDatabaseAdapter] Instancia creada");
         this.url = url;
         this.user = user;
         this.password = password;
+    }
+
+    public static synchronized MySQLDatabaseAdapter getInstance(String url, String user, String password) {
+        if (instance == null) {
+            instance = new MySQLDatabaseAdapter(url, user, password);
+        }
+        return instance;
     }
 
     @Override
@@ -85,5 +95,19 @@ public class MySQLDatabaseAdapter implements DatabaseAdapter {
     @Override
     public String getDatabaseType() {
         return "MySQL";
+    }
+
+    @Override
+    public String getServerTime() {
+        try (Connection conn = getConnection();
+             java.sql.Statement stmt = conn.createStatement();
+             java.sql.ResultSet rs = stmt.executeQuery("SELECT NOW()")) {
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "(error obteniendo hora)";
     }
 }

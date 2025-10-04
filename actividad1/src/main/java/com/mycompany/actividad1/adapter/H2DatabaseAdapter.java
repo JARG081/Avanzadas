@@ -10,10 +10,20 @@ public class H2DatabaseAdapter implements DatabaseAdapter {
     private final String user;
     private final String password;
 
-    public H2DatabaseAdapter(String url, String user, String password) {
+    private static H2DatabaseAdapter instance;
+
+    private H2DatabaseAdapter(String url, String user, String password) {
+        System.out.println("[H2DatabaseAdapter] Instancia creada");
         this.url = url;
         this.user = user;
         this.password = password;
+    }
+
+    public static synchronized H2DatabaseAdapter getInstance(String url, String user, String password) {
+        if (instance == null) {
+            instance = new H2DatabaseAdapter(url, user, password);
+        }
+        return instance;
     }
 
     @Override
@@ -80,5 +90,19 @@ public class H2DatabaseAdapter implements DatabaseAdapter {
     @Override
     public String getDatabaseType() {
         return "H2";
+    }
+
+    @Override
+    public String getServerTime() {
+        try (Connection conn = getConnection();
+             java.sql.Statement stmt = conn.createStatement();
+             java.sql.ResultSet rs = stmt.executeQuery("SELECT CURRENT_TIMESTAMP()")) {
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "(error obteniendo hora)";
     }
 }

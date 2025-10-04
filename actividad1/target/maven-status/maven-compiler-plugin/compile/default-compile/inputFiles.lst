@@ -1,67 +1,67 @@
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\FacultadDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\EstudianteMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\OracleDatabaseAdapter.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\ProgramaRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\ProgramaJdbcRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\ProfesorJdbcRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\EstudianteDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\FacultadMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\PersonaController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\CursosInscritosService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Facultad.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\FacultadRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\ProgramaController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\InscripcionesPersonas.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\PersonaRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\H2DatabaseAdapter.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\factory\app\AppFactory.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\CursoProfesor.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\ProgramaService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\Database.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\Observer\CursoObserver.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\CursoController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\CursoJdbcRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\EstudianteController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Profesor.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\FacultadController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\ui\Pantalla.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\ProfesorDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\CursoProfesorDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\InscripcionesPersonasDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\PersonaMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Programa.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Persona.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\CursosInscritosJdbc.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\InscripcionDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\InscripcionesMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\CursosInscritosController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\FacultadService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\ui\PantallaInscripcion.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\CursoMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Estudiante.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\controller\ProfesorController.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\MySQLDatabaseAdapter.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\DatabaseAdapter.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\EstudianteService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\ProfesorRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\factory\domain\DomainFactory.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\CursosInscritos.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\PersonaJdbcRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Inscripcion.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\ProfesorService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\CursoDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\EstudianteRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\InscripcionMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\ProgramaMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\FacultadJdbcRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\CursoService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\ProgramaDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\mapper\ProfesorMapper.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\CursosInscritosDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\dto\PersonaDTO.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\service\PersonaService.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\EstudianteJdbcRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\Main.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Curso.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\CursoRepository.java
-C:\Users\josem\Desktop\repoAvanzadas\Avanzadas4\Avanzadas\actividad1\src\main\java\repository\CursosInscritosRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\CursosInscritos.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\ProgramaMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\ProgramaService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\PersonaService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\PersonaJdbcRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\Observer\CursoObserver.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Facultad.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\FacultadMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\EstudianteService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\FacultadRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\OracleDatabaseAdapter.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\ProgramaJdbcRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\CursoProfesorDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\FacultadController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\ProfesorMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\CursoController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Estudiante.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\PersonaController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\FacultadService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Persona.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Profesor.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\CursosInscritosDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\EstudianteMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\CursoJdbcRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\InscripcionDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\CursosInscritosJdbc.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\ProgramaDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\ProgramaController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\CursoDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\CursoProfesor.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\ProgramaRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\InscripcionesMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\EstudianteRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Inscripcion.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\FacultadJdbcRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\CursosInscritosController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\CursoService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\CursosInscritosService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\service\ProfesorService.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\InscripcionMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\DatabaseAdapter.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\MySQLDatabaseAdapter.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\PersonaRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\ui\Pantalla.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Programa.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\PersonaMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\PersonaDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\factory\domain\DomainFactory.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\EstudianteDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\ProfesorDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\factory\app\AppFactory.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\Main.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\mapper\CursoMapper.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\InscripcionesPersonasDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\dto\FacultadDTO.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\Curso.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\ProfesorRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\ProfesorController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\EstudianteJdbcRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\model\InscripcionesPersonas.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\dao\ProfesorJdbcRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\Database.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\CursoRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\repository\CursosInscritosRepository.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\controller\EstudianteController.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\com\mycompany\actividad1\adapter\H2DatabaseAdapter.java
+C:\Users\PRINCESO\Documents\Universidad\Tecnologías avanzadas\Avanzadas5\Avanzadas\actividad1\src\main\java\ui\PantallaInscripcion.java
