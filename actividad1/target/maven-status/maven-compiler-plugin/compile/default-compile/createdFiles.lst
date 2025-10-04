@@ -51,6 +51,7 @@ controller\CursosInscritosController$1.class
 controller\EstudianteController.class
 repository\PersonaRepository.class
 service\CursosInscritosService.class
+ui\Observer.class
 com\mycompany\actividad1\model\Facultad.class
 ui\Pantalla$7.class
 ui\Pantalla$39.class
@@ -118,6 +119,7 @@ com\mycompany\actividad1\dao\CursoJdbcRepository.class
 controller\ProgramaController$1.class
 ui\Pantalla$10.class
 service\EstudianteService.class
+ui\PantallaInscripcion$6.class
 com\mycompany\actividad1\dao\FacultadJdbcRepository.class
 controller\FacultadController.class
 ui\Pantalla$28.class

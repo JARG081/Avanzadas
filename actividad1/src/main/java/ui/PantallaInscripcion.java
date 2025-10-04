@@ -1,6 +1,5 @@
 package ui;
 
-import com.mycompany.actividad1.model.Inscripcion;
 import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import controller.CursosInscritosController;
@@ -12,26 +11,36 @@ import controller.PersonaController;
 import controller.ProfesorController;
 import controller.ProgramaController;
 
-
-
-
 /**
  *
  * @author josem
  */
 public class PantallaInscripcion extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PantallaInscripcion.class.getName());
+    // Campos (sin inicializador)
+    private final AppFactory factory;
+    private final CursosInscritosController inscController;
+
+    private Double  oldCursoId = null;
+    private Double  oldEstId   = null;
+    private Integer oldAnio    = null;
+    private Integer oldSem     = null;
+
+
 
     /**
      * Creates new form PantallaInscripcion
      */
-    public PantallaInscripcion() {
+    public PantallaInscripcion(AppFactory factory) {
+    this.factory = factory;
+    this.inscController = factory.cursosInscritosController();
+
     initComponents();
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setLocationRelativeTo(null);
-    cargarTablaInscripciones(); 
-    }
+    cargarTablaInscripciones();
+    
+}
+
 
     public PantallaInscripcion(PersonaController personaController, ProfesorController profesorController, FacultadController facultadController, ProgramaController programaController, CursoController cursoController, EstudianteController estudianteController) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -115,6 +124,12 @@ public class PantallaInscripcion extends javax.swing.JFrame {
             }
         });
 
+        idEstudianteIns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idEstudianteInsActionPerformed(evt);
+            }
+        });
+
         jLabel24.setText("Id Curso");
 
         jLabel25.setText("Id Estudiante");
@@ -128,47 +143,44 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
+                        .addGap(136, 136, 136)
                         .addComponent(jLabel20))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(44, 44, 44)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ingresInsfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel25)
-                                .addGap(4, 4, 4)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel27, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(185, 185, 185)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(anioIns, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                            .addComponent(idEstudianteIns, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(idCursoIns)
+                            .addComponent(semestreIns)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(ingresInsfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(actuaInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buscainsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(idCursoIns)
-                            .addComponent(idEstudianteIns)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(delInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(anioIns)
-                            .addComponent(semestreIns))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addComponent(delInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel20)
-                .addGap(52, 52, 52)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(idCursoIns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,16 +189,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(anioIns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(semestreIns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ingresInsfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buscainsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(delInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(actuaInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))
+                        .addComponent(semestreIns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addGap(9, 9, 9)
@@ -194,8 +197,16 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel27)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel26)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jLabel26)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ingresInsfBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buscainsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(delInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(actuaInsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(122, 122, 122)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -204,7 +215,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,13 +224,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private Double  oldCursoId = null;
-    private Double  oldEstId   = null;
-    private Integer oldAnio    = null;
-    private Integer oldSem     = null;
-    private final AppFactory factory = new AppFactory();
-    private final CursosInscritosController inscController = factory.cursosInscritosController();
-    
+
     
     private void ingresInsfBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresInsfBtnActionPerformed
         try {
@@ -239,32 +244,33 @@ public class PantallaInscripcion extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }
-
-        private void btnBuscarActionPerformed() {
+/*
+    private void btnBuscarActionPerformed() {
+            
     }//GEN-LAST:event_ingresInsfBtnActionPerformed
-
+*/
     private void actuaInsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actuaInsBtnActionPerformed
-        try {
-            if (oldCursoId==null || oldEstId==null || oldAnio==null || oldSem==null) {
-                JOptionPane.showMessageDialog(this, "Primero busque la inscripción a actualizar.");
-                return;
-            }
-            var oldDto = new dto.InscripcionDTO(oldCursoId, oldEstId, oldAnio, oldSem);
-            var newDto = inscController.build(
-                idCursoIns.getText().trim(),
-                idEstudianteIns.getText().trim(),
-                anioIns.getText().trim(),
-                semestreIns.getText().trim()
-            );
-            boolean ok = inscController.actualizar(oldDto, newDto);
-            JOptionPane.showMessageDialog(this, ok ? "Inscripción actualizada." : "No se pudo actualizar.");
-            cargarTablaInscripciones();
-            limpiarCamposInscripcion();
-        } catch (IllegalArgumentException iae) {
-            JOptionPane.showMessageDialog(this, iae.getMessage());
-        } catch (HeadlessException e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+     try {
+        if (oldCursoId==null || oldEstId==null || oldAnio==null || oldSem==null) {
+            JOptionPane.showMessageDialog(this, "Primero busque la inscripción a actualizar.");
+            return;
         }
+        var oldDto = new dto.InscripcionDTO(oldCursoId, oldEstId, oldAnio, oldSem);
+        var newDto = inscController.build(
+            idCursoIns.getText().trim(),
+            idEstudianteIns.getText().trim(),
+            anioIns.getText().trim(),
+            semestreIns.getText().trim()
+        );
+        boolean ok = inscController.actualizar(oldDto, newDto);
+        JOptionPane.showMessageDialog(this, ok ? "Inscripción actualizada." : "No se pudo actualizar.");
+        cargarTablaInscripciones();
+        limpiarCamposInscripcion();
+    } catch (IllegalArgumentException iae) {
+        JOptionPane.showMessageDialog(this, iae.getMessage());
+    } catch (HeadlessException e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
     }//GEN-LAST:event_actuaInsBtnActionPerformed
 
     private void buscainsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscainsBtnActionPerformed
@@ -281,12 +287,10 @@ public class PantallaInscripcion extends javax.swing.JFrame {
                 idEstudianteIns.setText(String.valueOf(dto.getEstudianteId()));
                 anioIns.setText(String.valueOf(dto.getAnio()));
                 semestreIns.setText(String.valueOf(dto.getSemestre()));
-
                 oldCursoId = dto.getCursoId();
                 oldEstId   = dto.getEstudianteId();
                 oldAnio    = dto.getAnio();
                 oldSem     = dto.getSemestre();
-
                 JOptionPane.showMessageDialog(this, "Inscripción encontrada.");
             } else {
                 JOptionPane.showMessageDialog(this, "No se encontró la inscripción.");
@@ -347,6 +351,10 @@ public class PantallaInscripcion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_idCursoInsActionPerformed
 
+    private void idEstudianteInsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idEstudianteInsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idEstudianteInsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actuaInsBtn;
     private javax.swing.JTextField anioIns;
@@ -388,6 +396,7 @@ public class PantallaInscripcion extends javax.swing.JFrame {
     cargarTablaInscripciones();
     limpiarCamposInscripcion();
     }
+
 
 
 }

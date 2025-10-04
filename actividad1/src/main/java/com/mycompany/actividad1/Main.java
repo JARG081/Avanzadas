@@ -94,42 +94,31 @@ public class Main {
         private static void launchGUI() {
             log("Preparando GUI (EDT)...");
             SwingUtilities.invokeLater(() -> {
-              try {
-                // Instancia única de controladores desde la misma factory
-                Pantalla p = new Pantalla(
-                    factory.personaController(),
-                    factory.profesorController(),
-                    factory.facultadController(),
-                    factory.programaController(),
-                    factory.cursoController(),
-                    factory.estudianteController()
-                );
-                UI = p;
-                p.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-                p.setLocationRelativeTo(null);
-                p.setVisible(true);
+                try {
+                    // private static final AppFactory factory = new AppFactory();
 
-                PantallaInscripcion w = new PantallaInscripcion(
-                    factory.personaController(),
-                    factory.profesorController(),
-                    factory.facultadController(),
-                    factory.programaController(),
-                    factory.cursoController(),
-                    factory.estudianteController()
-                );
-                UI2 = w;
-                w.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-                w.setLocationRelativeTo(null);
-                w.setVisible(true);
+                    Pantalla p = new Pantalla(factory);
+                    UI = p;
+                    p.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                    p.setLocationRelativeTo(null);
+                    p.setVisible(true);
 
-                if (UI  != null) UI.recargarTodo();
-                if (UI2 != null) UI2.recargarTodo();
-              } catch (Throwable t) {
-                t.printStackTrace();
-              }
+                    PantallaInscripcion w = new PantallaInscripcion(factory);
+                    UI2 = w;
+                    w.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+                    w.setLocationRelativeTo(null);
+                    w.setVisible(true);
+                    
+                    ui.Observer obs = new ui.Observer(factory);
+                    obs.setLocationRelativeTo(null);
+                    obs.setVisible(true);
+                    
+                    if (UI  != null) UI.recargarTodo();
+                    if (UI2 != null) UI2.recargarTodo();
+                } catch (Throwable t) {
+                }
             });
-          }
-
+        }
 
     // ========== MENÚS EN CONSOLA ==========
     private static void runConsoleMenus() {
