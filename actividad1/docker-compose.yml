@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: universidad-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "1234"        # tu pwd
+      MYSQL_DATABASE: "universidad"      # tu DB
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3307:3306"                      # host:cont
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p1234"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  oracle:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: universidad-oracle
+    environment:
+      ORACLE_PASSWORD: "1234"            # SYS/SYSTEM
+      ORACLE_DATABASE: "orcl"            # PDB/servicio = orcl
+    ports:
+      - "1522:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./oracle-init:/container-entrypoint-initdb.d  # crea usuario root/1234
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM dual;' | sqlplus -s system/1234@localhost:1521/orcl || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+
+volumes:
+  mysql_data:
+  oracle_data:
