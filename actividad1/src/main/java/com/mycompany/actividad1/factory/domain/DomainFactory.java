@@ -15,8 +15,6 @@ public class DomainFactory {
 
     private static Properties loadProps() {
         Properties p = new Properties();
-        
-        // Cargar configuraciones de base de datos
         try (InputStream dbIn = DomainFactory.class.getClassLoader()
                 .getResourceAsStream("database.properties")) {
             if (dbIn == null) throw new RuntimeException("No se pudo encontrar database.properties");
@@ -24,8 +22,6 @@ public class DomainFactory {
         } catch (IOException e) {
             throw new RuntimeException("Error cargando database.properties", e);
         }
-        
-        // Cargar configuración de BD activa
         try (InputStream configIn = DomainFactory.class.getClassLoader()
                 .getResourceAsStream("configurationDB.properties")) {
             if (configIn == null) throw new RuntimeException("No se pudo encontrar configurationDB.properties");
@@ -68,7 +64,6 @@ public class DomainFactory {
     public FacultadRepository facultadRepository() { return new FacultadJdbcRepository(); }
     public ProgramaRepository programaRepository() { return new ProgramaJdbcRepository(); }
 
-    // Curso repositorio SINGLETON
     private final CursoRepository cursoRepo = new CursoJdbcRepository();
     public CursoRepository cursoRepository() { return cursoRepo; }
 
@@ -81,7 +76,6 @@ public class DomainFactory {
     public FacultadService facultadService() { return new FacultadService(facultadRepository()); }
     public ProgramaService programaService() { return new ProgramaService(programaRepository()); }
 
-    // Curso service SINGLETON (usa repo compartido)
     private final CursoService cursoSrv = new CursoService(cursoRepo);
     public CursoService cursoService() { return cursoSrv; }
 

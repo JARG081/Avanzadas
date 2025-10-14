@@ -15,7 +15,7 @@ public class CursoController {
     public CursoController(CursoService service) { this.service = service; }
 
     private static Double parseId(String s, String campo){
-        if (s==null || s.isBlank()) throw new IllegalArgumentException(campo+" es obligatorio");
+        if (s==null || s.isBlank()) throw new IllegalArgumentException(campo+" es obligatorio, msj desde controller");
         try{
             Double v = Double.valueOf(s.trim());
             if (v < 0) throw new IllegalArgumentException(campo+" debe ser positivo");
@@ -58,6 +58,7 @@ public class CursoController {
         }
         return m;
     }
+    public int serviceHash() { return System.identityHashCode(this.service); }
     public DefaultTableModel modeloTablaDeDTO(CursoDTO c) {
         DefaultTableModel m = new DefaultTableModel(
             new Object[]{"ID","Nombre","Programa","Activo"}, 0) {

@@ -32,8 +32,6 @@ public class AppFactory {
     public CursosInscritosController cursosInscritosController() {
         return new CursosInscritosController(domain.cursosInscritosService());
     }
-
-    // acceso directo al mismo cursoService con observers
     public CursoService cursoService() { return domain.cursoService(); }
 
     public String activeDb() { return domain.getActiveDatabase(); }

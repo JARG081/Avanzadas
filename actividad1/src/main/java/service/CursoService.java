@@ -20,9 +20,6 @@ public class CursoService {
     public void addObserver(CursoObserver o){ if(o!=null) observers.add(o); }
     public void removeObserver(CursoObserver o){ observers.remove(o); }
 
-    private void notifyCursoCreado(Curso c){
-        for (CursoObserver o : observers) o.onCursoCreado(c);
-    }
     
     private static void validarIdPos(Double id) {
         if (id == null || id < 0) throw new IllegalArgumentException("ID de curso inválido");
@@ -30,6 +27,7 @@ public class CursoService {
     private static void validarNombre(String s) {
         if (s == null || s.isBlank()) throw new IllegalArgumentException("Nombre es obligatorio");
     }
+
 
     public Curso registrar(Double id, String nombre, Double idPrograma, boolean activo) {
         validarIdPos(id);
@@ -49,6 +47,16 @@ public class CursoService {
         notifyCursoCreado(c);
         return c;
     }
+
+    private void notifyCursoCreado(Curso c){
+        for (CursoObserver o : observers) {
+            try {
+                o.onCursoCreado(c);
+            } catch (Throwable t) {
+            }
+        }
+    }
+
 
     public boolean actualizar(Double id, String nombre, Double idPrograma, boolean activo) {
         validarIdPos(id);

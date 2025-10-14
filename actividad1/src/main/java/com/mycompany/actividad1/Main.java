@@ -4,6 +4,7 @@ import com.mycompany.actividad1.factory.app.AppFactory;
 import controller.*;
 import dto.CursoDTO;
 import ui.Pantalla;
+import Observer.ConsoleCursoObserver;
 
 import javax.swing.*;
 import java.awt.GraphicsEnvironment;
@@ -27,6 +28,10 @@ public class Main {
 
 
     private static final AppFactory factory = new AppFactory();
+    static {
+    factory.cursoService().addObserver(new Observer.ConsoleCursoObserver());
+    }
+    
     private static final PersonaController personaController       = factory.personaController();
     private static final ProfesorController profesorController     = factory.profesorController();
     private static final EstudianteController estudianteController = factory.estudianteController();
@@ -34,42 +39,11 @@ public class Main {
     private static final ProgramaController programaController     = factory.programaController();
     private static final CursoController cursoController           = factory.cursoController();
     private static final CursosInscritosController inscController  = factory.cursosInscritosController();
-
+    
 
     public static void main(String[] args) {
         log("Iniciando aplicación… DB activa=" + factory.activeDb());
         log("Hora del servidor: " + factory.domain().databaseAdapter().getServerTime());
-          factory.cursoService().addObserver(curso -> {
-            final String prog = (curso.getPrograma()!=null)
-                ? (curso.getPrograma().getNombre()!=null && !curso.getPrograma().getNombre().isBlank()
-                    ? curso.getPrograma().getNombre()
-                    : String.valueOf(curso.getPrograma().getId()))
-                : "(sin programa)";
-
-            System.out.println("→ Curso registrado: ID=" + curso.getID()
-                + ", Nombre=" + curso.getNombre()
-                + ", Programa=" + prog
-                + ", Activo=" + (Boolean.TRUE.equals(curso.getActivo()) ? "Sí" : "No"));
-
-            javax.swing.SwingUtilities.invokeLater(() -> {
-              try {
-                if (UI != null) {
-                  javax.swing.JOptionPane.showMessageDialog(
-                      UI,
-                      "Curso registrado:\n" +
-                      "ID: " + curso.getID() + "\n" +
-                      "Nombre: " + curso.getNombre() + "\n" +
-                      "Programa: " + prog + "\n" +
-                      "Activo: " + (Boolean.TRUE.equals(curso.getActivo()) ? "Sí" : "No"));
-                  UI.recargarTodo();
-                }
-                if (UI2 != null) UI2.recargarTodo();
-              } catch (Exception ex) {
-                System.out.println("[OBS] Error refrescando UI: " + ex.getMessage());
-              }
-            });
-          });
-
             // Hilo consola
             Thread consoleThread = new Thread(() -> {
                 try {
@@ -161,21 +135,21 @@ public class Main {
         }
     }
 
-        private static void refreshUIAsync() {
-        Pantalla p  = UI;
-        PantallaInscripcion p2 = UI2;
-        if (p != null || p2 != null) {
-            System.out.println("[UI] refreshUIAsync() solicitado");
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    if (p  != null) { System.out.println("[UI] -> Pantalla.recargarTodo()"); p.recargarTodo(); }
-                    if (p2 != null) { System.out.println("[UI] -> PantallaInscripcion.recargarTodo()"); p2.recargarTodo(); }
-                } catch (Exception ex) {
-                    System.out.println("× Error refrescando UI: " + ex.getMessage());
-                }
-            });
-        }
+    private static void refreshUIAsync() {
+    Pantalla p  = UI;
+    PantallaInscripcion p2 = UI2;
+    if (p != null || p2 != null) {
+        System.out.println("[UI] refreshUIAsync() solicitado");
+        SwingUtilities.invokeLater(() -> {
+            try {
+                if (p  != null) { System.out.println("[UI] -> Pantalla.recargarTodo()"); p.recargarTodo(); }
+                if (p2 != null) { System.out.println("[UI] -> PantallaInscripcion.recargarTodo()"); p2.recargarTodo(); }
+            } catch (Exception ex) {
+                System.out.println("× Error refrescando UI: " + ex.getMessage());
+            }
+        });
     }
+}
 
 
 
@@ -712,138 +686,145 @@ public class Main {
 
 
    // ========== Curso (CONSOLA) ==========
-private static void submenuCurso(Scanner sc) {
-    while (true) {
-        System.out.println("\n=== Curso ===");
-        System.out.println("[1] Crear");
-        System.out.println("[2] Buscar");
-        System.out.println("[3] Editar");
-        System.out.println("[4] Eliminar");
-        System.out.println("[5] Listar todos");
-        System.out.println("[6] Volver");
-        System.out.println("[0] Cerrar programa");
-        String op = ask(sc, "Opción: ");
-        switch (op) {
-            case "1": cursoCrear(sc);   break;
-            case "2": cursoBuscar(sc);  break;
-            case "3": cursoEditar(sc);  break;
-            case "4": cursoEliminar(sc);break;
-            case "5": cursoListar();    break;
-            case "6": return;
-            case "0": System.out.println("¡Hasta luego!"); return;
-            default:  System.out.println("Opción inválida.");
+    private static void submenuCurso(Scanner sc) {
+        while (true) {
+            System.out.println("\n=== Curso ===");
+            System.out.println("[1] Crear");
+            System.out.println("[2] Buscar");
+            System.out.println("[3] Editar");
+            System.out.println("[4] Eliminar");
+            System.out.println("[5] Listar todos");
+            System.out.println("[6] Volver");
+            System.out.println("[0] Cerrar programa");
+            String op = ask(sc, "Opción: ");
+            switch (op) {
+                case "1": cursoCrear(sc);   break;
+                case "2": cursoBuscar(sc);  break;
+                case "3": cursoEditar(sc);  break;
+                case "4": cursoEliminar(sc);break;
+                case "5": cursoListar();    break;
+                case "6": return;
+                case "0": System.out.println("¡Hasta luego!"); return;
+                default:  System.out.println("Opción inválida.");
+            }
         }
     }
-}
 
-private static void cursoCrear(Scanner sc) {
-    System.out.println("\n--- Crear Curso ---");
-    try {
-        String id = askNumericDouble(sc, "ID (entero): ");
-        String nombre = askNonEmpty(sc, "Nombre: ");
-        String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
-        String activo = ask(sc, "¿Activo? (S/N): ").trim().toLowerCase(Locale.ROOT);
-        boolean activoBool = activo.equals("s") || activo.equals("si") || activo.equals("sí");
+    private static void cursoCrear(Scanner sc) {
+        System.out.println("\n--- Crear Curso ---");
+        try {
+            String id = askNumericDouble(sc, "ID (entero): ");
+            String nombre = askNonEmpty(sc, "Nombre: ");
+            String idPrograma = ask(sc, "ID Programa (opcional, Enter para dejar vacío): ").trim();
+            String activo = ask(sc, "¿Activo? (S/N): ").trim().toLowerCase(Locale.ROOT);
+            boolean activoBool = activo.equals("s") || activo.equals("si") || activo.equals("sí");
 
-        cursoController.insertar(id, nombre, idPrograma, activoBool);
-        System.out.println("Curso creado.");
-        cursoListar();
-        refreshUIAsync();
-    } catch (Exception e) {
-        System.out.println("× Error: " + e.getMessage());
+            cursoController.insertar(id, nombre, idPrograma, activoBool);
+            System.out.println("Curso creado.");
+            cursoListar();
+            refreshUIAsync();
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
+        }
     }
-}
 
-private static void cursoBuscar(Scanner sc) {
-    System.out.println("\n--- Buscar Curso ---");
-    try {
-        String id = askNumericDouble(sc, "ID (entero): ");
-        CursoDTO dto = cursoController.buscarDTO(id);
-        if (dto == null) {
-            System.out.println("No existe curso con ID " + id);
-        } else {
-            System.out.println("Resultado:");
-            System.out.println(" - ID: " + dto.getId());
-            System.out.println(" - Nombre: " + dto.getNombre());
-            System.out.println(" - Programa: " + (dto.getProgramaNombre()==null? "" : dto.getProgramaNombre()));
-            System.out.println(" - Activo: " + (Boolean.TRUE.equals(dto.getActivo()) ? "Sí" : "No"));
+    private static void cursoBuscar(Scanner sc) {
+        System.out.println("\n--- Buscar Curso ---");
+        try {
+            String id = askNumericDouble(sc, "ID (entero): ");
+            CursoDTO dto = cursoController.buscarDTO(id);
+            if (dto == null) {
+                System.out.println("No existe curso con ID " + id);
+            } else {
+                System.out.println("Resultado:");
+                System.out.println(" - ID: " + dto.getId());
+                System.out.println(" - Nombre: " + dto.getNombre());
+                System.out.println(" - Programa: " + (dto.getProgramaNombre()==null? "" : dto.getProgramaNombre()));
+                System.out.println(" - Activo: " + (Boolean.TRUE.equals(dto.getActivo()) ? "Sí" : "No"));
+            }
+        } catch (Exception e) {
+            System.out.println("× Error: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.out.println("× Error: " + e.getMessage());
     }
-}
 
-private static void cursoEditar(Scanner sc) {
-    System.out.println("\n--- Editar Curso ---");
-    try {
-        String id = askNumeric(sc, "ID (entero) a editar: ");
-        CursoDTO actual = cursoController.buscarDTO(id);
-        if (actual == null) { 
-            System.out.println("No existe curso con ID " + id); 
-            return; 
+    private static void cursoEditar(Scanner sc) {
+        System.out.println("\n--- Editar Curso ---");
+        try {
+            String id = askNumeric(sc, "ID (entero) a editar: ");
+            CursoDTO actual = cursoController.buscarDTO(id);
+            if (actual == null) { 
+                System.out.println("No existe curso con ID " + id); 
+                return; 
+            }
+
+            String nombre = askDefault(sc, "Nombre [" + actual.getNombre() + "]: ", actual.getNombre());
+            String idPrograma = ask(sc, "ID Programa (Enter para dejar vacío"
+                + (actual.getProgramaId()!=null ? ", actual=" + actual.getProgramaId() : "")
+                + "): ").trim();
+            String activo = ask(sc, "¿Activo? (S/N) [" + (Boolean.TRUE.equals(actual.getActivo())? "S":"N") + "]: ")
+                .trim().toLowerCase(Locale.ROOT);
+
+            boolean activoBool = activo.isEmpty() ? Boolean.TRUE.equals(actual.getActivo())
+                             : (activo.equals("s") || activo.equals("si") || activo.equals("sí"));
+
+            boolean ok = cursoController.actualizar(id, nombre, idPrograma, activoBool);
+            System.out.println(ok ? "Curso actualizado." : "No se pudo actualizar.");
+            cursoListar();
+            refreshUIAsync();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
-
-        String nombre = askDefault(sc, "Nombre [" + actual.getNombre() + "]: ", actual.getNombre());
-        String idPrograma = ask(sc, "ID Programa (Enter para dejar vacío"
-            + (actual.getProgramaId()!=null ? ", actual=" + actual.getProgramaId() : "")
-            + "): ").trim();
-        String activo = ask(sc, "¿Activo? (S/N) [" + (Boolean.TRUE.equals(actual.getActivo())? "S":"N") + "]: ")
-            .trim().toLowerCase(Locale.ROOT);
-
-        boolean activoBool = activo.isEmpty() ? Boolean.TRUE.equals(actual.getActivo())
-                         : (activo.equals("s") || activo.equals("si") || activo.equals("sí"));
-
-        boolean ok = cursoController.actualizar(id, nombre, idPrograma, activoBool);
-        System.out.println(ok ? "Curso actualizado." : "No se pudo actualizar.");
-        cursoListar();
-        refreshUIAsync();
-    } catch (Exception e) {
-        System.out.println("Error: " + e.getMessage());
     }
-}
 
-private static void cursoEliminar(Scanner sc) {
-    System.out.println("\n--- Eliminar Curso ---");
-    try {
-        String id = askNumeric(sc, "ID (entero) a eliminar: ");
-        CursoDTO actual = cursoController.buscarDTO(id);
-        if (actual == null) { 
-            System.out.println("No existe curso con ID " + id); 
-            return; 
-        }
-        String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
-        if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) { 
-            System.out.println("Cancelado."); 
-            return; 
-        }
+    private static void cursoEliminar(Scanner sc) {
+        System.out.println("\n--- Eliminar Curso ---");
+        try {
+            String id = askNumeric(sc, "ID (entero) a eliminar: ");
+            System.out.println("[DEBUG] id raw: '" + id + "'"); // borrar luego
+            if (id == null || id.isBlank()) {
+                System.out.println("ID vacío. Cancelado.");
+                return;
+            }
 
-        boolean ok = cursoController.eliminar(id);
-        System.out.println(ok ? "Curso eliminado." : "× No se pudo eliminar.");
-        cursoListar();
-        refreshUIAsync();
-    } catch (Exception e) {
-        System.out.println("Error: " + e.getMessage());
+            CursoDTO actual = cursoController.buscarDTO(id);
+            if (actual == null) {
+                System.out.println("No existe curso con ID " + id);
+                return;
+            }
+            String conf = ask(sc, "¿Confirmar? (S/N): ").trim().toLowerCase(Locale.ROOT);
+            if (!conf.equals("s") && !conf.equals("si") && !conf.equals("sí")) {
+                System.out.println("Cancelado.");
+                return;
+            }
+
+            boolean ok = cursoController.eliminar(id);
+            System.out.println(ok ? "Curso eliminado." : "× No se pudo eliminar.");
+            cursoListar();
+            refreshUIAsync();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
-}
 
-private static void cursoListar() {
-    try {
-        List<CursoDTO> lista = cursoController.listarDTO();
-        System.out.println("\n=== Cursos en BD ===");
-        if (lista == null || lista.isEmpty()) { 
-            System.out.println("(sin registros)"); 
-            return; 
+
+    private static void cursoListar() {
+        try {
+            List<CursoDTO> lista = cursoController.listarDTO();
+            System.out.println("\n=== Cursos en BD ===");
+            if (lista == null || lista.isEmpty()) { 
+                System.out.println("(sin registros)"); 
+                return; 
+            }
+            for (CursoDTO dto : lista) {
+                System.out.println(" - ID=" + dto.getId()
+                    + ", Nombre=" + dto.getNombre()
+                    + ", Programa=" + (dto.getProgramaNombre()==null? "" : dto.getProgramaNombre())
+                    + ", Activo=" + (Boolean.TRUE.equals(dto.getActivo())? "Sí":"No"));
+            }
+        } catch (Exception e) {
+            System.out.println("× Error listando cursos: " + e.getMessage());
         }
-        for (CursoDTO dto : lista) {
-            System.out.println(" - ID=" + dto.getId()
-                + ", Nombre=" + dto.getNombre()
-                + ", Programa=" + (dto.getProgramaNombre()==null? "" : dto.getProgramaNombre())
-                + ", Activo=" + (Boolean.TRUE.equals(dto.getActivo())? "Sí":"No"));
-        }
-    } catch (Exception e) {
-        System.out.println("× Error listando cursos: " + e.getMessage());
     }
-}
 
     // ========== Inscripción (CONSOLA) ==========
     private static void submenuInscripcion(Scanner sc) {
@@ -1005,13 +986,11 @@ private static void cursoListar() {
     }
 
     private static String askNumeric(Scanner sc, String prompt) {
-        String s = ask(sc, prompt);
-        while (!s.matches("\\d+")) {
-            System.out.println("  -> Debe ser número entero positivo.");
-            s = ask(sc, prompt);
-        }
-        return null;
+        System.out.print(prompt);
+        String line = sc.nextLine();
+        return (line==null) ? "" : line.trim();
     }
+
     private static String askNumericDouble(Scanner sc, String prompt) {
     String s = ask(sc, prompt);
     while (!s.matches("\\d+(\\.\\d+)?")) {

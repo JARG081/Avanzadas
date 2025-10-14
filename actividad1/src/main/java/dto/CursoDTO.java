@@ -3,8 +3,8 @@ package dto;
 public class CursoDTO {
     private Double id;
     private String nombre;
-    private Double programaId;     // opcional
-    private String programaNombre; // opcional para UI
+    private Double programaId;   
+    private String programaNombre;
     private Boolean activo;
 
     public CursoDTO() {}

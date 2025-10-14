@@ -9,6 +9,7 @@ ui\Pantalla$32.class
 ui\Pantalla$22.class
 service\FacultadService.class
 ui\Pantalla$12.class
+Observer\ConsoleCursoObserver.class
 com\mycompany\actividad1\model\Curso.class
 com\mycompany\actividad1\adapter\H2DatabaseAdapter.class
 controller\ProfesorController$1.class
