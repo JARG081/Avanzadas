@@ -14,7 +14,7 @@ public class CursoJdbcRepository implements CursoRepository {
     @Override
     public Curso buscarPorId(Double id) {
         final String sql = "SELECT c.id, c.nombre, c.id_programa, c.activo, p.nombre AS programa_nombre " +
-                           "FROM curso c LEFT JOIN programa p ON p.id = c.id_programa " +
+                           "FROM CURSO c LEFT JOIN PROGRAMA p ON p.id = c.id_programa " +
                            "WHERE c.id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -44,7 +44,7 @@ public class CursoJdbcRepository implements CursoRepository {
     @Override
     public List<Curso> listar() {
         final String sql = "SELECT c.id, c.nombre, c.id_programa, c.activo, p.nombre AS programa_nombre " +
-                           "FROM curso c LEFT JOIN programa p ON p.id = c.id_programa " +
+                           "FROM CURSO c LEFT JOIN PROGRAMA p ON p.id = c.id_programa " +
                            "ORDER BY c.id";
         List<Curso> out = new ArrayList<>();
         try (Connection conn = Database.getConnection();
@@ -72,7 +72,7 @@ public class CursoJdbcRepository implements CursoRepository {
     }
     @Override
     public void insertar(Curso c) {
-        final String sql = "INSERT INTO curso (id, nombre, id_programa, activo) VALUES (?, ?, ?, ?)";
+        final String sql = "INSERT INTO CURSO (id, nombre, id_programa, activo) VALUES (?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDouble(1, c.getID());
@@ -91,7 +91,7 @@ public class CursoJdbcRepository implements CursoRepository {
 
     @Override
     public boolean actualizar(Curso c) {
-        final String sql = "UPDATE curso SET nombre=?, id_programa=?, activo=? WHERE id=?";
+        final String sql = "UPDATE CURSO SET nombre=?, id_programa=?, activo=? WHERE id=?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, c.getNombre());
@@ -110,7 +110,7 @@ public class CursoJdbcRepository implements CursoRepository {
 
     @Override
     public boolean eliminar(Double id) {
-        final String sql = "DELETE FROM curso WHERE id = ?";
+        final String sql = "DELETE FROM CURSO WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDouble(1, id);

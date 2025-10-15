@@ -13,7 +13,7 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
 
     @Override
     public void insertar(Programa p) {
-        final String sql = "INSERT INTO programa (id, nombre, duracion, registro, id_facultad) VALUES (?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO PROGRAMA (id, nombre, duracion, registro, id_facultad) VALUES (?, ?, ?, ?, ?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, p.getId());
@@ -34,7 +34,7 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
 
     @Override
     public boolean actualizar(Programa p) {
-        final String sql = "UPDATE programa SET nombre=?, duracion=?, registro=?, id_facultad=? WHERE id=?";
+        final String sql = "UPDATE PROGRAMA SET nombre=?, duracion=?, registro=?, id_facultad=? WHERE id=?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, p.getNombre());
@@ -55,7 +55,7 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
 
     @Override
     public boolean eliminar(Double id) {
-        final String sql = "DELETE FROM programa WHERE id = ?";
+        final String sql = "DELETE FROM PROGRAMA WHERE id = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, id);
@@ -70,8 +70,8 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
         final String sql =
             "SELECT pr.id, pr.nombre, pr.duracion, pr.registro, pr.id_facultad, " +
             "       f.nombre AS facultad_nombre " +
-            "FROM programa pr " +
-            "LEFT JOIN facultad f ON f.id = pr.id_facultad " +
+            "FROM PROGRAMA pr " +
+            "LEFT JOIN FACULTAD f ON f.id = pr.id_facultad " +
             "WHERE pr.id = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -105,8 +105,8 @@ public class ProgramaJdbcRepository implements ProgramaRepository {
         final String sql =
             "SELECT pr.id, pr.nombre, pr.duracion, pr.registro, pr.id_facultad, " +
             "       f.nombre AS facultad_nombre " +
-            "FROM programa pr " +
-            "LEFT JOIN facultad f ON f.id = pr.id_facultad " +
+            "FROM PROGRAMA pr " +
+            "LEFT JOIN FACULTAD f ON f.id = pr.id_facultad " +
             "ORDER BY pr.id";
         List<Programa> out = new ArrayList<>();
         try (Connection c = Database.getConnection();

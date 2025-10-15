@@ -13,7 +13,7 @@ public class ProfesorJdbcRepository implements ProfesorRepository {
 
     @Override
     public void insertar(Profesor profesor) {
-        final String sql = "INSERT INTO profesor (id_persona, contrato) VALUES (?, ?)";
+        final String sql = "INSERT INTO PROFESOR (id_persona, contrato) VALUES (?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDouble(1, profesor.getIdPersona());
@@ -26,7 +26,7 @@ public class ProfesorJdbcRepository implements ProfesorRepository {
 
     @Override
     public boolean actualizar(Profesor profesor) {
-        final String sql = "UPDATE profesor SET contrato = ? WHERE id_persona = ?";
+        final String sql = "UPDATE PROFESOR SET contrato = ? WHERE id_persona = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, profesor.getContrato());
@@ -39,7 +39,7 @@ public class ProfesorJdbcRepository implements ProfesorRepository {
 
     @Override
     public boolean eliminar(Double idPersona) {
-        final String sql = "DELETE FROM profesor WHERE id_persona = ?";
+        final String sql = "DELETE FROM PROFESOR WHERE id_persona = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDouble(1, idPersona);
@@ -53,7 +53,7 @@ public class ProfesorJdbcRepository implements ProfesorRepository {
     public Profesor buscarPorIdPersona(Double idPersona) {
         final String sql =
             "SELECT p.id, p.nombres, p.apellidos, p.email, pr.contrato " +
-            "FROM profesor pr JOIN persona p ON p.id = pr.id_persona " +
+            "FROM PROFESOR pr JOIN PERSONA p ON p.id = pr.id_persona " +
             "WHERE pr.id_persona = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -81,7 +81,7 @@ public class ProfesorJdbcRepository implements ProfesorRepository {
     public List<Profesor> listar() {
         final String sql =
             "SELECT p.id, p.nombres, p.apellidos, p.email, pr.contrato " +
-            "FROM profesor pr JOIN persona p ON p.id = pr.id_persona " +
+            "FROM PROFESOR pr JOIN PERSONA p ON p.id = pr.id_persona " +
             "ORDER BY p.id";
         List<Profesor> out = new ArrayList<>();
         try (Connection conn = Database.getConnection();

@@ -13,7 +13,7 @@ public class FacultadJdbcRepository implements FacultadRepository {
 
     @Override
     public void insertar(Facultad f) {
-        final String sql = "INSERT INTO facultad (id, nombre, id_decano) VALUES (?, ?, ?)";
+        final String sql = "INSERT INTO FACULTAD (id, nombre, id_decano) VALUES (?, ?, ?)";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, f.getID());
@@ -31,7 +31,7 @@ public class FacultadJdbcRepository implements FacultadRepository {
 
     @Override
     public boolean actualizar(Facultad f) {
-        final String sql = "UPDATE facultad SET nombre=?, id_decano=? WHERE id=?";
+        final String sql = "UPDATE FACULTAD SET nombre=?, id_decano=? WHERE id=?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, f.getNombre());
@@ -49,7 +49,7 @@ public class FacultadJdbcRepository implements FacultadRepository {
 
     @Override
     public boolean eliminar(Double id) {
-        final String sql = "DELETE FROM facultad WHERE id = ?";
+        final String sql = "DELETE FROM FACULTAD WHERE id = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, id);
@@ -64,8 +64,8 @@ public class FacultadJdbcRepository implements FacultadRepository {
         final String sql =
             "SELECT f.id, f.nombre, f.id_decano, " +
             "       p.nombres, p.apellidos, p.email " +
-            "FROM facultad f " +
-            "LEFT JOIN persona p ON p.id = f.id_decano " +
+            "FROM FACULTAD f " +
+            "LEFT JOIN PERSONA p ON p.id = f.id_decano " +
             "WHERE f.id = ?";
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
@@ -96,8 +96,8 @@ public class FacultadJdbcRepository implements FacultadRepository {
         final String sql =
             "SELECT f.id, f.nombre, f.id_decano, " +
             "       p.nombres, p.apellidos, p.email " +
-            "FROM facultad f " +
-            "LEFT JOIN persona p ON p.id = f.id_decano " +
+            "FROM FACULTAD f " +
+            "LEFT JOIN PERSONA p ON p.id = f.id_decano " +
             "ORDER BY f.id";
         List<Facultad> out = new ArrayList<>();
         try (Connection c = Database.getConnection();

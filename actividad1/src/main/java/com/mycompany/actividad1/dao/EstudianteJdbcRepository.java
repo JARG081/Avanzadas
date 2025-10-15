@@ -14,7 +14,7 @@ public class EstudianteJdbcRepository implements EstudianteRepository {
 
     @Override
     public void insertar(Estudiante est) {
-        final String sql = "INSERT INTO estudiante (id_persona, codigo, id_programa) VALUES (?,?,?)";
+        final String sql = "INSERT INTO ESTUDIANTE (id_persona, codigo, id_programa) VALUES (?,?,?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -36,9 +36,9 @@ public class EstudianteJdbcRepository implements EstudianteRepository {
         final String sql =
             "SELECT p.id, p.nombres, p.apellidos, p.email, " +
             "       e.codigo, e.id_programa, pr.nombre AS programa_nombre " +
-            "FROM estudiante e " +
-            "JOIN persona p ON p.id = e.id_persona " +
-            "LEFT JOIN programa pr ON pr.id = e.id_programa " +
+            "FROM ESTUDIANTE e " +
+            "JOIN PERSONA p ON p.id = e.id_persona " +
+            "LEFT JOIN PROGRAMA pr ON pr.id = e.id_programa " +
             "WHERE e.id_persona = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -75,9 +75,9 @@ public class EstudianteJdbcRepository implements EstudianteRepository {
         final String sql =
             "SELECT p.id, p.nombres, p.apellidos, p.email, " +
             "       e.codigo, e.id_programa, pr.nombre AS programa_nombre " +
-            "FROM estudiante e " +
-            "JOIN persona p ON p.id = e.id_persona " +
-            "LEFT JOIN programa pr ON pr.id = e.id_programa " +
+            "FROM ESTUDIANTE e " +
+            "JOIN PERSONA p ON p.id = e.id_persona " +
+            "LEFT JOIN PROGRAMA pr ON pr.id = e.id_programa " +
             "ORDER BY p.id";
         List<Estudiante> out = new ArrayList<>();
         try (Connection conn = Database.getConnection();
@@ -110,7 +110,7 @@ public class EstudianteJdbcRepository implements EstudianteRepository {
 
     @Override
     public boolean actualizar(Estudiante est) {
-        final String sql = "UPDATE estudiante SET codigo = ?, id_programa = ? WHERE id_persona = ?";
+        final String sql = "UPDATE ESTUDIANTE SET codigo = ?, id_programa = ? WHERE id_persona = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, est.getCodigo());
@@ -128,7 +128,7 @@ public class EstudianteJdbcRepository implements EstudianteRepository {
 
     @Override
     public boolean eliminar(Double idPersona) {
-        final String sql = "DELETE FROM estudiante WHERE id_persona = ?";
+        final String sql = "DELETE FROM ESTUDIANTE WHERE id_persona = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDouble(1, idPersona);

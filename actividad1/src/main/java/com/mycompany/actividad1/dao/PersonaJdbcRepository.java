@@ -12,7 +12,7 @@ public class PersonaJdbcRepository implements PersonaRepository {
 
     @Override
     public void insertar(Persona persona) {
-        final String sql = "INSERT INTO persona (id, nombres, apellidos, email) VALUES (?, ?, ?, ?)";
+        final String sql = "INSERT INTO PERSONA (id, nombres, apellidos, email) VALUES (?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -29,7 +29,7 @@ public class PersonaJdbcRepository implements PersonaRepository {
 
     @Override
     public boolean actualizar(Persona persona) {
-        final String sql = "UPDATE persona SET nombres = ?, apellidos = ?, email = ? WHERE id = ?";
+        final String sql = "UPDATE PERSONA SET nombres = ?, apellidos = ?, email = ? WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -46,7 +46,7 @@ public class PersonaJdbcRepository implements PersonaRepository {
 
     @Override
     public boolean eliminar(Double id) {
-        final String sql = "DELETE FROM persona WHERE id = ?";
+        final String sql = "DELETE FROM PERSONA WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -60,7 +60,7 @@ public class PersonaJdbcRepository implements PersonaRepository {
 
     @Override
     public Persona buscarPorId(Double id) {
-        final String sql = "SELECT id, nombres, apellidos, email FROM persona WHERE id = ?";
+        final String sql = "SELECT id, nombres, apellidos, email FROM PERSONA WHERE id = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -84,7 +84,7 @@ public class PersonaJdbcRepository implements PersonaRepository {
 
     @Override
     public List<Persona> listar() {
-        final String sql = "SELECT id, nombres, apellidos, email FROM persona ORDER BY id";
+        final String sql = "SELECT id, nombres, apellidos, email FROM PERSONA ORDER BY id";
         final List<Persona> lista = new ArrayList<>();
 
         try (Connection conn = Database.getConnection();

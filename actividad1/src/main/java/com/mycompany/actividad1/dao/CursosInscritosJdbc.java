@@ -15,7 +15,7 @@ public class CursosInscritosJdbc implements CursosInscritosRepository {
 
     @Override
     public boolean insertar(Inscripcion insc) {
-        final String sql = "INSERT INTO inscripcion (curso_id, estudiante_id, anio, semestre) VALUES (?,?,?,?)";
+        final String sql = "INSERT INTO INSCRIPCION (curso_id, estudiante_id, anio, semestre) VALUES (?,?,?,?)";
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, insc.getCurso().getID());
             ps.setDouble(2, insc.getEstudiante().getId());
@@ -31,11 +31,11 @@ public class CursosInscritosJdbc implements CursosInscritosRepository {
             "SELECT c.id AS c_id, c.nombre AS c_nombre, c.id_programa AS c_prog, c.activo AS c_activo, " +
             "       p.nombre AS prog_nombre, " +
             "       pe.id AS e_id, pe.nombres AS e_nom, pe.apellidos AS e_ape, pe.email AS e_mail, e.codigo AS e_cod " +
-            "FROM inscripcion i " +
-            "JOIN curso c ON c.id = i.curso_id " +
-            "LEFT JOIN programa p ON p.id = c.id_programa " +
-            "LEFT JOIN persona pe ON pe.id = i.estudiante_id " +
-            "LEFT JOIN estudiante e ON e.id_persona = pe.id " +
+            "FROM INSCRIPCION i " +
+            "JOIN CURSO c ON c.id = i.curso_id " +
+            "LEFT JOIN PROGRAMA p ON p.id = c.id_programa " +
+            "LEFT JOIN PERSONA pe ON pe.id = i.estudiante_id " +
+            "LEFT JOIN ESTUDIANTE e ON e.id_persona = pe.id " +
             "WHERE i.curso_id=? AND i.estudiante_id=? AND i.anio=? AND i.semestre=?";
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, idCurso);
@@ -74,7 +74,7 @@ public class CursosInscritosJdbc implements CursosInscritosRepository {
     @Override
     public boolean actualizar(Inscripcion nueva, Double idCursoOld, Double idEstOld, Integer anioOld, Integer semOld) {
         final String sql =
-            "UPDATE inscripcion SET curso_id=?, estudiante_id=?, anio=?, semestre=? " +
+            "UPDATE INSCRIPCION SET curso_id=?, estudiante_id=?, anio=?, semestre=? " +
             "WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=?";
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, nueva.getCurso().getID());
@@ -91,7 +91,7 @@ public class CursosInscritosJdbc implements CursosInscritosRepository {
 
     @Override
     public boolean eliminar(Double idCurso, Double idEstudiante, Integer anio, Integer semestre) {
-        final String sql = "DELETE FROM inscripcion WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=?";
+        final String sql = "DELETE FROM INSCRIPCION WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=?";
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, idCurso);
             ps.setDouble(2, idEstudiante);
@@ -103,7 +103,7 @@ public class CursosInscritosJdbc implements CursosInscritosRepository {
 
     @Override
     public boolean existe(Double idCurso, Double idEstudiante, Integer anio, Integer semestre) {
-        final String sql = "SELECT 1 FROM inscripcion WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=? LIMIT 1";
+        final String sql = "SELECT 1 FROM INSCRIPCION WHERE curso_id=? AND estudiante_id=? AND anio=? AND semestre=? LIMIT 1";
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDouble(1, idCurso);
             ps.setDouble(2, idEstudiante);
@@ -119,11 +119,11 @@ public class CursosInscritosJdbc implements CursosInscritosRepository {
             "SELECT i.anio, i.semestre, " +
             "       c.id AS c_id, c.nombre AS c_nombre, c.id_programa AS c_prog, c.activo AS c_activo, p.nombre AS prog_nombre, " +
             "       pe.id AS e_id, pe.nombres AS e_nom, pe.apellidos AS e_ape, pe.email AS e_mail, e.codigo AS e_cod " +
-            "FROM inscripcion i " +
-            "JOIN curso c ON c.id = i.curso_id " +
-            "LEFT JOIN programa p ON p.id = c.id_programa " +
-            "LEFT JOIN persona pe ON pe.id = i.estudiante_id " +
-            "LEFT JOIN estudiante e ON e.id_persona = pe.id " +
+            "FROM INSCRIPCION i " +
+            "JOIN CURSO c ON c.id = i.curso_id " +
+            "LEFT JOIN PROGRAMA p ON p.id = c.id_programa " +
+            "LEFT JOIN PERSONA pe ON pe.id = i.estudiante_id " +
+            "LEFT JOIN ESTUDIANTE e ON e.id_persona = pe.id " +
             "ORDER BY i.anio DESC, i.semestre DESC, c.id";
         List<Inscripcion> out = new ArrayList<>();
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
