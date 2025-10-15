@@ -5,6 +5,7 @@ import controller.*;
 import dto.CursoDTO;
 import ui.Pantalla;
 import Observer.ConsoleCursoObserver;
+import com.mycompany.actividad1.adapter.DatabaseAdapter;
 
 import javax.swing.*;
 import java.awt.GraphicsEnvironment;
@@ -42,8 +43,15 @@ public class Main {
     
 
     public static void main(String[] args) {
-        log("Iniciando aplicación… DB activa=" + factory.activeDb());
-        log("Hora del servidor: " + factory.domain().databaseAdapter().getServerTime());
+            log("Iniciando aplicación… DB activa=" + factory.activeDb());
+
+       DatabaseAdapter adapter = factory.domain().databaseAdapter();
+       if (adapter != null) {
+           dbLoad.dbLoad.init(adapter);
+           log("Hora del servidor: " + adapter.getServerTime());
+       } else {
+           System.out.println("[WARN] No hay adapter disponible en factory.domain()");
+       }
             // Hilo consola
             Thread consoleThread = new Thread(() -> {
                 try {
