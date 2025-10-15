@@ -48,11 +48,11 @@ public class Pantalla extends javax.swing.JFrame {
         cargarTablaCurso();
         cargarTablaProfesores();
         cargarTablaEstudiantes();
-        System.out.println("[DEBUG] Pantalla.constructor -> cursoController hash=" + System.identityHashCode(this.cursoController));
+        /*System.out.println("[DEBUG] Pantalla.constructor -> cursoController hash=" + System.identityHashCode(this.cursoController));
         try {
             System.out.println("[DEBUG] Pantalla.constructor -> cursoController.service hash=" + this.cursoController.serviceHash());
         } catch (Throwable t) {}
-
+        */
     }
 
     public Pantalla() {
